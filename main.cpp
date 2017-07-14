@@ -6,12 +6,17 @@
 class Body {
 
 private:
-    double m_x, m_y, m_z, m_vx, m_vy, vz,m_x0, m_y0, m_z0, m_vx0, m_vy0, m_vz0, m_radius, m_gm;
+    double m_x, m_y, m_z, m_vx, m_vy, m_vz,m_x0, m_y0, m_z0, m_vx0, m_vy0, m_vz0, m_radius, m_gm;
     std::string m_name;
+
 public:
     Body(std::string, double, double, double, double, double, double, double, double);
     std::vector<double> compute_acceleration(double, double, double);
+    std::vector<double> get_coords();
+    double get_radius();
+    std::string get_name();
     void step(double, std::vector<Body>);
+
 };
 
 Body::Body(std::string name, double x0, double y0, double z0, double vx0, double vy0, double vz0,
@@ -19,6 +24,10 @@ Body::Body(std::string name, double x0, double y0, double z0, double vx0, double
     m_x0 = x0;
     m_y0 = y0;
     m_z0 = z0;
+
+    m_x = m_x0;
+    m_y = m_y0;
+    m_z = m_z0;
 
     m_vx0 = vx0;
     m_vy0 = vy0;
@@ -42,13 +51,24 @@ std::vector<double> Body::compute_acceleration(double x, double y, double z) {
     double ay = m_gm/(delta_x2+delta_y2+delta_z2)* delta_y/sqrt(delta_x2+delta_y2+delta_z2);
     double az = m_gm/(delta_x2+delta_y2+delta_z2)* delta_z/sqrt(delta_x2+delta_y2+delta_z2);
 
-    std::vector<double> a(3);
+    return std::vector<double> {ax, ay, az};
+}
 
-    a[0] = ax;
-    a[1] = ay;
-    a[2] = az;
+std::vector<double> Body::get_coords(){
+    return std::vector<double> {m_x, m_y, m_z};
+}
 
-    return a;
+double Body::get_radius() {
+    return m_radius;
+}
+
+std::string Body::get_name() {
+    return m_name;
+}
+
+// TODO Implement step function.
+void Body::step(double dt, std::vector<Body> targets) {
+    // ...
 }
 
 int main() {
