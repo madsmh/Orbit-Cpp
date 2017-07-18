@@ -1,77 +1,164 @@
 #include <iostream>
 #include <string>
+#include <xtensor/xarray.hpp>
+#include <xtensor/xtensor.hpp>
+#include <xtensor-blas/xlinalg.hpp>
 #include <vector>
-#include <cmath>
+#include <math.h>
 
 class Body {
 
 private:
-    double m_x, m_y, m_z, m_vx, m_vy, m_vz, m_x0, m_y0, m_z0, m_vx0, m_vy0, m_vz0, m_radius, m_gm;
-    double m_mass;
+    double m_x, m_y, m_z, m_vx, m_vy, m_vz,m_x0, m_y0, m_z0, m_vx0, m_vy0, m_vz0, m_radius, m_gm, m_mass;
     std::string m_name;
-    int m_i;
 
 public:
-    Body(std::string, double, double, double, double, double, double, double, double);
-    std::vector<double> compute_acceleration(double, double, double);
-    std::vector<double> get_coords();
-    double get_radius();
-    double get_ke();
-    std::string get_name();
+    Body(std::string name, xt::xarray <double> pos0, xt::xarray <double> vel0 ,
+         double mass, double gm, double radius) {
+        m_x0 = pos0[0];
+        m_y0 = pos0[1];
+        m_z0 = pos0[2];
+
+        m_x = m_x0;
+        m_y = m_y0;
+        m_z = m_z0;
+
+        m_vx0 = vel0[0];
+        m_vy0 = vel0[1];
+        m_vz0 = vel0[2];
+
+        m_gm = gm;
+        m_radius = radius;
+        m_mass = mass;
+
+        m_name = name;
+    }
+
+    xt::xarray <double> get_position(){
+        return xt::xarray<double> {m_x, m_y, m_z};
+    };
+
+    xt::xarray <double> get_velocity() {
+        return xt::xarray<double> {m_vx, m_vy, m_vz};
+    };
+
+    xt::xarray <double> compute_acceleration(xt::xarray <double> force) {
+        return force/m_mass;
+    };
+
+    void set_position(xt::xarray<double> pos) {
+        m_x = pos[0], m_y = pos[1], m_z = pos[2];
+
+    };
+
+    void set_velocity(xt::xarray<double> vel) {
+        m_x = vel[0], m_y = vel[1], m_z = vel[2];
+    };
+
+
+    double get_radius() {
+        return m_radius;
+    };
+
+    double get_GM() {
+        return m_gm;
+    };
+
+    std::string get_name() {
+        return m_name;
+    };
+
+    double get_mass(){
+        return m_mass;
+    };
+
 };
 
-Body::Body(std::string name, double x0, double y0, double z0, double vx0, double vy0, double vz0,
-           double gm, double radius) {
-    m_x0 = x0;
-    m_y0 = y0;
-    m_z0 = z0;
+class System {
+private:
+    std::vector<std::string> self_names;
+    std::vector<Body> self_bodies;
 
-    m_x = m_x0;
-    m_y = m_y0;
-    m_z = m_z0;
+    xt::xarray <double> self_pos;
+    xt::xarray <double> self_vel;
+    xt::xarray <double> self_masses;
+    xt::xarray <double> self_gms;
+    xt::xarray <double> self_radii;
 
-    m_vx0 = vx0;
-    m_vy0 = vy0;
-    m_vz0 = vz0;
+    long self_n;
 
-    m_gm = gm;
-    m_radius = radius;
+public:
+    System(std::vector<std::string> names, xt::xarray<double> pos, xt::xarray <double> vel, xt::xarray<double> masses,
+           xt::xarray<double> gms, xt::xarray<double> radii){
 
-    m_name = name;
+        // Number of names, and thus number of Bodies to initialize
+        self_n = names.size();
+
+        // Initialize self_n obejects of Body type
+        for (int i=0; i < self_n; i++){
+            self_bodies.push_back(Body(names[i], pos[i], vel[i], masses[i], gms[i], radii[i]));
+        }
+
+
+    };
+    xt::xarray <double> get_positions(){
+
+        xt::xarray<double> positions = xt::zeros<double>({self_n, 3});
+
+        for (int i = 0; i < self_n; ++i) {
+            positions[i] = self_bodies[i].get_position();
+        }
+        return positions;
+    };
+
+    xt::xarray <double> get_velocities(){
+        xt::xarray <double> velocities = xt::zeros<double>({self_n, 3});
+
+        for (int i = 0; i < self_n; ++i) {
+            velocities[i] = self_bodies[i].get_velocity();
+        }
+
+        return velocities;
+    };
+    xt::xarray <double> get_accelerations();
+
+    xt::xarray<double> force(Body body1, Body body2){
+        // Function to calulate the vector force on body2 from
+        // body 1
+
+        xt::xarray<double> pos1 = body1.get_position();
+        xt::xarray<double> pos2 = body2.get_position();
+
+        // If the positions are equal return the zero-vector
+        if(xt::all(xt::equal(pos1, pos2))) {
+            return xt::zeros<double>({1, 3});
+        }
+
+        xt::xarray<double> r12 = pos2 - pos1;
+        double dist = xt::linalg::norm(r12);
+
+        return -6.67259e-11 * body1.get_mass() * body2.get_mass()/pow(dist, 3) * r12;
+    }
+
+    xt::xarray <double> force_matrix(){
+        // Initialize the matrix that will hold the force vectors
+        xt::xarray <double> forces = xt::zeros<double>({self_n, self_n, 3});
+
+        // Enter the values into the force matrix
+        for (int i = 0; i < self_n; ++i) {
+            for (int j = 0; j < self_n; ++j)
+                forces[i][j] = force(self_bodies[i], self_bodies[j]);
+            }
+    }
+
+
+    void set_positions(xt::xarray<double>);
+    void set_velocities(xt::xarray<double>);
 };
-std::vector<double> Body::compute_acceleration(double x, double y, double z) {
-    // Calculate gravitational acceleration due to self at (x, y, z)
-
-    double delta_x = m_x - x;
-    double delta_y = m_y - y;
-    double delta_z = m_z - z;
-
-    double r2 = pow(delta_x, 2)+pow(delta_y, 2)+pow(delta_z, 2);
-    double r = sqrt(r2);
-    double f = m_gm/r2;
-
-    return std::vector<double> {f * delta_x/r, f * delta_y/r, f * delta_z/r};
-};
-
-std::vector<double> Body::get_coords(){
-    return std::vector<double> {m_x, m_y, m_z};
-};
-
-double Body::get_radius() {
-    return m_radius;
-};
-
-double Body::get_ke() {
-    return 0.5 * m_mass * (pow(m_vx,2) + pow(m_vy,2) + pow(m_vz, 2));
-}
-
-std::string Body::get_name() {
-    return m_name;
-};
-
 
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
     return 0;
-};
+}
+
