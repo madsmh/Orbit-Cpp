@@ -1,8 +1,5 @@
 #include <iostream>
 #include <string>
-#include <xtensor/xarray.hpp>
-#include <xtensor/xtensor.hpp>
-#include <xtensor-blas/xlinalg.hpp>
 #include <vector>
 #include <math.h>
 
@@ -13,7 +10,7 @@ private:
     std::string m_name;
 
 public:
-    Body(std::string name, xt::xarray <double> pos0, xt::xarray <double> vel0 ,
+    Body(std::string name, double pos0[3], double vel0[3] ,
          double mass, double gm, double radius) {
         m_x0 = pos0[0];
         m_y0 = pos0[1];
@@ -34,24 +31,21 @@ public:
         m_name = name;
     }
 
-    xt::xarray <double> get_position(){
-        return xt::xarray<double> {m_x, m_y, m_z};
+    std::vector<double> get_position(){
+        return std::vector<double> {m_x, m_y, m_z};
     };
 
-    xt::xarray <double> get_velocity() {
-        return xt::xarray<double> {m_vx, m_vy, m_vz};
+    std::vector<double> get_velocity() {
+        return std::vector<double> {m_vx, m_vy, m_vz};
     };
 
-    xt::xarray <double> compute_acceleration(xt::xarray <double> force) {
-        return force/m_mass;
-    };
 
-    void set_position(xt::xarray<double> pos) {
+    void set_position(double pos[3]) {
         m_x = pos[0], m_y = pos[1], m_z = pos[2];
 
     };
 
-    void set_velocity(xt::xarray<double> vel) {
+    void set_velocity(double vel[3]) {
         m_x = vel[0], m_y = vel[1], m_z = vel[2];
     };
 
@@ -79,81 +73,108 @@ private:
     std::vector<std::string> self_names;
     std::vector<Body> self_bodies;
 
-    xt::xarray <double> self_pos;
-    xt::xarray <double> self_vel;
-    xt::xarray <double> self_masses;
-    xt::xarray <double> self_gms;
-    xt::xarray <double> self_radii;
-
     long self_n;
 
 public:
-    System(std::vector<std::string> names, xt::xarray<double> pos, xt::xarray <double> vel, xt::xarray<double> masses,
-           xt::xarray<double> gms, xt::xarray<double> radii){
-
-        // Number of names, and thus number of Bodies to initialize
-        self_n = names.size();
+    System(std::vector<std::string> names, double pos0[][3], double vel0[][3],
+           double masses[], double gms[], double radii[]){
 
         // Initialize self_n obejects of Body type
         for (int i=0; i < self_n; i++){
-            self_bodies.push_back(Body(names[i], pos[i], vel[i], masses[i], gms[i], radii[i]));
+            self_bodies.emplace_back(names[i], pos0[i], vel0[i], masses[i], gms[i], radii[i]);
         }
 
+        for (int j = 0; j < self_n; ++j) {
+            self_names.push_back(self_bodies[j].get_name());
+        }
 
     };
-    xt::xarray <double> get_positions(){
+    std::vector<std::vector<double>> get_positions(){
 
-        xt::xarray<double> positions = xt::zeros<double>({self_n, 3});
+        std::vector<std::vector<double>> positions;
 
         for (int i = 0; i < self_n; ++i) {
-            positions[i] = self_bodies[i].get_position();
+            positions.push_back(self_bodies[i].get_position());
         }
+
         return positions;
     };
 
-    xt::xarray <double> get_velocities(){
-        xt::xarray <double> velocities = xt::zeros<double>({self_n, 3});
+    std::vector<std::vector<double>> get_velocities(){
+
+        std::vector<std::vector<double>> velocities;
 
         for (int i = 0; i < self_n; ++i) {
-            velocities[i] = self_bodies[i].get_velocity();
+            velocities.push_back(self_bodies[i].get_velocity());
         }
 
         return velocities;
     };
-    xt::xarray <double> get_accelerations();
 
-    xt::xarray<double> force(Body body1, Body body2){
+    std::vector<double> acceleration(Body body1, Body body2){
         // Function to calulate the vector force on body2 from
         // body 1
 
-        xt::xarray<double> pos1 = body1.get_position();
-        xt::xarray<double> pos2 = body2.get_position();
+        std::vector<double> pos1 = body1.get_position();
+        std::vector<double> pos2 = body2.get_position();
 
         // If the positions are equal return the zero-vector
-        if(xt::all(xt::equal(pos1, pos2))) {
-            return xt::zeros<double>({1, 3});
+        if(pos1 == pos2) {
+            return std::vector<double> {0, 0, 0};
         }
 
-        xt::xarray<double> r12 = pos2 - pos1;
-        double dist = xt::linalg::norm(r12);
+        std::vector<double> r12 = {pos2[0] - pos1[0], pos2[1] - pos1[1], pos2[2] - pos1[2]};
+        double dist = std::sqrt(pow(r12[0],2)+pow(r12[0], 2)+pow(r12[0], 2));
 
-        return -6.67259e-11 * body1.get_mass() * body2.get_mass()/pow(dist, 3) * r12;
+        return std::vector<double> {-body1.get_GM()*r12[0]/pow(dist, 3), -body1.get_GM()*r12[2]/pow(dist, 3),
+                                    body1.get_GM()*r12[2]/pow(dist, 3)};
     }
 
-    xt::xarray <double> force_matrix(){
+    std::vector<std::vector<double>> get_accelerations(){
         // Initialize the matrix that will hold the force vectors
-        xt::xarray <double> forces = xt::zeros<double>({self_n, self_n, 3});
+
+        double accels[self_n][self_n][3];
+
+        std::vector<std::vector<double>> accelerations;
 
         // Enter the values into the force matrix
         for (int i = 0; i < self_n; ++i) {
-            for (int j = 0; j < self_n; ++j)
-                forces[i][j] = force(self_bodies[i], self_bodies[j]);
+            for (int j = 0; j < self_n; ++j){
+                std::vector<double> temp_accel = acceleration(self_bodies[i], self_bodies[j]);
+                accels[i][j][0] = temp_accel[0];
+                accels[i][j][1] = temp_accel[1];
+                accels[i][j][2] = temp_accel[2];
             }
+        }
+
+        for (int i = 0; i < self_n; ++i) {
+            double a = 0;
+            double b = 0;
+            double c = 0;
+
+            for (int j = 0; j < self_n; ++j) {
+                a += accels[i][j][0];
+                b += accels[i][j][1];
+                c += accels[i][j][2];
+            }
+
+            accelerations.push_back({a, b, c});
+        }
+
+        return accelerations;
     }
 
 
-    void set_positions(xt::xarray<double>);
-    void set_velocities(xt::xarray<double>);
+    void set_positions(double positions[][3]){
+        for (int i = 0; i < self_n; ++i) {
+            self_bodies[i].set_position(positions[i]);
+        }
+    };
+    void set_velocities(double velocities[][3]){
+        for (int i = 0; i < self_n; ++i) {
+            self_bodies[i].set_velocity(velocities[i]);
+        }
+    };
 };
 
 
