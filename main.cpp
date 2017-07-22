@@ -1,12 +1,13 @@
 #include <iostream>
+#include <istream>
 #include <string>
+#include <sstream>
 #include <vector>
-#include <array>
 #include <cmath>
+#include <fstream>
 
 class Body {
 
-private:
     double m_x, m_y, m_z, m_vx, m_vy, m_vz,m_x0, m_y0, m_z0, m_vx0, m_vy0, m_vz0, m_radius, m_gm;
     std::string m_name;
 
@@ -64,7 +65,7 @@ public:
 };
 
 class System {
-private:
+
     std::vector<std::string> self_names;
     std::vector<Body> self_bodies;
 
@@ -181,6 +182,7 @@ public:
 };
 
 class Trajectory{
+
     long self_n_rows;
     int self_n_trajectories;
     std::vector<std::vector<std::vector<double > > > self_trajectories;
@@ -285,6 +287,49 @@ void verlet(System system, Trajectory trajectory, double delta){
         }
     }
 
+}
+
+
+struct HorizonsFile {
+    double x;
+    double y;
+    double z;
+    double vx;
+    double vy;
+    double vz;
+};
+
+std::vector<HorizonsFile> horizons_to_struct(std::string planet){
+    std::string path = "data/" + planet + ".csv";
+    std::ifstream filereader;
+    HorizonsFile h = {0};
+    std::vector<HorizonsFile> data;
+
+    std::string buffer;
+
+    filereader.open(path);
+    if (filereader.is_open()){
+        while(!filereader.eof()){
+            std::getline(filereader, buffer, ',');
+            std::getline(filereader, buffer, ',');
+            std::getline(filereader, buffer, ',');
+            h.x = stod(buffer);
+            std::getline(filereader, buffer, ',');
+            h.y = stod(buffer);
+            std::getline(filereader, buffer, ',');
+            h.z = stod(buffer);
+            std::getline(filereader, buffer, ',');
+            h.vx = stod(buffer);
+            std::getline(filereader, buffer, ',');
+            h.vy = stod(buffer);
+            std::getline(filereader, buffer, ',');
+            h.vz = stod(buffer);
+            std::getline(filereader, buffer, ',');
+            std::getline(filereader, buffer, ',');
+            std::getline(filereader, buffer, ',');
+            data.push_back(h);
+        }
+    }
 }
 
 int main() {
