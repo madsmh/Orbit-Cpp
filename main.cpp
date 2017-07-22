@@ -12,19 +12,19 @@ class Body {
     std::string m_name;
 
 public:
-    Body(std::string name, std::vector<double> pos0, std::vector<double> vel0,
+    Body(std::string name, std::vector<double> posvel0,
          double gm, double radius) {
-        m_x0 = pos0[0];
-        m_y0 = pos0[1];
-        m_z0 = pos0[2];
+        m_x0 = posvel0[0];
+        m_y0 = posvel0[1];
+        m_z0 = posvel0[2];
 
         m_x = m_x0;
         m_y = m_y0;
         m_z = m_z0;
 
-        m_vx0 = vel0[0];
-        m_vy0 = vel0[1];
-        m_vz0 = vel0[2];
+        m_vx0 = posvel0[3];
+        m_vy0 = posvel0[4];
+        m_vz0 = posvel0[5];
 
         m_gm = gm;
         m_radius = radius;
@@ -72,14 +72,14 @@ class System {
     long self_n;
 
 public:
-    System(std::vector<std::string> names, std::vector<std::vector<double> > pos0,
-           std::vector<std::vector<double> > vel0, double masses[], double gms[], double radii[]){
+    System(std::vector<std::string> names, std::vector<std::vector<double> > posvel0,
+           double masses[], double gms[], double radii[]){
 
         self_n = names.size();
 
         // Initialize self_n obejects of Body type
         for (int i=0; i < self_n; i++){
-            self_bodies.emplace_back(Body(names[i], pos0[i], vel0[i], gms[i], radii[i]));
+            self_bodies.emplace_back(Body(names[i], posvel0[i], gms[i], radii[i]));
         }
 
         for (int j = 0; j < self_n; ++j) {
@@ -299,38 +299,125 @@ struct HorizonsFile {
     double vz;
 };
 
-std::vector<HorizonsFile> horizons_to_struct(std::string planet){
-    std::string path = "data/" + planet + ".csv";
-    std::ifstream filereader;
-    HorizonsFile h = {0};
-    std::vector<HorizonsFile> data;
+class PlanetData {
+    std::vector<std::string> self_planet_names;
+public:
+    explicit PlanetData(std::vector<std::string> names){
+        self_planet_names = std::move(names);
+    }
 
-    std::string buffer;
+    std::vector<HorizonsFile> horizons_to_struct(std::string planet){
+        std::string path = "data/" + planet + ".csv";
+        std::ifstream filereader;
+        HorizonsFile h = {0};
+        std::vector<HorizonsFile> data;
 
-    filereader.open(path);
-    if (filereader.is_open()){
-        while(!filereader.eof()){
-            std::getline(filereader, buffer, ',');
-            std::getline(filereader, buffer, ',');
-            std::getline(filereader, buffer, ',');
-            h.x = stod(buffer);
-            std::getline(filereader, buffer, ',');
-            h.y = stod(buffer);
-            std::getline(filereader, buffer, ',');
-            h.z = stod(buffer);
-            std::getline(filereader, buffer, ',');
-            h.vx = stod(buffer);
-            std::getline(filereader, buffer, ',');
-            h.vy = stod(buffer);
-            std::getline(filereader, buffer, ',');
-            h.vz = stod(buffer);
-            std::getline(filereader, buffer, ',');
-            std::getline(filereader, buffer, ',');
-            std::getline(filereader, buffer, ',');
-            data.push_back(h);
+        std::string buffer;
+
+        filereader.open(path);
+        if (filereader.is_open()){
+            std::getline(filereader, buffer);
+            while(!filereader.eof()){
+                std::getline(filereader, buffer, ',');
+                std::getline(filereader, buffer, ',');
+                std::getline(filereader, buffer, ',');
+                h.x = stod(buffer);
+                std::getline(filereader, buffer, ',');
+                h.y = stod(buffer);
+                std::getline(filereader, buffer, ',');
+                h.z = stod(buffer);
+                std::getline(filereader, buffer, ',');
+                h.vx = stod(buffer);
+                std::getline(filereader, buffer, ',');
+                h.vy = stod(buffer);
+                std::getline(filereader, buffer, ',');
+                h.vz = stod(buffer);
+                std::getline(filereader, buffer, ',');
+                std::getline(filereader, buffer, ',');
+                std::getline(filereader, buffer, ',');
+                data.push_back(h);
+            }
         }
     }
-}
+    std::vector<std::vector<double > > get_horizons_data(std::string planet){
+        std::vector<HorizonsFile> h_structs = horizons_to_struct(std::move(planet));
+        std::vector<std::vector<double> > buffer;
+
+        long n_of_structs = h_structs.size();
+
+        for (int i = 0; i < n_of_structs; ++i) {
+            HorizonsFile h = h_structs[i];
+            buffer.emplace_back(std::vector<double> {h.x, h.y, h.z, h.vx, h.vy, h.vz});
+        }
+
+        return buffer;
+    }
+
+    std::vector<std::vector<double> > get_data(int i){
+        return get_horizons_data(self_planet_names[i]);
+    }
+};
+
+
+struct PropertiesFile {
+    std::string name;
+    double r;
+    double GM;
+};
+
+
+class PhysicalProperties{
+    std::vector<std::string> self_names;
+    std::vector<double> self_radii;
+    std::vector<double> self_GMs;
+
+public:
+    PhysicalProperties(){
+        std::string path = "phyisical_properties/properties.csv";
+        std::ifstream filereader;
+
+        PropertiesFile p = {0};
+
+        std::vector<PropertiesFile> data;
+        std::string buffer;
+
+        filereader.open(path);
+        if(filereader.is_open()){
+            while (!filereader.eof()){
+                getline(filereader, buffer, ',');
+                p.name = buffer;
+                getline(filereader, buffer, ',');
+                p.GM = stod(buffer);
+                getline(filereader, buffer, ',');
+                p.r = stod(buffer);
+
+                data.emplace_back(p);
+            }
+        }
+
+        long n = data.size();
+        for (int i = 0; i < n; ++i) {
+
+            PropertiesFile d = data[i];
+            self_names.emplace_back(d.name);
+            self_radii.emplace_back(d.r);
+            self_GMs.emplace_back(d.GM);
+        }
+    }
+
+    std::vector<std::string> get_names(){
+        return self_names;
+    };
+
+    std::vector<double> get_radii(){
+        return self_radii;
+    }
+
+    std::vector<double> get_GMs(){
+        return self_GMs;
+    }
+};
+
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
