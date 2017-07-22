@@ -1,0 +1,27 @@
+NAME,RADIUS,GM, COMMENT,
+Sun, 695700e3, 1.3271244004193938e20, "Source: NASA/JPL Horizons",
+Mercury, 2439.7e3, 22032.09e9, "Source: NASA/JPL Horizons",
+Venus, 6051.8e3, 324858.63e9, "Source: NASA/JPL Horizons",
+Earth, 6371.0e3, 398600.440e9, "Source: NASA/JPL Horizons",
+Mars, 3389.5e3, 42828.3e9, "Source: NASA/JPL Horizons",
+Jupiter, 69911e3, 126686511e9, "Source: NASA/JPL Horizons",
+Saturn, 58232e3, 37931207.8e9, "Source: NASA/JPL Horizons",
+Uranus, 25362e3, 5793966e9, "Source: NASA/JPL Horizons",
+Neptune, 24622e3, 6835107e9, "Source: NASA/JPL Horizons",
+Pluto, 1737.4e3, 872.4e9, "Source: NASA/JPL Horizons",
+Luna, 469.7e3, 4902.801076e9, "Source: JPL, Lunar Constants and Models Document",
+Ceres, 469.7e3, 62.6284e9, "Source: NASA/JPL Horizons",
+Pallas, 272.5e3, 14.3e9, "Source: NASA/JPL Horizons",
+Vesta, 262.7e3, 17.8e9, "Source: NASA/JPL Horizons",
+Hygiea, 203.56e3, 7e9,  "Asteroid. Source: NASA/JPL Horizons",
+Ganymede, 2634e3, 9887.83e9, "Moon of Jupiter. Source: International Astronomical Union, Icy Bodies of the Solar System",
+Titan, 2575.5e3, 8978.1356e9, "Moon of Saturn. Source: International Astronomical Union, Icy Bodies of the Solar System",
+Callisto, 2410.3e3, 7179.29e9, "Moon of Jupiter. Source: International Astronomical Union, Icy Bodies of the Solar System",
+Io, 1821.46e3, 5959.916e9, "Moon of Jupiter. Source: International Astronomical Union, Icy Bodies of the Solar System",
+Europa, 1562.09e3, 3202.72e9, "Moon of Jupiter. Source: International Astronomical Union, Icy Bodies of the Solar System",
+Mimas, 198.8e3, 2.503, "Moon of Saturn. Source: NASA/JPL Horizons"
+Enceladus, 252.3e3, 7.206e9, "Moon of Saturn. Source: NASA/JPL Horizons"
+Tethys, 533e3, 41.2097, "Moon of Saturn. Source: International Astronomical Union, Icy Bodies of the Solar System"
+Dione, 561.7e3, 73.1127, "Moon of Saturn. Source: International Astronomical Union, Icy Bodies of the Solar System"
+Rhea, 764.3e3, 153.9416,  "Moon of Saturn. Source: International Astronomical Union, Icy Bodies of the Solar System"
+Iapetus, 735.6, 120.5117,  "Moon of Saturn. Source: International Astronomical Union, Icy Bodies of the Solar System"
