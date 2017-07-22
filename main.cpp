@@ -73,7 +73,7 @@ class System {
 
 public:
     System(std::vector<std::string> names, std::vector<std::vector<double> > posvel0,
-           double masses[], double gms[], double radii[]){
+           std::vector<double> gms, std::vector<double> radii){
 
         self_n = names.size();
 
@@ -306,7 +306,7 @@ public:
         self_planet_names = std::move(names);
     }
 
-    std::vector<HorizonsFile> horizons_to_struct(std::string planet){
+    std::vector<HorizonsFile> horizons_to_struct(const std::string planet){
         std::string path = "data/" + planet + ".csv";
         std::ifstream filereader;
         HorizonsFile h = {0};
@@ -355,6 +355,17 @@ public:
 
     std::vector<std::vector<double> > get_data(int i){
         return get_horizons_data(self_planet_names[i]);
+    }
+
+    std::vector<std::vector<double> > get_starting_values(){
+        long n = self_planet_names.size();
+        std::vector<std::vector<double> > statingvalues;
+
+        for (int i = 0; i < n; ++i) {
+            statingvalues.emplace_back(get_data(i)[0]);
+        }
+
+        return statingvalues;
     }
 };
 
@@ -420,6 +431,24 @@ public:
 
 
 int main() {
+
+    long detail = 64;
+    double dt = 86400/detail;
+    long rows = 1131*detail;
+
+    PhysicalProperties prop;
+    PlanetData planet_data (prop.get_names());
+    System sol (prop.get_names(),
+                planet_data.get_starting_values(),
+                prop.get_GMs(),
+                prop.get_radii());
+
+    int n_bodies = prop.get_names().size();
+
+    Trajectory tra (n_bodies,rows);
+
+    verlet(sol, tra, dt);
+
     std::cout << "Hello, World!" << std::endl;
     return 0;
 }
