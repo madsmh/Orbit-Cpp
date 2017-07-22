@@ -241,9 +241,11 @@ public:
 void verlet(System system, Trajectory trajectory, double delta){
 
     long n = trajectory.get_number_of_rows();
+    long n_bodies = system.get_number_of_bodies();
+
     double delta2 = pow(delta, 2);
 
-    for (int i = 0; i < n; ++i) {
+    for (long i = 0; i < n; ++i) {
         if(i==1){
             std::vector<std::vector<double> > x0 = system.get_positions();
             std::vector<std::vector<double> > v0 = system.get_velocities();
@@ -258,7 +260,7 @@ void verlet(System system, Trajectory trajectory, double delta){
 
             std::vector<std::vector<double> > x1;
 
-            for (int j = 0; j < system.get_number_of_bodies(); ++j) {
+            for (long j = 0; j < n_bodies; ++j) {
                 x1.emplace_back(std::vector<double> {x0[j][0]+v0[j][0]*delta+0.5*a0[j][0]*delta2,
                                                      x0[j][1]+v0[j][1]*delta+0.5*a0[j][1]*delta2,
                                                      x0[j][2]+v0[j][2]*delta+0.5*a0[j][2]*delta2});
@@ -270,7 +272,7 @@ void verlet(System system, Trajectory trajectory, double delta){
 
             std::vector<std::vector<double> > v1;
 
-            for (int k = 0; k < system.get_number_of_bodies(); ++k) {
+            for (long k = 0; k < n_bodies; ++k) {
                 v1.emplace_back(std::vector<double> {v0[k][0]+ 0.5* (a0[k][0]+a1[k][0]) * delta,
                                                      v0[k][1]+ 0.5* (a0[k][1]+a1[k][1]) * delta,
                                                      v0[k][2]+ 0.5* (a0[k][2]+a1[k][2]) * delta});
