@@ -71,14 +71,14 @@ private:
     long self_n;
 
 public:
-    System(std::vector<std::string> names, double pos0[][3], double vel0[][3],
-           double masses[], double gms[], double radii[]){
+    System(std::vector<std::string> names, std::vector<std::vector<double> > pos0,
+           std::vector<std::vector<double> > vel0, double masses[], double gms[], double radii[]){
 
         self_n = names.size();
 
         // Initialize self_n obejects of Body type
         for (int i=0; i < self_n; i++){
-            self_bodies.emplace_back(names[i], pos0[i], vel0[i], masses[i], gms[i], radii[i]);
+            self_bodies.emplace_back(Body(names[i], pos0[i], vel0[i], gms[i], radii[i]));
         }
 
         for (int j = 0; j < self_n; ++j) {
@@ -211,7 +211,9 @@ public:
         std::vector<std::vector<double> > positions;
 
         for (int j = 0; j < self_n_trajectories; ++j) {
-            positions.emplace_back({self_trajectories[j][i][0], self_trajectories[j][i][1], self_trajectories[j][i][2]});
+            positions.emplace_back(std::vector<double> {self_trajectories[j][i][0],
+                                                        self_trajectories[j][i][1],
+                                                        self_trajectories[j][i][2]});
         }
 
         return positions;
@@ -222,7 +224,7 @@ public:
         std::vector<std::vector<double> > velocities;
 
         for (int j = 0; j < self_n_trajectories; ++j) {
-            velocities.emplace_back({self_trajectories[j][i][3],
+            velocities.emplace_back(std::vector<double> {self_trajectories[j][i][3],
                                      self_trajectories[j][i][4],
                                      self_trajectories[j][i][5]});
         }
@@ -257,9 +259,9 @@ void verlet(System system, Trajectory trajectory, double delta){
             std::vector<std::vector<double> > x1;
 
             for (int j = 0; j < system.get_number_of_bodies(); ++j) {
-                x1.emplace_back({x0[j][0]+v0[j][0]*delta+0.5*a0[j][0]*delta2,
-                                 x0[j][1]+v0[j][1]*delta+0.5*a0[j][1]*delta2,
-                                 x0[j][2]+v0[j][2]*delta+0.5*a0[j][2]*delta2});
+                x1.emplace_back(std::vector<double> {x0[j][0]+v0[j][0]*delta+0.5*a0[j][0]*delta2,
+                                                     x0[j][1]+v0[j][1]*delta+0.5*a0[j][1]*delta2,
+                                                     x0[j][2]+v0[j][2]*delta+0.5*a0[j][2]*delta2});
             }
 
             system.set_positions(x1);
@@ -269,9 +271,9 @@ void verlet(System system, Trajectory trajectory, double delta){
             std::vector<std::vector<double> > v1;
 
             for (int k = 0; k < system.get_number_of_bodies(); ++k) {
-                v1.emplace_back({v0[k][0]+ 0.5* (a0[k][0]+a1[k][0]) * delta,
-                                 v0[k][1]+ 0.5* (a0[k][1]+a1[k][1]) * delta,
-                                 v0[k][2]+ 0.5* (a0[k][2]+a1[k][2]) * delta});
+                v1.emplace_back(std::vector<double> {v0[k][0]+ 0.5* (a0[k][0]+a1[k][0]) * delta,
+                                                     v0[k][1]+ 0.5* (a0[k][1]+a1[k][1]) * delta,
+                                                     v0[k][2]+ 0.5* (a0[k][2]+a1[k][2]) * delta});
             }
 
             system.set_velocities(v1);
