@@ -5,6 +5,7 @@
 #include <vector>
 #include <cmath>
 #include <fstream>
+#include <algorithm>
 
 class Body {
 
@@ -384,10 +385,10 @@ class PhysicalProperties{
 
 public:
     PhysicalProperties(){
-        std::string path = "phyisical_properties/properties.csv";
+        std::string path = "physical_properties/properties.csv";
         std::ifstream filereader;
 
-        PropertiesFile p = {0};
+        PropertiesFile p;
 
         std::vector<PropertiesFile> data;
         std::string buffer;
@@ -449,7 +450,19 @@ int main() {
 
     verlet(sol, tra, dt);
 
-    std::cout << "Hello, World!" << std::endl;
+    std::vector<double> dists;
+
+    std::vector<std::vector<double > > earth = tra.get_trajectory(3);
+    std::vector<std::vector<double > > earth_ref = planet_data.get_data(3);
+
+    for (int i = 0; i < rows; i += detail) {
+        dists.emplace_back(sqrt( pow(earth[i][0]-earth_ref[i][0], 2)+
+                                 pow(earth[i][1]-earth_ref[i][1], 2)+
+                                 pow(earth[i][2]-earth_ref[i][2], 2)));
+
+    }
+     double max_dist = *max_element(dists.begin(), dists.end());
+    std::cout << max_dist << std::endl;
     return 0;
 }
 
