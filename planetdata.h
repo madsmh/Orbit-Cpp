@@ -23,10 +23,10 @@ class PlanetData {
     std::vector<std::vector<Vector3> > self_velocities;
 
     void structs_to_arrays();
-public:
-    explicit PlanetData(std::vector<std::string> names);
 
     std::vector<HorizonsFile> horizons_to_structs(std::string planet);
+public:
+    explicit PlanetData(std::vector<std::string> names);
 
     std::vector<Vector3> get_body_positions(int body);
 
