@@ -27,6 +27,10 @@ public:
         m_vy0 = posvel0[4];
         m_vz0 = posvel0[5];
 
+        m_vx = m_vx0;
+        m_vy = m_vy0;
+        m_vz = m_vz0;
+
         m_gm = gm;
         m_radius = radius;
 
@@ -159,7 +163,7 @@ public:
                 c += accels[i][j][2];
             }
 
-            accelerations.push_back({a, b, c});
+            accelerations.emplace_back(std::vector<double> {a, b, c});
         }
 
         return accelerations;
@@ -185,11 +189,11 @@ public:
 class Trajectory{
 
     long self_n_rows;
-    int self_n_trajectories;
+    long self_n_trajectories;
     std::vector<std::vector<std::vector<double > > > self_trajectories;
 
 public:
-    Trajectory(int n_trajectories, long n_rows) {
+    Trajectory(long n_trajectories, long n_rows) {
 
         for (int i = 0; i < n_trajectories; ++i) {
             self_trajectories.emplace_back(std::vector<std::vector<double > > {});
@@ -201,12 +205,16 @@ public:
 
     void set_position(std::vector<std::vector<double> > pos, std::vector<std::vector<double> > vel){
         for (int i = 0; i< self_n_trajectories ; ++i) {
-            self_trajectories[i].emplace_back(std::vector<double > {pos[i][0], pos[i][1], pos[i][2], vel[i][0],
-                                            vel[i][1], vel[i][2]});
+            self_trajectories[i].emplace_back(std::vector<double > {pos[i][0],
+                                                                    pos[i][1],
+                                                                    pos[i][2],
+                                                                    vel[i][0],
+                                                                    vel[i][1],
+                                                                    vel[i][2]});
         }
     }
 
-    std::vector<std::vector<double > > get_trajectory(int i){
+    std::vector<std::vector<double > > get_trajectory(long i){
         return self_trajectories[i];
     }
 
@@ -248,8 +256,8 @@ void verlet(System system, Trajectory trajectory, double delta){
 
     double delta2 = pow(delta, 2);
 
-    for (long i = 0; i < n; ++i) {
-        if(i==1){
+    for (int i = 0; i < n; ++i) {
+        if(i == 0){
             std::vector<std::vector<double> > x0 = system.get_positions();
             std::vector<std::vector<double> > v0 = system.get_velocities();
 
@@ -307,10 +315,10 @@ public:
         self_planet_names = std::move(names);
     }
 
-    std::vector<HorizonsFile> horizons_to_struct(const std::string planet){
+    std::vector<HorizonsFile> horizons_to_struct(const std::string &planet){
         std::string path = "data/" + planet + ".csv";
         std::ifstream filereader;
-        HorizonsFile h = {0};
+        HorizonsFile h = {};
         std::vector<HorizonsFile> data;
 
         std::string buffer;
@@ -340,8 +348,8 @@ public:
             }
         }
     }
-    std::vector<std::vector<double > > get_horizons_data(std::string planet){
-        std::vector<HorizonsFile> h_structs = horizons_to_struct(std::move(planet));
+    std::vector<std::vector<double > > get_horizons_data(const std::string &planet){
+        std::vector<HorizonsFile> h_structs = horizons_to_struct(planet);
         std::vector<std::vector<double> > buffer;
 
         long n_of_structs = h_structs.size();
@@ -373,8 +381,8 @@ public:
 
 struct PropertiesFile {
     std::string name;
-    double r;
-    double GM;
+    double r{};
+    double GM{};
 };
 
 
@@ -433,7 +441,7 @@ public:
 
 int main() {
 
-    long detail = 64;
+    int detail = 64;
     double dt = 86400/detail;
     long rows = 1131*detail;
 
@@ -444,7 +452,7 @@ int main() {
                 prop.get_GMs(),
                 prop.get_radii());
 
-    int n_bodies = prop.get_names().size();
+    long n_bodies = prop.get_names().size();
 
     Trajectory tra (n_bodies,rows);
 
@@ -452,9 +460,9 @@ int main() {
 
     std::vector<double> dists;
 
-    std::vector<std::vector<double > > earth = tra.get_trajectory(3);
-    std::vector<std::vector<double > > earth_ref = planet_data.get_data(3);
-
+    std::vector<std::vector<double > > earth = tra.get_trajectory(0);
+    //std::vector<std::vector<double > > earth_ref = planet_data.get_data(3);
+    /*
     for (int i = 0; i < rows; i += detail) {
         dists.emplace_back(sqrt( pow(earth[i][0]-earth_ref[i][0], 2)+
                                  pow(earth[i][1]-earth_ref[i][1], 2)+
@@ -462,7 +470,7 @@ int main() {
 
     }
      double max_dist = *max_element(dists.begin(), dists.end());
-    std::cout << max_dist << std::endl;
+    std::cout << max_dist << std::endl;*/
     return 0;
 }
 
