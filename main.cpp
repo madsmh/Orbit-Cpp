@@ -1,6 +1,4 @@
 #include <iostream>
-#include <istream>
-#include <string>
 #include <sstream>
 #include <vector>
 #include <cmath>
@@ -29,7 +27,9 @@ void verlet(System system, Trajectory trajectory, double delta){
             trajectory.set_position(x0, v0);
         }
         else {
+
             std::vector<Vector3> x0 = trajectory.get_positions_at_index(i-1);
+            std::cout << "Starting round " << i << std::endl;
             std::vector<Vector3> v0 = trajectory.get_velocities_at_index(i-1);
 
             std::vector<Vector3> a0 = system.get_accelerations();
@@ -52,6 +52,7 @@ void verlet(System system, Trajectory trajectory, double delta){
             system.set_velocities(v1);
 
             trajectory.set_position(x1, v1);
+            std::cout << " Round " << i << std::endl;
 
         }
     }
@@ -64,33 +65,35 @@ int main() {
     double dt = 86400/detail;
     long rows = 1131*detail;
 
+
     PhysicalProperties prop;
     PlanetData planet_data (prop.get_names());
-    System sol (prop.get_names(),
-                planet_data.get_starting_positions(),
-                planet_data.get_starting_velocities(),
-                prop.get_GMs(),
-                prop.get_radii());
+
+
+    System sol (prop.get_names(), planet_data.get_starting_positions(), planet_data.get_starting_velocities(),
+                prop.get_GMs(), prop.get_radii());
+
 
     long n_bodies = prop.get_names().size();
 
     Trajectory tra (n_bodies,rows);
 
+
     verlet(sol, tra, dt);
 
     std::vector<double> dists;
 
-    std::vector<Vector3 > earth = tra.get_trajectory_positions(0);
-    std::vector<Vector3 > earth_ref = planet_data.get_body_positions(3);
-    /*
-    for (int i = 0; i < rows; i += detail) {
-        dists.emplace_back(sqrt( pow(earth[i][0]-earth_ref[i][0], 2)+
-                                 pow(earth[i][1]-earth_ref[i][1], 2)+
-                                 pow(earth[i][2]-earth_ref[i][2], 2)));
+    std::vector<Vector3 > earth = tra.get_trajectory_velocities(3);
+
+    std::vector<Vector3 > earth_ref = planet_data.get_body_positions(0);
+
+    /*for (int i = 0; i < rows; i += detail) {
+        Vector3 error = earth[i]-earth_ref[i];
+        dists.emplace_back(error.norm() );
 
     }
      double max_dist = *max_element(dists.begin(), dists.end());
-    std::cout << max_dist << std::endl;*/
-    return 0;
+    std::cout << max_dist << std::endl;
+    */return 0;
 }
 
