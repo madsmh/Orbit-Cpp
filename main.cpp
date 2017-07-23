@@ -83,15 +83,24 @@ int main() {
 
     std::vector<double> dists;
 
-    std::vector<Vector3 > earth = tra.get_trajectory_velocities(3);
+    std::vector<Vector3 > earth = tra.get_trajectory_positions(3);
 
     std::vector<Vector3 > earth_ref = planet_data.get_body_positions(3);
 
-    for (int i = 0; i < rows; i += detail) {
+    std::cout << "loaded the datasets." << std::endl;
+
+    for (int i = 0; i < rows; ++i) {
+        std::cout << "Start " << i;
         Vector3 error = earth[i]-earth_ref[i];
-        dists.emplace_back(error.norm() );
+
+        double error_norm = error.norm();
+        std::cout << "End " << i;
+        dists.emplace_back(error_norm);
 
     }
+
+    std::cout << "calculated the errors. \n";
+
      double max_dist = *max_element(dists.begin(), dists.end());
     std::cout << max_dist << std::endl;
 

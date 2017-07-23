@@ -6,7 +6,7 @@
 #include "propertiesfile.h"
 
 PhysicalProperties::PhysicalProperties(){
-    std::string path = "physical_properties/properties.csv";
+    std::string path = "../physical_properties/properties.csv";
     std::ifstream filereader;
 
     PropertiesFile p;
