@@ -347,6 +347,7 @@ public:
                 data.push_back(h);
             }
         }
+        return data;
     }
     std::vector<std::vector<double > > get_horizons_data(const std::string &planet){
         std::vector<HorizonsFile> h_structs = horizons_to_struct(planet);
