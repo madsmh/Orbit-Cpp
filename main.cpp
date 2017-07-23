@@ -346,6 +346,7 @@ public:
                 std::getline(filereader, buffer, ',');
                 std::getline(filereader, buffer, ',');
                 std::getline(filereader, buffer, ',');
+                std::getline(filereader, buffer, '\n');
                 data.push_back(h);
             }
             filereader.close();
