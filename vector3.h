@@ -36,7 +36,7 @@ public:
     }
 
     Vector3&operator *= (const double rhs) {
-        m_x *= rhs
+        m_x *= rhs;
         m_y *= rhs;
         m_z *= rhs;
     }
@@ -53,7 +53,6 @@ public:
     friend Vector3 operator * (const double lhs, Vector3& rhs ){
         return rhs *= lhs;
     }
-
 
     friend Vector3 operator + (Vector3& lhs, const Vector3& rhs) {
         return lhs += rhs;
