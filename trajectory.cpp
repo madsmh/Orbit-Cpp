@@ -35,7 +35,7 @@ std::vector<Vector3 > Trajectory::get_positions_at_index(int i){
     std::vector<Vector3 > positions;
 
     for (int j = 0; j < self_n_trajectories; ++j) {
-        positions.emplace_back(self_positions[i][i]);
+        positions.emplace_back(self_positions[j][i]);
     }
 
     return positions;
@@ -46,7 +46,7 @@ std::vector<Vector3> Trajectory::get_velocities_at_index(int i) {
     std::vector<Vector3> velocities;
 
     for (int j = 0; j < self_n_trajectories; ++j) {
-        velocities.emplace_back(self_velocities[i][i]);
+        velocities.emplace_back(self_velocities[j][i]);
     }
 
     return velocities;
