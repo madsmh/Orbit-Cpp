@@ -35,7 +35,7 @@ public:
         return *this;
     }
 
-    Vector3&operator *= (const double rhs) {
+    Vector3& operator *= (const double rhs) {
         m_x *= rhs;
         m_y *= rhs;
         m_z *= rhs;
@@ -47,19 +47,19 @@ public:
         return lhs.m_x == rhs.m_x && lhs.m_y == rhs.m_y && lhs.m_z == rhs.m_z;
     }
 
-    friend Vector3 operator * (Vector3& lhs, const double rhs ){
+    friend Vector3& operator * (Vector3& lhs, const double rhs ){
         return lhs *= rhs;
     }
 
-    friend Vector3 operator * (const double lhs, Vector3& rhs ){
+    friend Vector3& operator * (const double lhs, Vector3& rhs ){
         return rhs *= lhs;
     }
 
-    friend Vector3 operator + (Vector3& lhs, const Vector3& rhs) {
+    friend Vector3& operator + (Vector3& lhs, const Vector3& rhs) {
         return lhs += rhs;
     }
 
-    friend Vector3 operator - (Vector3& lhs, const Vector3& rhs) {
+    friend Vector3& operator - (Vector3& lhs, const Vector3& rhs) {
         return lhs -= rhs;
     }
 
