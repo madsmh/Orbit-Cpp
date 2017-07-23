@@ -317,6 +317,7 @@ public:
 
     std::vector<HorizonsFile> horizons_to_struct(const std::string &planet){
         std::string path = "data/" + planet + ".csv";
+        std::transform(path.begin(), path.end(), path.begin(), ::tolower);
         std::ifstream filereader;
         HorizonsFile h = {};
         std::vector<HorizonsFile> data;
