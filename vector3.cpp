@@ -1,5 +1,6 @@
 #include "vector3.h"
 
+/*
 int main() {
     std::vector<double> w {2,3,4};
     Vector3 v1(1,2,3);
@@ -12,3 +13,4 @@ int main() {
 
     std::cout << t << std::endl;
 }
+*/

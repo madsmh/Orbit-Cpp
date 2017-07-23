@@ -18,8 +18,8 @@ class System {
     long self_n;
 
 public:
-    System(std::vector<std::string>, std::vector<Vector3>, std::vector<Vector3>,
-           std::vector<double>, std::vector<double>);
+    System(std::vector<std::string> names, std::vector<Vector3> pos0,
+           std::vector<Vector3> vel0, std::vector<double>, std::vector<double>);
 
     std::vector<Vector3> get_positions();
 

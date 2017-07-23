@@ -12,7 +12,7 @@
 
 
 
-explicit PlanetData::PlanetData(std::vector<std::string> names){
+PlanetData::PlanetData(std::vector<std::string> names){
     self_planet_names = std::move(names);
 
     structs_to_arrays();
