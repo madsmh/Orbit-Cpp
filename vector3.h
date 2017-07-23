@@ -41,13 +41,9 @@ public:
         m_z *= rhs;
     }
 
-    bool operator== (const Vector3& lhs, const Vector3& rhs){
-        if (lhs.m_x == rhs.m_x && lhs.m_y == rhs.m_y && lhs.m_z == rhs.m_z){
-            return  true;
-        }
+    friend bool operator== (const Vector3& lhs, const Vector3& rhs){
 
-        return  false;
-
+        return lhs.m_x == rhs.m_x && lhs.m_y == rhs.m_y && lhs.m_z == rhs.m_z;
     }
 
     friend Vector3 operator * (Vector3& lhs, const double rhs ){
