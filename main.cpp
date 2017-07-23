@@ -41,14 +41,12 @@ void verlet(System system, Trajectory trajectory, double delta){
             }
 
             system.set_positions(x1);
-            std::vector<std::vector<double> > a1 = system.get_accelerations();
+            std::vector<Vector3 > a1 = system.get_accelerations();
 
-            std::vector<std::vector<double> > v1;
+            std::vector<Vector3 > v1;
 
             for (long k = 0; k < n_bodies; ++k) {
-                v1.emplace_back(std::vector<double> {v0[k][0]+ 0.5* (a0[k][0]+a1[k][0]) * delta,
-                                                     v0[k][1]+ 0.5* (a0[k][1]+a1[k][1]) * delta,
-                                                     v0[k][2]+ 0.5* (a0[k][2]+a1[k][2]) * delta});
+                v1.emplace_back(v0[k]+ 0.5* (a0[k]+a1[k]) * delta);
             }
 
             system.set_velocities(v1);
