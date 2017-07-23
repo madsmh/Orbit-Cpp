@@ -15,7 +15,7 @@
 PlanetData::PlanetData(std::vector<std::string> names){
     self_planet_names = names;
 
-    for (int i = 0; i < self_planet_names.size(); ++i) {
+    for (unsigned int i = 0; i < self_planet_names.size(); ++i) {
         self_positions.emplace_back(std::vector<Vector3> {});
         self_velocities.emplace_back(std::vector<Vector3> {});
     }
