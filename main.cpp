@@ -85,15 +85,16 @@ int main() {
 
     std::vector<Vector3 > earth = tra.get_trajectory_velocities(3);
 
-    std::vector<Vector3 > earth_ref = planet_data.get_body_positions(0);
+    std::vector<Vector3 > earth_ref = planet_data.get_body_positions(3);
 
-    /*for (int i = 0; i < rows; i += detail) {
+    for (int i = 0; i < rows; i += detail) {
         Vector3 error = earth[i]-earth_ref[i];
         dists.emplace_back(error.norm() );
 
     }
      double max_dist = *max_element(dists.begin(), dists.end());
     std::cout << max_dist << std::endl;
-    */return 0;
+
+    return 0;
 }
 
