@@ -52,7 +52,7 @@ std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string plan
             std::getline(filereader, buffer, ',');
             std::getline(filereader, buffer, ',');
             std::getline(filereader, buffer, ',');
-            // std::getline(filereader, buffer, '\n');
+            std::getline(filereader, buffer, '\n');
             data.push_back(h);
         }
         filereader.close();
