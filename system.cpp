@@ -5,7 +5,6 @@
 #include <vector>
 #include <string>
 #include "vector3.h"
-#include "body.h"
 
 System::System(std::vector<std::string> names, std::vector<Vector3> pos0,
                std::vector<Vector3> vel0, std::vector<double> gms,
