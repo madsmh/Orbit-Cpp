@@ -8,12 +8,12 @@ class Body {
     std::string m_name;
 
 public:
-    Body(std::string name, std::vector<double> posvel0,
+    Body(std::string name, Vector3 pos0, Vector3 vel0,
          double gm, double radius) {
-        r0 = Vector3( posvel0[0], posvel0[1], posvel0[2]);
+        r0 = pos0;
         r = r0;
 
-        v0 = Vector3( posvel0[3], posvel0[4], posvel0[5]);
+        v0 = vel0;
         v = v0;
 
         m_gm = gm;
@@ -22,20 +22,20 @@ public:
         m_name = name;
     }
 
-    std::vector<double> get_position(){
+    Vector3 get_position(){
         return r;
     };
 
-    std::vector<double> get_velocity() {
+    Vector3 get_velocity() {
         return v;
     };
 
 
-    void set_position(std::vector<double> pos) {
+    void set_position(Vector3 pos) {
         r = pos;
     };
 
-    void set_velocity(std::vector<double> vel) {
+    void set_velocity(Vector3 vel) {
         v = vel;
     };
 
