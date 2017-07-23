@@ -39,6 +39,7 @@ public:
         m_x *= rhs;
         m_y *= rhs;
         m_z *= rhs;
+        return *this;
     }
 
     friend bool operator== (const Vector3& lhs, const Vector3& rhs){
