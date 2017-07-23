@@ -5,7 +5,7 @@
 #ifndef ORBIT3D_PROPERTIESFILE_H
 #define ORBIT3D_PROPERTIESFILE_H
 
-#import <vector>
+#include <vector>
 #include "vector3.h"
 
 struct PropertiesFile {
