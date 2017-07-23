@@ -1,2 +1,8 @@
-planets: Makefile main.cpp system.cpp trajectory.cpp
-	g++ -g -Wall main.cpp system.cpp trajectory.cpp -o planets
+sources  = main.cpp
+sources += propertiesfile.cpp
+sources += trajectory.cpp
+sources += planetdata.cpp
+sources += system.cpp
+
+planets: $(sources)
+	g++ -g -Wall $(sources) -o planets

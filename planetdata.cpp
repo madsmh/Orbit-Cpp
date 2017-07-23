@@ -28,11 +28,14 @@ std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string plan
 
     std::string buffer;
 
+    std::cout << "Reading data for " << planet << std::endl;
+
     filereader.open(path);
     if (filereader.is_open()) {
         std::getline(filereader, buffer);
         while (!filereader.eof()) {
             std::getline(filereader, buffer, ',');
+            if (buffer == "") break;
             std::getline(filereader, buffer, ',');
             std::getline(filereader, buffer, ',');
             h.x = stod(buffer);
