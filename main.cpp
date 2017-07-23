@@ -403,6 +403,7 @@ public:
 
         filereader.open(path);
         if(filereader.is_open()){
+            getline(filereader, buffer, '\n');
             while (!filereader.eof()){
                 getline(filereader, buffer, ',');
                 p.name = buffer;
