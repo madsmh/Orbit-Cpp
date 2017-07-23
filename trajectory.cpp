@@ -7,8 +7,8 @@
 Trajectory::Trajectory(long n_trajectories, long n_rows) {
 
     for (int i = 0; i < n_trajectories; ++i) {
-        self_positions.emplace_back(std::vector<double> {});
-        self_velocities.emplace_back(std::vector<double> {});
+        self_positions.emplace_back(std::vector<Vector3> {});
+        self_velocities.emplace_back(std::vector<Vector3> {});
     }
 
     self_n_trajectories = n_trajectories;
