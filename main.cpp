@@ -37,7 +37,7 @@ void verlet(System system, Trajectory trajectory, double delta){
             std::vector<Vector3 > x1;
 
             for (long j = 0; j < n_bodies; ++j) {
-                x1.emplace_back(Vector3 x0[j] + v0[j]*delta + delta2*0.5 *a0[j]);
+                x1.emplace_back(x0[j] + v0[j]*delta + delta2*0.5 *a0[j]);
             }
 
             system.set_positions(x1);
