@@ -318,6 +318,7 @@ public:
     std::vector<HorizonsFile> horizons_to_struct(const std::string &planet){
         std::string path = "data/" + planet + ".csv";
         std::transform(path.begin(), path.end(), path.begin(), ::tolower);
+
         std::ifstream filereader;
         HorizonsFile h = {};
         std::vector<HorizonsFile> data;
@@ -347,6 +348,7 @@ public:
                 std::getline(filereader, buffer, ',');
                 data.push_back(h);
             }
+            filereader.close();
         }
         return data;
     }
@@ -418,7 +420,9 @@ public:
 
                 data.emplace_back(p);
             }
+            filereader.close();
         }
+
 
         long n = data.size();
         for (int i = 0; i < n; ++i) {
