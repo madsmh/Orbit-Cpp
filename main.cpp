@@ -90,7 +90,7 @@ int main() {
     std::cout << "loaded the datasets." << std::endl;
 
     for (int i = 0; i < rows; ++i) {
-        std::cout << "Start " << i;
+        std::cout << "Start " << i << std::endl;
         Vector3 error = earth[i]-earth_ref[i];
 
         double error_norm = error.norm();
