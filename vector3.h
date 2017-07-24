@@ -17,6 +17,8 @@
  *
  * */
 
+#ifndef ORBIT3D_VECTOR3_H
+#define ORBIT3D_VECTOR3_H
 
 #include <vector>
 #include <iostream>
