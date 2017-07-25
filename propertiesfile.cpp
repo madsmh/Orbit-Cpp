@@ -38,9 +38,12 @@ PhysicalProperties::PhysicalProperties(){
             p.name = buffer;
             std::cout << "Reading physical constants for object " << buffer << std::endl;
             getline(filereader, buffer, ',');
-            p.GM = stod(buffer);
-            getline(filereader, buffer, ',');
             p.r = stod(buffer);
+            std::cout << "Radius = " << p.r << ", ";
+            getline(filereader, buffer, ',');
+            p.GM = stod(buffer);
+            std::cout << "GM = " << p.GM << std::endl;
+            getline(filereader, buffer, ',');
             getline(filereader, buffer, '\n');
 
             data.emplace_back(p);
