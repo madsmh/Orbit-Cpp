@@ -65,20 +65,20 @@ public:
         return lhs.m_x == rhs.m_x && lhs.m_y == rhs.m_y && lhs.m_z == rhs.m_z;
     }
 
-    friend Vector3& operator * (Vector3& lhs, const double rhs ){
-        return lhs *= rhs;
+    friend Vector3 operator * (const Vector3& lhs, const double rhs ){
+        return Vector3 (lhs.x() * rhs, lhs.y() * rhs, lhs.z() * rhs);
     }
 
-    friend Vector3& operator * (const double lhs, Vector3& rhs ){
-        return rhs *= lhs;
+    friend Vector3 operator * (const double lhs, const Vector3& rhs ){
+        return Vector3 (rhs.x() * lhs, rhs.y() * lhs, rhs.z() * lhs);
     }
 
-    friend Vector3& operator + (Vector3& lhs, const Vector3& rhs) {
-        return lhs += rhs;
+    friend Vector3 operator + (const Vector3& lhs, const Vector3& rhs) {
+        return Vector3 (lhs.x() + rhs.x(), lhs.y() + rhs.y(), lhs.z() + rhs.z());
     }
 
-    friend Vector3& operator - (Vector3& lhs, const Vector3& rhs) {
-        return lhs -= rhs;
+    friend Vector3 operator - (const Vector3& lhs, const Vector3& rhs) {
+        return Vector3 (lhs.x() - rhs.x(), lhs.y() - rhs.y(), lhs.z() - rhs.z());
     }
 
     friend std::ostream& operator <<(std::ostream &os, const Vector3& rhs) {
