@@ -70,13 +70,14 @@ Vector3 System::acceleration(Body body1, Body body2){
     // If the positions are equal return the zero-vector
     if(pos1 == pos2) {
         return Vector3 (0, 0, 0);
+    } else {
+
+        Vector3 r12 = pos2 - pos1;
+
+        double f = -body1.get_GM()/pow(r12.norm(), 3);
+
+        return r12*f ;
     }
-
-    Vector3 r12 = pos2 - pos1;
-
-    double f = -body1.get_GM()/pow(r12.norm(), 3);
-
-    return r12*f ;
 }
 
 std::vector<Vector3> System::get_accelerations(){
