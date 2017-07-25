@@ -54,7 +54,7 @@ std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string plan
         std::getline(filereader, buffer, '\n');
         while (!filereader.eof()) {
             std::getline(filereader, buffer, ',');
-            if (buffer.empty())break;
+            if (buffer.empty()) break;
             std::getline(filereader, buffer, ',');
             std::getline(filereader, buffer, ',');
             h.x = stod(buffer)*1000;
@@ -71,7 +71,7 @@ std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string plan
             std::getline(filereader, buffer, ',');
             std::getline(filereader, buffer, ',');
             std::getline(filereader, buffer, ',');
-            std::getline(filereader, buffer, '\n');
+            std::getline(filereader, buffer);
             data.push_back(h);
         }
         filereader.close();
@@ -88,15 +88,14 @@ void PlanetData::structs_to_arrays() {
 
     for (int j = 0; j < n; ++j) {
         std::vector<HorizonsFile> h_structs = horizons_to_structs(self_planet_names[j]);
-        std::cout << "Initialized vector of structs. With " <<  h_structs.size()
+        std::cout << "Initialized vector of structs with " <<  h_structs.size()
         << " elements" << " self-positons have size " << self_positions.size() << std::endl;
         long n_of_structs = h_structs.size();
 
         for (int i = 0; i < n_of_structs; ++i) {
             HorizonsFile h = h_structs[i];
-            Vector3 temp_vec = Vector3(h.x, h.y, h.z);
-            self_positions[j].emplace_back(temp_vec);
-            self_velocities[j].emplace_back(Vector3(h.vx, h.vy, h.vz));
+            self_positions[j].emplace_back(Vector3 (h.x, h.y, h.z));
+            self_velocities[j].emplace_back(Vector3 (h.vx, h.vy, h.vz));
         }
         std::cout << "Saved structs to vector" << std::endl;
     }
