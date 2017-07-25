@@ -67,7 +67,7 @@ void verlet(System system, Trajectory &trajectory, double delta){
             std::vector<Vector3 > v1;
 
             for (long k = 0; k < n_bodies; ++k) {
-                v1.emplace_back(v0[k]+ 0.5* (a0[k]+a1[k]) * delta);
+                v1.emplace_back(v0[k]+ 0.5 * delta *(a0[k]+a1[k]) );
             }
 
             system.set_velocities(v1);
@@ -81,7 +81,7 @@ void verlet(System system, Trajectory &trajectory, double delta){
 
 int main() {
 
-    int detail = 64;
+    auto detail = 64;
     double dt = 86400/detail;
     long rows = 1131*detail;
 
@@ -106,26 +106,28 @@ int main() {
 
     std::vector<double> dists;
 
-    std::vector<Vector3 > earth = tra.get_trajectory_positions(3);
+    // Get the earths trajectory
+    std::vector<Vector3> earth_sim = tra.get_trajectory_positions(3);
+    std::vector<Vector3> earth_ref = planet_data.get_body_positions(3);
+    std::vector<Vector3> sun_sim = tra.get_trajectory_positions(0);
 
-    std::vector<Vector3 > earth_ref = planet_data.get_body_positions(3);
+    std::vector<Vector3> earth_corrected {};
 
-    std::cout << "loaded the datasets." << std::endl;
+    for (int j = 0; j < rows; ++j) {
+        earth_corrected.push_back(earth_sim[j]);
+    }
 
 
-
-    for (int i = 0; i < rows; ++i) {
-        std::cout << "Start " << i << std::endl;
-        Vector3 error = earth[i]-earth_ref[i];
+    for (int i = 0; i < 1131; ++i) {
+        Vector3 error = earth_corrected[i*detail]-earth_ref[i];
 
         double error_norm = error.norm();
         dists.emplace_back(error_norm);
-
     }
 
     std::cout << "Calculated the errors. \n";
 
-     double max_dist = *max_element(dists.begin(), dists.end());
+     double max_dist = *max_element(dists.begin(), dists.end())/1000;
     std::cout << max_dist << std::endl;
 
     return 0;
