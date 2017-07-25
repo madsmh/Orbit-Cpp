@@ -73,10 +73,7 @@ Vector3 System::acceleration(Body body1, Body body2){
 
     Vector3 r12 = pos2 - pos1;
 
-    double f = -body1.get_GM()/std::pow(r12.norm(), 3);
-
-    return f*r12 ;
-
+    return -1*body1.get_GM()/(std::pow(r12.norm(), 3))*r12 ;
 }
 
 std::vector<Vector3> System::get_accelerations(){
