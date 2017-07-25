@@ -23,7 +23,6 @@
 #include <fstream>
 
 #include "planetdata.h"
-#include "vector3.h"
 
 
 
@@ -55,20 +54,20 @@ std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string plan
         std::getline(filereader, buffer, '\n');
         while (!filereader.eof()) {
             std::getline(filereader, buffer, ',');
-            if (buffer == "") break;
+            if (buffer.empty())break;
             std::getline(filereader, buffer, ',');
             std::getline(filereader, buffer, ',');
-            h.x = stod(buffer);
+            h.x = stod(buffer)*1000;
             std::getline(filereader, buffer, ',');
-            h.y = stod(buffer);
+            h.y = stod(buffer)*1000;
             std::getline(filereader, buffer, ',');
-            h.z = stod(buffer);
+            h.z = stod(buffer)*1000;
             std::getline(filereader, buffer, ',');
-            h.vx = stod(buffer);
+            h.vx = stod(buffer)*1000;
             std::getline(filereader, buffer, ',');
-            h.vy = stod(buffer);
+            h.vy = stod(buffer)*1000;
             std::getline(filereader, buffer, ',');
-            h.vz = stod(buffer);
+            h.vz = stod(buffer)*1000;
             std::getline(filereader, buffer, ',');
             std::getline(filereader, buffer, ',');
             std::getline(filereader, buffer, ',');
@@ -114,7 +113,6 @@ std::vector<Vector3> PlanetData::get_body_velocities(int body) {
 
 std::vector<Vector3 > PlanetData::get_starting_positions(){
     long n = self_planet_names.size();
-    std::cout << "get-starting-positions invoked" << std::endl;
     std::vector<Vector3> starting_positions;
 
     for (int i = 0; i < n; ++i) {
@@ -127,8 +125,6 @@ std::vector<Vector3 > PlanetData::get_starting_positions(){
 }
 
 std::vector<Vector3 > PlanetData::get_starting_velocities() {
-
-    std::cout << "get-starting-velocities invoked" << std::endl;
 
     long n = self_planet_names.size();
 
