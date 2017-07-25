@@ -32,7 +32,7 @@
 #include "propertiesfile.h"
 
 
-void verlet(System system, Trajectory trajectory, double delta){
+void verlet(System system, Trajectory &trajectory, double delta){
 
     long n = trajectory.get_number_of_rows();
     long n_bodies = system.get_number_of_bodies();
@@ -112,17 +112,18 @@ int main() {
 
     std::cout << "loaded the datasets." << std::endl;
 
+
+
     for (int i = 0; i < rows; ++i) {
         std::cout << "Start " << i << std::endl;
         Vector3 error = earth[i]-earth_ref[i];
 
         double error_norm = error.norm();
-        std::cout << "End " << i;
         dists.emplace_back(error_norm);
 
     }
 
-    std::cout << "calculated the errors. \n";
+    std::cout << "Calculated the errors. \n";
 
      double max_dist = *max_element(dists.begin(), dists.end());
     std::cout << max_dist << std::endl;
