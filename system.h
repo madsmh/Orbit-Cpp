@@ -46,9 +46,9 @@ public:
 
     std::vector<Vector3> get_accelerations();
 
-    void set_positions(std::vector<Vector3>);
+    void set_positions(std::vector<Vector3> positions);
 
-    void set_velocities(std::vector<Vector3>);
+    void set_velocities(std::vector<Vector3> velocities);
 
     long get_number_of_bodies(){ return self_n; }
 };
