@@ -33,15 +33,16 @@ class System {
 
     long self_n;
 
+    Vector3 acceleration(Body body1, Body body2);
+
 public:
     System(std::vector<std::string> names, std::vector<Vector3> pos0,
-           std::vector<Vector3> vel0, std::vector<double>, std::vector<double>);
+           std::vector<Vector3> vel0, std::vector<double> gms, std::vector<double> radii);
 
     std::vector<Vector3> get_positions();
 
     std::vector<Vector3> get_velocities();
 
-    Vector3 acceleration(Body, Body );
 
     std::vector<Vector3> get_accelerations();
 
