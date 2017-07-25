@@ -39,6 +39,8 @@ void verlet(System system, Trajectory trajectory, double delta){
 
     double delta2 = pow(delta, 2);
 
+    std::cout << "Starting integrator." << std::endl;
+
     for (int i = 0; i < n; ++i) {
         if(i == 0){
             std::vector<Vector3 > x0 = system.get_positions();
@@ -49,7 +51,6 @@ void verlet(System system, Trajectory trajectory, double delta){
         else {
 
             std::vector<Vector3> x0 = trajectory.get_positions_at_index(i-1);
-            std::cout << "Starting round " << i << std::endl;
             std::vector<Vector3> v0 = trajectory.get_velocities_at_index(i-1);
 
             std::vector<Vector3> a0 = system.get_accelerations();
@@ -72,10 +73,9 @@ void verlet(System system, Trajectory trajectory, double delta){
             system.set_velocities(v1);
 
             trajectory.set_position(x1, v1);
-            std::cout << " Round " << i << std::endl;
-
         }
     }
+    std::cout << "Integration finished." << std::endl;
 }
 
 
@@ -90,8 +90,11 @@ int main() {
     PlanetData planet_data (prop.get_names());
 
 
-    System sol (prop.get_names(), planet_data.get_starting_positions(), planet_data.get_starting_velocities(),
-                prop.get_GMs(), prop.get_radii());
+    System sol (prop.get_names(),
+                planet_data.get_starting_positions(),
+                planet_data.get_starting_velocities(),
+                prop.get_GMs(),
+                prop.get_radii());
 
 
     long n_bodies = prop.get_names().size();

@@ -59,28 +59,21 @@ std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string plan
             std::getline(filereader, buffer, ',');
             std::getline(filereader, buffer, ',');
             h.x = stod(buffer);
-            std::cout << "x" << std::endl;
             std::getline(filereader, buffer, ',');
             h.y = stod(buffer);
-            std::cout << "y" << std::endl;
             std::getline(filereader, buffer, ',');
             h.z = stod(buffer);
-            std::cout << "z" << std::endl;
             std::getline(filereader, buffer, ',');
             h.vx = stod(buffer);
-            std::cout << "vx" << std::endl;
             std::getline(filereader, buffer, ',');
             h.vy = stod(buffer);
-            std::cout << "vy" << std::endl;
             std::getline(filereader, buffer, ',');
             h.vz = stod(buffer);
-            std::cout << "vz" << std::endl;
             std::getline(filereader, buffer, ',');
             std::getline(filereader, buffer, ',');
             std::getline(filereader, buffer, ',');
             std::getline(filereader, buffer, '\n');
             data.push_back(h);
-            std::cout << "end" << std::endl;
         }
         filereader.close();
         std::cout << "Closing file" << std::endl;
