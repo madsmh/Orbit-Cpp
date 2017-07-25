@@ -19,9 +19,7 @@
 
 
 #include "system.h"
-#include <vector>
-#include <string>
-#include "vector3.h"
+
 
 System::System(std::vector<std::string> names, std::vector<Vector3> pos0,
                std::vector<Vector3> vel0, std::vector<double> gms,
@@ -30,7 +28,7 @@ System::System(std::vector<std::string> names, std::vector<Vector3> pos0,
     self_n = names.size();
 
     // Initialize self_n obejects of Body type
-    for (int i=0; i < self_n; i++){
+    for (int i=0; i < self_n; ++i){
     self_bodies.emplace_back(Body(names[i], pos0[i], vel0[i], gms[i], radii[i]));
     }
 
@@ -70,14 +68,15 @@ Vector3 System::acceleration(Body body1, Body body2){
     // If the positions are equal return the zero-vector
     if(pos1 == pos2) {
         return Vector3 (0, 0, 0);
-    } else {
-
-        Vector3 r12 = pos2 - pos1;
-
-        double f = -body1.get_GM()/pow(r12.norm(), 3);
-
-        return r12*f ;
     }
+
+
+    Vector3 r12 = pos2 - pos1;
+
+    double f = -body1.get_GM()/std::pow(r12.norm(), 3);
+
+    return r12*f ;
+
 }
 
 std::vector<Vector3> System::get_accelerations(){
@@ -108,7 +107,7 @@ std::vector<Vector3> System::get_accelerations(){
             c += accels[i][j][2];
         }
 
-        accelerations.emplace_back(std::vector<double> {a, b, c});
+        accelerations.emplace_back(Vector3 (a, b, c));
     }
 
     return accelerations;
