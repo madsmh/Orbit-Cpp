@@ -75,39 +75,23 @@ Vector3 System::acceleration(Body body1, Body body2){
 
     double f = -body1.get_GM()/std::pow(r12.norm(), 3);
 
-    return r12*f ;
+    return f*r12 ;
 
 }
 
 std::vector<Vector3> System::get_accelerations(){
 
-    // Initialize the matrix that will hold the force vectors
-    double accels[self_n][self_n][3];
-
-    std::vector<Vector3> accelerations;
-
-    // Enter the values into the acceleration matrix
-    for (int i = 0; i < self_n; ++i) {
-        for (int j = 0; j < self_n; ++j){
-            Vector3 temp_accel = acceleration(self_bodies[i], self_bodies[j]);
-            accels[i][j][0] = temp_accel.x();
-            accels[i][j][1] = temp_accel.y();
-            accels[i][j][2] = temp_accel.z();
-        }
-    }
+    std::vector<Vector3> accelerations {};
 
     for (int i = 0; i < self_n; ++i) {
-        double a = 0;
-        double b = 0;
-        double c = 0;
+        Vector3 temp_accel (0, 0, 0);
 
         for (int j = 0; j < self_n; ++j) {
-            a += accels[i][j][0];
-            b += accels[i][j][1];
-            c += accels[i][j][2];
+            temp_accel += acceleration(self_bodies[i], self_bodies[j]);
+
         }
 
-        accelerations.emplace_back(Vector3 (a, b, c));
+        accelerations.emplace_back(temp_accel);
     }
 
     return accelerations;
