@@ -32,12 +32,12 @@
 #include "propertiesfile.h"
 
 
-void verlet(System system, Trajectory &trajectory, double delta){
+void verlet(System &system, Trajectory &trajectory, double delta){
 
     long n = trajectory.get_number_of_rows();
     long n_bodies = system.get_number_of_bodies();
 
-    double delta2 = pow(delta, 2);
+    double delta2 = std::pow(delta, 2);
 
     std::cout << "Starting integrator." << std::endl;
 
@@ -47,6 +47,8 @@ void verlet(System system, Trajectory &trajectory, double delta){
             std::vector<Vector3> v0 = system.get_velocities();
 
             trajectory.set_position(x0, v0);
+            system.set_positions(x0);
+            system.set_velocities(v0);
         }
         else {
 
@@ -62,12 +64,13 @@ void verlet(System system, Trajectory &trajectory, double delta){
             }
 
             system.set_positions(x1);
+
             std::vector<Vector3 > a1 = system.get_accelerations();
 
             std::vector<Vector3 > v1;
 
             for (long k = 0; k < n_bodies; ++k) {
-                v1.emplace_back(v0[k]+ 0.5 * delta *(a0[k]+a1[k]) );
+                v1.emplace_back(v0[k]+ 0.5 * delta *( a0[k]+a1[k]) );
             }
 
             system.set_velocities(v1);
@@ -87,12 +90,12 @@ int main() {
 
 
     PhysicalProperties prop;
-    PlanetData planet_data (prop.get_names());
+    PlanetData horizons (prop.get_names());
 
 
     System sol (prop.get_names(),
-                planet_data.get_starting_positions(),
-                planet_data.get_starting_velocities(),
+                horizons.get_starting_positions(),
+                horizons.get_starting_velocities(),
                 prop.get_GMs(),
                 prop.get_radii());
 
@@ -108,13 +111,13 @@ int main() {
 
     // Get the earths trajectory
     std::vector<Vector3> earth_sim = tra.get_trajectory_positions(3);
-    std::vector<Vector3> earth_ref = planet_data.get_body_positions(3);
+    std::vector<Vector3> earth_ref = horizons.get_body_positions(3);
     std::vector<Vector3> sun_sim = tra.get_trajectory_positions(0);
 
     std::vector<Vector3> earth_corrected {};
 
     for (int j = 0; j < rows; ++j) {
-        earth_corrected.push_back(earth_sim[j]);
+        earth_corrected.push_back(earth_sim[j]-sun_sim[j]);
     }
 
 
@@ -127,7 +130,7 @@ int main() {
 
     std::cout << "Calculated the errors. \n";
 
-     double max_dist = *max_element(dists.begin(), dists.end())/1000;
+     double max_dist = *std::max_element(dists.begin(), dists.end())/1000;
     std::cout << max_dist << std::endl;
 
     return 0;
