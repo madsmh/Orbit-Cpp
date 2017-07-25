@@ -60,25 +60,25 @@ public:
         return *this;
     }
 
-    friend bool operator== (const Vector3& lhs, const Vector3& rhs){
+    friend bool operator == (const Vector3& lhs, const Vector3& rhs){
 
-        return lhs.m_x == rhs.m_x && lhs.m_y == rhs.m_y && lhs.m_z == rhs.m_z;
+        return (lhs.m_x == rhs.m_x) && (lhs.m_y == rhs.m_y) && (lhs.m_z == rhs.m_z);
     }
 
     friend Vector3 operator * (const Vector3& lhs, const double rhs ){
-        return Vector3 (lhs.x() * rhs, lhs.y() * rhs, lhs.z() * rhs);
+        return Vector3 (lhs.m_x * rhs, lhs.m_y * rhs, lhs.m_z * rhs);
     }
 
     friend Vector3 operator * (const double lhs, const Vector3& rhs ){
-        return Vector3 (rhs.x() * lhs, rhs.y() * lhs, rhs.z() * lhs);
+        return Vector3 (rhs.m_x * lhs, rhs.m_y * lhs, rhs.m_z * lhs);
     }
 
     friend Vector3 operator + (const Vector3& lhs, const Vector3& rhs) {
-        return Vector3 (lhs.x() + rhs.x(), lhs.y() + rhs.y(), lhs.z() + rhs.z());
+        return Vector3 (lhs.m_x + rhs.m_x, lhs.m_y + rhs.m_y, lhs.m_z + rhs.m_z);
     }
 
     friend Vector3 operator - (const Vector3& lhs, const Vector3& rhs) {
-        return Vector3 (lhs.x() - rhs.x(), lhs.y() - rhs.y(), lhs.z() - rhs.z());
+        return Vector3 (lhs.m_x - rhs.m_x, lhs.m_y - rhs.m_y, lhs.m_z - rhs.m_z);
     }
 
     friend std::ostream& operator <<(std::ostream &os, const Vector3& rhs) {

@@ -39,7 +39,6 @@ void Trajectory::set_position(std::vector<Vector3> pos, std::vector<Vector3> vel
 }
 
 std::vector<Vector3> Trajectory::get_trajectory_positions(int body){
-    std::cout << self_positions[body].size() << "\n";
     return self_positions[body];
 }
 
