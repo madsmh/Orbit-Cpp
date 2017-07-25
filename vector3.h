@@ -22,7 +22,7 @@
 
 #include <vector>
 #include <iostream>
-#include "cmath"
+#include <math.h>
 
 class Vector3 {
     double m_x, m_y, m_z;
@@ -32,7 +32,7 @@ public:
 
     explicit Vector3(std::vector<double> v) : m_x(v[0]), m_y(v[1]), m_z(v[2]) {}
     double norm2() const { return m_x*m_x + m_y*m_y + m_z*m_z;}
-    double norm()  const { return sqrt(norm2());}
+    double norm()  const { return std::sqrt(norm2());}
     double x()     const { return m_x;}
     double y()     const { return m_y;}
     double z()     const { return m_z;}
