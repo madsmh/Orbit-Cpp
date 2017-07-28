@@ -11,4 +11,5 @@ headers += trajectory.h
 headers += vector3.h
 
 planets: $(sources) $(headers)
-	g++ -g -Wall $(sources) -o planets
+	mkdir -p bin
+	g++ -g -Wall $(sources) -o bin/planets
