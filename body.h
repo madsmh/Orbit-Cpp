@@ -40,33 +40,33 @@ public:
         m_name = name;
     }
 
-    Vector3 get_position(){
+    Vector3 get_position() const{
         return r;
     };
 
-    Vector3 get_velocity() {
+    Vector3 get_velocity() const{
         return v;
     };
 
 
-    void set_position(Vector3 pos) {
+    void set_position(const Vector3& pos) {
         r = pos;
     };
 
-    void set_velocity(Vector3 vel) {
+    void set_velocity(const Vector3& vel) {
         v = vel;
     };
 
 
-    double get_radius() {
+    double get_radius() const{
         return m_radius;
     };
 
-    double get_GM() {
+    double get_GM() const{
         return m_gm;
     };
 
-    std::string get_name() {
+    std::string get_name() const{
         return m_name;
     };
 };

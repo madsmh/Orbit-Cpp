@@ -33,24 +33,23 @@ class System {
 
     long self_n;
 
-    Vector3 acceleration(Body body1, Body body2);
+    Vector3 acceleration(const Body& body1, const Body& body2) const;
 
 public:
     System(std::vector<std::string> names, std::vector<Vector3> pos0,
            std::vector<Vector3> vel0, std::vector<double> gms, std::vector<double> radii);
 
-    std::vector<Vector3> get_positions();
+    std::vector<Vector3> get_positions() const;
 
-    std::vector<Vector3> get_velocities();
+    std::vector<Vector3> get_velocities() const;
 
+    std::vector<Vector3> get_accelerations() const;
 
-    std::vector<Vector3> get_accelerations();
+    void set_positions(const std::vector<Vector3>& positions);
 
-    void set_positions(std::vector<Vector3> positions);
+    void set_velocities(const std::vector<Vector3>& velocities);
 
-    void set_velocities(std::vector<Vector3> velocities);
-
-    long get_number_of_bodies(){ return self_n; }
+    long get_number_of_bodies() const{ return self_n; }
 };
 
 

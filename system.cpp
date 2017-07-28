@@ -36,7 +36,7 @@ System::System(std::vector<std::string> names, std::vector<Vector3> pos0,
         self_names.push_back(self_bodies[j].get_name());
     }
 };
-std::vector<Vector3> System::get_positions(){
+std::vector<Vector3> System::get_positions() const{
 
     std::vector<Vector3> positions;
 
@@ -47,7 +47,7 @@ std::vector<Vector3> System::get_positions(){
     return positions;
 };
 
-std::vector<Vector3> System::get_velocities(){
+std::vector<Vector3> System::get_velocities() const{
 
     std::vector<Vector3> velocities;
 
@@ -58,7 +58,7 @@ std::vector<Vector3> System::get_velocities(){
     return velocities;
 };
 
-Vector3 System::acceleration(Body body1, Body body2){
+Vector3 System::acceleration(const Body& body1, const Body& body2) const{
     // Function to calulate the vector force on body2 from
     // body 1
 
@@ -76,7 +76,7 @@ Vector3 System::acceleration(Body body1, Body body2){
     return -1*body1.get_GM()/(std::pow(r12.norm(), 3))*r12 ;
 }
 
-std::vector<Vector3> System::get_accelerations(){
+std::vector<Vector3> System::get_accelerations() const{
 
     std::vector<Vector3> accelerations {};
 
@@ -94,13 +94,13 @@ std::vector<Vector3> System::get_accelerations(){
     return accelerations;
 }
 
-void System::set_positions(std::vector<Vector3> positions){
+void System::set_positions(const std::vector<Vector3>& positions){
     for (int i = 0; i < self_n; ++i) {
         self_bodies[i].set_position(positions[i]);
     }
 }
 
-void System::set_velocities(std::vector<Vector3> velocities){
+void System::set_velocities(const std::vector<Vector3>& velocities){
     for (int i = 0; i < self_n; ++i) {
         self_bodies[i].set_velocity(velocities[i]);
     }
