@@ -28,15 +28,15 @@ System::System(std::vector<std::string> names, std::vector<Vector3> pos0,
     self_n = names.size();
 
     // Initialize self_n obejects of Body type
-    for (int i=0; i < self_n; ++i){
-    self_bodies.emplace_back(Body(names[i], pos0[i], vel0[i], gms[i], radii[i]));
+    for (int i = 0; i < self_n; ++i){
+        self_bodies.emplace_back(Body(names[i], pos0[i], vel0[i], gms[i], radii[i]));
     }
 
     for (int j = 0; j < self_n; ++j) {
         self_names.push_back(self_bodies[j].get_name());
     }
 };
-std::vector<Vector3> System::get_positions() const{
+std::vector<Vector3> System::get_positions() const {
 
     std::vector<Vector3> positions;
 
@@ -47,7 +47,7 @@ std::vector<Vector3> System::get_positions() const{
     return positions;
 };
 
-std::vector<Vector3> System::get_velocities() const{
+std::vector<Vector3> System::get_velocities() const {
 
     std::vector<Vector3> velocities;
 
@@ -58,7 +58,7 @@ std::vector<Vector3> System::get_velocities() const{
     return velocities;
 };
 
-Vector3 System::acceleration(const Body& body1, const Body& body2) const{
+Vector3 System::acceleration(const Body& body1, const Body& body2) const {
     // Function to calulate the vector force on body2 from
     // body 1
 
@@ -66,17 +66,16 @@ Vector3 System::acceleration(const Body& body1, const Body& body2) const{
     Vector3 pos2 = body2.get_position();
 
     // If the positions are equal return the zero-vector
-    if(pos1 == pos2) {
+    if (pos1 == pos2) {
         return Vector3 (0, 0, 0);
     }
 
-
     Vector3 r12 = pos2 - pos1;
 
-    return -1*body1.get_GM()/(std::pow(r12.norm(), 3))*r12 ;
+    return (-1*body1.get_GM()/(std::pow(r12.norm(), 3))) * r12 ;
 }
 
-std::vector<Vector3> System::get_accelerations() const{
+std::vector<Vector3> System::get_accelerations() const {
 
     std::vector<Vector3> accelerations {};
 
@@ -85,7 +84,6 @@ std::vector<Vector3> System::get_accelerations() const{
 
         for (int j = 0; j < self_n; ++j) {
             temp_accel += acceleration(self_bodies[i], self_bodies[j]);
-
         }
 
         accelerations.emplace_back(temp_accel);
@@ -105,5 +103,4 @@ void System::set_velocities(const std::vector<Vector3>& velocities){
         self_bodies[i].set_velocity(velocities[i]);
     }
 }
-
 
