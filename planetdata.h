@@ -41,7 +41,7 @@ class PlanetData {
 
     std::vector<HorizonsFile> horizons_to_structs(std::string planet);
 public:
-    explicit PlanetData(std::vector<std::string> names);
+    explicit PlanetData(const std::vector<std::string> &names);
 
     std::vector<Vector3> get_body_positions(int body);
 

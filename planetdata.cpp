@@ -26,7 +26,7 @@
 
 
 
-PlanetData::PlanetData(std::vector<std::string> names){
+PlanetData::PlanetData(const std::vector<std::string> &names){
     self_planet_names = names;
 
     for (unsigned int i = 0; i < self_planet_names.size(); ++i) {
@@ -72,7 +72,7 @@ std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string plan
             std::getline(filereader, buffer, ',');
             std::getline(filereader, buffer, ',');
             std::getline(filereader, buffer);
-            data.push_back(h);
+            data.emplace_back(h);
         }
         filereader.close();
         std::cout << "Closing file" << std::endl;
