@@ -35,6 +35,7 @@ PhysicalProperties::PhysicalProperties(){
         getline(filereader, buffer, '\n');
         while (!filereader.eof()){
             getline(filereader, buffer, ',');
+            if (buffer.empty()) break;
             p.name = buffer;
             std::cout << "Reading physical constants for object " << buffer << std::endl;
             getline(filereader, buffer, ',');
