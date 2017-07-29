@@ -3,6 +3,7 @@ sources += propertiesfile.cpp
 sources += trajectory.cpp
 sources += planetdata.cpp
 sources += system.cpp
+
 headers  = body.h
 headers += planetdata.h
 headers += propertiesfile.h
