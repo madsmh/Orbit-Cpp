@@ -83,7 +83,7 @@ std::vector<Vector3> System::get_accelerations() const {
         Vector3 temp_accel (0, 0, 0);
 
         for (int j = 0; j < self_n; ++j) {
-            temp_accel += acceleration(self_bodies[i], self_bodies[j]);
+            temp_accel += acceleration(self_bodies[j], self_bodies[i]);
         }
 
         accelerations.emplace_back(temp_accel);
