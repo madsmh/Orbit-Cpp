@@ -31,21 +31,22 @@ Trajectory::Trajectory(long n_trajectories, long n_rows) {
     self_n_rows = n_rows;
 }
 
-void Trajectory::set_position(std::vector<Vector3> pos, std::vector<Vector3> vel){
+void Trajectory::set_position(const std::vector<Vector3>& pos, const std::vector<Vector3>& vel){
     for (unsigned int i = 0; i< self_n_trajectories ; ++i) {
         self_positions[i].emplace_back(pos[i]);
         self_velocities[i].emplace_back(vel[i]);
     }
 }
 
-std::vector<Vector3> Trajectory::get_trajectory_positions(int body){
+std::vector<Vector3> Trajectory::get_trajectory_positions(int body) const {
     return self_positions[body];
 }
 
-std::vector<Vector3> Trajectory::get_trajectory_velocities(int body) {
+std::vector<Vector3> Trajectory::get_trajectory_velocities(int body)  const {
     return self_velocities[body];
 }
-std::vector<Vector3 > Trajectory::get_positions_at_index(int index){
+
+std::vector<Vector3> Trajectory::get_positions_at_index(int index) const {
 
     std::vector<Vector3 > positions;
 
@@ -56,7 +57,7 @@ std::vector<Vector3 > Trajectory::get_positions_at_index(int index){
     return positions;
 }
 
-std::vector<Vector3> Trajectory::get_velocities_at_index(int index) {
+std::vector<Vector3> Trajectory::get_velocities_at_index(int index)  const {
 
     std::vector<Vector3> velocities;
 
