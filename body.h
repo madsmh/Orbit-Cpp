@@ -21,7 +21,7 @@
 
 class Body {
     Vector3 r,v,r0,v0;
-    double m_radius, m_gm;
+    double m_radius, m_gm, m_mass;
 
     std::string m_name;
 
@@ -35,6 +35,9 @@ public:
         v = v0;
 
         m_gm = gm;
+
+        m_mass = m_gm/6.67259e-11;
+
         m_radius = radius;
 
         m_name = name;
@@ -69,5 +72,13 @@ public:
     std::string get_name() const{
         return m_name;
     };
+
+    double get_kinetic_energy(){
+        return 0.5 * m_mass * v.norm2();
+    }
+    Vector3 get_momentum(){
+        return m_mass * v;
+    }
+
 };
 

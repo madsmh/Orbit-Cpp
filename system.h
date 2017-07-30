@@ -45,6 +45,10 @@ public:
 
     std::vector<Vector3> get_accelerations() const;
 
+    Vector3 get_total_momentum() const;
+
+    double get_total_kinetic_energy() const;
+
     void set_positions(const std::vector<Vector3>& positions);
 
     void set_velocities(const std::vector<Vector3>& velocities);

@@ -92,6 +92,17 @@ std::vector<Vector3> System::get_accelerations() const {
     return accelerations;
 }
 
+double System::get_total_kinetic_energy() const {
+    double total_kinetic = 0;
+
+    for (int i = 0; i < self_n; ++i) {
+        total_kinetic += self_bodies[i].get_kinetic_energy();
+    }
+
+    return total_kinetic;
+}
+
+
 void System::set_positions(const std::vector<Vector3>& positions){
     for (int i = 0; i < self_n; ++i) {
         self_bodies[i].set_position(positions[i]);
@@ -102,5 +113,15 @@ void System::set_velocities(const std::vector<Vector3>& velocities){
     for (int i = 0; i < self_n; ++i) {
         self_bodies[i].set_velocity(velocities[i]);
     }
+}
+
+Vector3 System::get_total_momentum() const {
+    Vector3 total_momentum (0, 0, 0);
+
+    for (int i = 0; i < self_n; ++i) {
+        total_momentum += self_bodies[i].get_momentum();
+    }
+
+    return total_momentum;
 }
 
