@@ -25,6 +25,7 @@
 #include <fstream>
 #include <algorithm>
 #include <getopt.h>
+#include <boost/timer.hpp>
 
 #include "vector3.h"
 #include "system.h"
@@ -34,7 +35,7 @@
 
 
 void verlet(System &system, Trajectory &trajectory, double delta){
-
+    boost::timer t;
     long n = trajectory.get_number_of_rows();
     long n_bodies = system.get_number_of_bodies();
 
@@ -87,7 +88,7 @@ void verlet(System &system, Trajectory &trajectory, double delta){
             trajectory.set_position(x1, v1);
         }
     }
-    std::cout << "Integration finished." << std::endl;
+    std::cout << "Integration finished in " << t.elapsed() << "seconds."<< std::endl;
 }
 
 void help(char *name) {
