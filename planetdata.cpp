@@ -37,7 +37,7 @@ PlanetData::PlanetData(const std::vector<std::string> &names){
 }
 
 std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string planet) {
-    std::string path = "../data/" + planet + ".csv";
+    std::string path = "../data/" + planet + ".txt";
     std::transform(path.begin(), path.end(), path.begin(), ::tolower);
 
     std::ifstream filereader;
@@ -51,30 +51,57 @@ std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string plan
     filereader.open(path);
 
     if (filereader.is_open()) {
-        std::getline(filereader, buffer, '\n');
         while (!filereader.eof()) {
-            std::getline(filereader, buffer, ',');
-            if (buffer.empty()) break;
-            std::getline(filereader, buffer, ',');
-            std::getline(filereader, buffer, ',');
-            h.x = stod(buffer)*1000;
-            std::getline(filereader, buffer, ',');
-            h.y = stod(buffer)*1000;
-            std::getline(filereader, buffer, ',');
-            h.z = stod(buffer)*1000;
-            std::getline(filereader, buffer, ',');
-            h.vx = stod(buffer)*1000;
-            std::getline(filereader, buffer, ',');
-            h.vy = stod(buffer)*1000;
-            std::getline(filereader, buffer, ',');
-            h.vz = stod(buffer)*1000;
-            std::getline(filereader, buffer, ',');
-            std::getline(filereader, buffer, ',');
-            std::getline(filereader, buffer, ',');
+
             std::getline(filereader, buffer);
-            data.emplace_back(h);
+
+            if (buffer == "$$SOE") {
+                std::getline(filereader, buffer, ',');
+                std::getline(filereader, buffer, ',');
+                std::getline(filereader, buffer, ',');
+                h.x = stod(buffer)*1000;
+                std::getline(filereader, buffer, ',');
+                h.y = stod(buffer)*1000;
+                std::getline(filereader, buffer, ',');
+                h.z = stod(buffer)*1000;
+                std::getline(filereader, buffer, ',');
+                h.vx = stod(buffer)*1000;
+                std::getline(filereader, buffer, ',');
+                h.vy = stod(buffer)*1000;
+                std::getline(filereader, buffer, ',');
+                h.vz = stod(buffer)*1000;
+                std::getline(filereader, buffer, ',');
+                std::getline(filereader, buffer, ',');
+                std::getline(filereader, buffer, ',');
+                std::getline(filereader, buffer);
+                data.emplace_back(h);
+
+                while (buffer != "$$EOE"){
+                    std::getline(filereader, buffer, ',');
+                    std::getline(filereader, buffer, ',');
+                    std::getline(filereader, buffer, ',');
+                    h.x = stod(buffer)*1000;
+                    std::getline(filereader, buffer, ',');
+                    h.y = stod(buffer)*1000;
+                    std::getline(filereader, buffer, ',');
+                    h.z = stod(buffer)*1000;
+                    std::getline(filereader, buffer, ',');
+                    h.vx = stod(buffer)*1000;
+                    std::getline(filereader, buffer, ',');
+                    h.vy = stod(buffer)*1000;
+                    std::getline(filereader, buffer, ',');
+                    h.vz = stod(buffer)*1000;
+                    std::getline(filereader, buffer, ',');
+                    std::getline(filereader, buffer, ',');
+                    std::getline(filereader, buffer, ',');
+                    std::getline(filereader, buffer);
+                    data.emplace_back(h);
+                }
+                filereader.close();
+            }
+
         }
-        filereader.close();
+
         std::cout << "Closing file" << std::endl;
     }
     std::cout << "Returned vector is of size: " << data.size() << std::endl;
