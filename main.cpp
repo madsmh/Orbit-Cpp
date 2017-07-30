@@ -50,6 +50,10 @@ void verlet(System &system, Trajectory &trajectory, double delta){
             trajectory.set_position(x0, v0);
             system.set_positions(x0);
             system.set_velocities(v0);
+
+            std::cout << "Total momentum         : " << system.get_total_momentum() << "\n";
+            std::cout << "Total angular momentum : " << system.get_total_angular_momentum() << "\n";
+            std::cout << "Total mechanical energy: " << system.get_total_mechanical_energy() << "\n";
         }
         else {
 
@@ -75,6 +79,10 @@ void verlet(System &system, Trajectory &trajectory, double delta){
             }
 
             system.set_velocities(v1);
+
+            std::cout << "Total momentum         : " << system.get_total_momentum() << "\n";
+            std::cout << "Total angular momentum : " << system.get_total_angular_momentum() << "\n";
+            std::cout << "Total mechanical energy: " << system.get_total_mechanical_energy() << "\n";
 
             trajectory.set_position(x1, v1);
         }
