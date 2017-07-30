@@ -79,11 +79,11 @@ std::vector<Vector3> System::get_accelerations() const {
 
     std::vector<Vector3> accelerations {};
 
-    for (int i = 0; i < self_n; ++i) {
+    for (auto body1 : self_bodies) {
         Vector3 temp_accel (0, 0, 0);
 
-        for (int j = 0; j < self_n; ++j) {
-            temp_accel += acceleration(self_bodies[j], self_bodies[i]);
+        for (auto body2 : self_bodies) {
+            temp_accel += acceleration(body2, body1);
         }
 
         accelerations.emplace_back(temp_accel);
@@ -95,8 +95,8 @@ std::vector<Vector3> System::get_accelerations() const {
 double System::get_total_kinetic_energy() const {
     double total_kinetic = 0;
 
-    for (int i = 0; i < self_n; ++i) {
-        total_kinetic += self_bodies[i].get_kinetic_energy();
+    for (auto body : self_bodies) {
+        total_kinetic += body.get_kinetic_energy();
     }
 
     return total_kinetic;
@@ -118,8 +118,8 @@ void System::set_velocities(const std::vector<Vector3>& velocities){
 Vector3 System::get_total_momentum() const {
     Vector3 total_momentum (0, 0, 0);
 
-    for (int i = 0; i < self_n; ++i) {
-        total_momentum += self_bodies[i].get_momentum();
+    for (auto body : self_bodies) {
+        total_momentum += body.get_momentum();
     }
 
     return total_momentum;
@@ -128,8 +128,8 @@ Vector3 System::get_total_momentum() const {
 Vector3 System::get_total_angular_momentum() const {
     Vector3 total_ang_momentum (0, 0, 0);
 
-    for (int i = 0; i < self_n; ++i) {
-        total_ang_momentum += self_bodies[i].get_angular_momentum();
+    for (auto body : self_bodies) {
+        total_ang_momentum += body.get_angular_momentum();
     }
 
     return total_ang_momentum;
@@ -151,9 +151,9 @@ double System::get_total_potential_energy() const {
 
     double total_potential_energy = 0;
 
-    for (int i = 0; i < self_n; ++i) {
-        for (int j = 0; j < self_n; ++j) {
-            total_potential_energy += potential_energy(self_bodies[i], self_bodies[j]);
+    for (auto body1 : self_bodies) {
+        for (auto body2 : self_bodies) {
+            total_potential_energy += potential_energy(body1, body2);
         }
     }
 
