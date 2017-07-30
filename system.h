@@ -37,6 +37,10 @@ class System {
 
     double potential(Body body1, Body body2) const;
 
+    double get_total_potential_energy() const;
+
+    double get_total_kinetic_energy() const;
+
 public:
     System(std::vector<std::string> names, std::vector<Vector3> pos0,
            std::vector<Vector3> vel0, std::vector<double> gms, std::vector<double> radii);
@@ -51,16 +55,13 @@ public:
 
     Vector3 get_total_angular_momentum () const;
 
-    double get_total_potential_energy() const;
-
-    double get_total_kinetic_energy() const;
-
     void set_positions(const std::vector<Vector3>& positions);
 
     void set_velocities(const std::vector<Vector3>& velocities);
 
     long get_number_of_bodies() const{ return self_n; }
 
+    double get_total_mechanical_energy () const;
 };
 
 

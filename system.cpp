@@ -154,4 +154,8 @@ double System::get_total_potential_energy() const {
     return total_potential_energy;
 }
 
+double System::get_total_mechanical_energy() const {
+    return get_total_kinetic_energy() + get_total_potential_energy();
+}
+
 
