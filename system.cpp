@@ -157,7 +157,7 @@ double System::get_total_potential_energy() const {
         }
     }
 
-    return total_potential_energy;
+    return total_potential_energy/2;
 }
 
 double System::get_total_mechanical_energy() const {
