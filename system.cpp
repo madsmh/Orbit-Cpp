@@ -138,6 +138,10 @@ Vector3 System::get_total_angular_momentum() const {
 double System::potential(Body body1, Body body2) const {
     // Gravitational potential of body 2 with respect to body 1.
 
+    if (body1.get_position() == body2.get_position()){
+        return 0;
+    }
+
     return -body1.get_GM()/(body2.get_position()-body1.get_position()).norm();
 }
 
