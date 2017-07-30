@@ -35,7 +35,7 @@ class System {
 
     Vector3 acceleration(const Body& body1, const Body& body2) const;
 
-    double potential(Body body1, Body body2) const;
+    double potential_energy(Body body1, Body body2) const;
 
     double get_total_potential_energy() const;
 
