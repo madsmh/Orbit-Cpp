@@ -95,9 +95,11 @@ void verlet(System &system, Trajectory &trajectory, double delta){
     std::cout << "Integration finished in " << t.elapsed() << " seconds."<< std::endl;
     double max_mech_energy = *std::max_element(mechanical_energy.begin(), mechanical_energy.end());
     double min_mech_energy = *std::min_element(mechanical_energy.begin(), mechanical_energy.end());
-    double rel_mech_energy = abs((max_mech_energy-min_mech_energy))/max_mech_energy;
+    double diff_mech_energy =  std::abs(max_mech_energy-min_mech_energy);
+    double rel_mech_energy = diff_mech_energy/std::abs(max_mech_energy);
 
     std::cout << "Mechanical energy, relative differnce "<< rel_mech_energy << "\n";
+    std::cout << "Abs. difference " << diff_mech_energy << "\n";
 
 }
 
@@ -168,10 +170,10 @@ int main(int argc, char *argv[]) {
         dists.emplace_back(error_norm);
     }
 
-    std::cout << "Calculated the errors. \n";
+    std::cout << "Calculated the errors: ";
 
      double max_dist = *std::max_element(dists.begin(), dists.end())/1000;
-    std::cout << max_dist << std::endl;
+    std::cout << max_dist << " km" << std::endl;
 
     return 0;
 }
