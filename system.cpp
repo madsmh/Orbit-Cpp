@@ -125,3 +125,14 @@ Vector3 System::get_total_momentum() const {
     return total_momentum;
 }
 
+Vector3 System::get_total_angular_momentum() const {
+    Vector3 total_ang_momentum (0, 0, 0);
+
+    for (int i = 0; i < self_n; ++i) {
+        total_ang_momentum += self_bodies[i].get_angular_momentum();
+    }
+
+    return total_ang_momentum;
+}
+
+

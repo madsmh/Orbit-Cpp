@@ -47,6 +47,8 @@ public:
 
     Vector3 get_total_momentum() const;
 
+    Vector3 get_total_angular_momentum () const;
+
     double get_total_kinetic_energy() const;
 
     void set_positions(const std::vector<Vector3>& positions);
