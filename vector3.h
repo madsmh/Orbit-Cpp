@@ -25,7 +25,7 @@
 #include <cmath>
 
 class Vector3 {
-    double m_x, m_y, m_z;
+    static double m_x, m_y, m_z;
 public:
     explicit Vector3(double x = 0.0, double y = 0.0, double z = 0.0)
             : m_x(x), m_y(y), m_z(z) {}
@@ -42,13 +42,6 @@ public:
         return std::vector<double> {m_x, m_y, m_z};
     }
 
-    friend Vector3 cross_product(Vector3 factor1, Vector3 factor2){
-        double x = factor1.m_y*factor2.m_z - factor1.m_z*factor2.m_y;
-        double y = factor1.m_z*factor2.m_x - factor1.m_x*factor2.m_z;
-        double z = factor1.m_x*factor2.m_y - factor1.m_y*factor2.m_x;
-
-        return Vector3 (x, y, z);
-    }
 
     Vector3& operator += (const Vector3& rhs) {
         m_x += rhs.m_x;
@@ -88,6 +81,14 @@ public:
 
     friend Vector3 operator * (const double lhs, Vector3 rhs ) {
         return rhs *= lhs;
+    }
+
+    Vector3 operator * (const Vector3& factor1, const Vector3& factor2){
+        double x = factor1.m_y*factor2.m_z - factor1.m_z*factor2.m_y;
+        double y = factor1.m_z*factor2.m_x - factor1.m_x*factor2.m_z;
+        double z = factor1.m_x*factor2.m_y - factor1.m_y*factor2.m_x;
+
+        return Vector3 (x, y, z);
     }
 
     friend Vector3 operator + (Vector3 lhs, const Vector3& rhs) {
