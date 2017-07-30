@@ -83,7 +83,7 @@ public:
         return rhs *= lhs;
     }
 
-    Vector3 operator * (const Vector3& factor1, const Vector3& factor2){
+    friend Vector3 operator * (const Vector3& factor1, const Vector3& factor2){
         double x = factor1.m_y*factor2.m_z - factor1.m_z*factor2.m_y;
         double y = factor1.m_z*factor2.m_x - factor1.m_x*factor2.m_z;
         double z = factor1.m_x*factor2.m_y - factor1.m_y*factor2.m_x;
