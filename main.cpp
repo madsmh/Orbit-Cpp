@@ -39,6 +39,10 @@ void verlet(System &system, Trajectory &trajectory, double delta){
     long n = trajectory.get_number_of_rows();
     long n_bodies = system.get_number_of_bodies();
 
+    std::vector<double> mechanical_energy;
+    std::vector<Vector3> momentum;
+    std::vector<Vector3> angular_momentum;
+
     double delta2 = std::pow(delta, 2);
 
     std::cout << "Starting integrator." << std::endl;
@@ -52,9 +56,9 @@ void verlet(System &system, Trajectory &trajectory, double delta){
             system.set_positions(x0);
             system.set_velocities(v0);
 
-            std::cout << "Total momentum         : " << system.get_total_momentum() << "\n";
-            std::cout << "Total angular momentum : " << system.get_total_angular_momentum() << "\n";
-            std::cout << "Total mechanical energy: " << system.get_total_mechanical_energy() << "\n";
+            momentum.emplace_back(system.get_total_momentum());
+            angular_momentum.emplace_back(system.get_total_angular_momentum());
+            mechanical_energy.emplace_back(system.get_total_mechanical_energy());
         }
         else {
 
@@ -81,14 +85,20 @@ void verlet(System &system, Trajectory &trajectory, double delta){
 
             system.set_velocities(v1);
 
-            std::cout << "Total momentum         : " << system.get_total_momentum() << "\n";
-            std::cout << "Total angular momentum : " << system.get_total_angular_momentum() << "\n";
-            std::cout << "Total mechanical energy: " << system.get_total_mechanical_energy() << "\n";
+            momentum.emplace_back(system.get_total_momentum());
+            angular_momentum.emplace_back(system.get_total_angular_momentum());
+            mechanical_energy.emplace_back(system.get_total_mechanical_energy());
 
             trajectory.set_position(x1, v1);
         }
     }
-    std::cout << "Integration finished in " << t.elapsed() << "seconds."<< std::endl;
+    std::cout << "Integration finished in " << t.elapsed() << " seconds."<< std::endl;
+    double max_mech_energy = *std::max_element(mechanical_energy.begin(), mechanical_energy.end());
+    double min_mech_energy = *std::min_element(mechanical_energy.begin(), mechanical_energy.end());
+    double rel_mech_energy = abs((max_mech_energy-min_mech_energy))/max_mech_energy;
+
+    std::cout << "Mechanical energy, relative differnce "<< rel_mech_energy << "\n";
+
 }
 
 void help(char *name) {
