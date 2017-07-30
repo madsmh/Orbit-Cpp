@@ -84,5 +84,9 @@ public:
         return m_r * get_momentum();
     }
 
+    double get_mass(){
+        return m_mass;
+    }
+
 };
 

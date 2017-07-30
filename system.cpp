@@ -135,4 +135,23 @@ Vector3 System::get_total_angular_momentum() const {
     return total_ang_momentum;
 }
 
+double System::potential(Body body1, Body body2) const {
+    // Gravitational potential of body 2 with respect to body 1.
+
+    return -body1.get_GM()/(body2.get_position()-body1.get_position()).norm();
+}
+
+double System::get_total_potential_energy() const {
+
+    double total_potential_energy = 0;
+
+    for (int i = 0; i < self_n; ++i) {
+        for (int j = 0; j < self_n; ++j) {
+            total_potential_energy += self_bodies[j].get_mass() * potential(self_bodies[i], self_bodies[j]);
+        }
+    }
+
+    return total_potential_energy;
+}
+
 
