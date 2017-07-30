@@ -21,7 +21,7 @@
 #include <fstream>
 #include "propertiesfile.h"
 
-PhysicalProperties::PhysicalProperties(){
+PhysicalProperties::PhysicalProperties(long n){
     std::string path = "../physical_properties/properties.csv";
     std::ifstream filereader;
 
@@ -52,7 +52,8 @@ PhysicalProperties::PhysicalProperties(){
         filereader.close();
     }
 
-    long n = data.size();
+    if (n==0)
+        n = data.size();
     for (int i = 0; i < n; ++i) {
 
         PropertiesFile d = data[i];

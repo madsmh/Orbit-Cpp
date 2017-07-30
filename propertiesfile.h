@@ -37,7 +37,7 @@ class PhysicalProperties {
     std::vector<double> self_GMs;
 
 public:
-    PhysicalProperties();
+    PhysicalProperties(long n = 0);
     std::vector<std::string> get_names(){
         return self_names;
     };

@@ -90,6 +90,7 @@ void help(char *name) {
 int main(int argc, char *argv[]) {
 
     auto detail = 64;
+    long bodies = 0;
     while (1)
     {
         char opt = getopt(argc, argv, "d:b:");
@@ -98,6 +99,7 @@ int main(int argc, char *argv[]) {
         switch (opt)
         {
             case 'd' : detail = atol(optarg); break;
+            case 'b' : bodies = atol(optarg); break;
             default  : help(argv[0]); exit(-1); break;
         }
     }
@@ -106,7 +108,7 @@ int main(int argc, char *argv[]) {
     long rows = 1131*detail;
 
 
-    PhysicalProperties prop;
+    PhysicalProperties prop(bodies);
     PlanetData horizons (prop.get_names());
 
 
