@@ -13,4 +13,4 @@ headers += vector3.h
 
 planets: $(sources) $(headers)
 	mkdir -p bin
-	g++ -g -Wall $(sources) -o bin/planets
+	g++ -g -O3 -Wall $(sources) -o bin/planets
