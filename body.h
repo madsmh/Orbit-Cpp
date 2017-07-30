@@ -73,14 +73,14 @@ public:
         return m_name;
     };
 
-    double get_kinetic_energy(){
+    double get_kinetic_energy() const {
         return 0.5 * m_mass * m_v.norm2();
     }
-    Vector3 get_momentum(){
+    Vector3 get_momentum() const {
         return m_mass * m_v;
     }
 
-    Vector3 get_angular_momentum(){
+    Vector3 get_angular_momentum() const {
         return m_r * get_momentum();
     }
 
