@@ -20,7 +20,7 @@
 #include "vector3.h"
 
 class Body {
-    Vector3 r,v,r0,v0;
+    Vector3 m_r, m_v, m_r0, m_v0;
     double m_radius, m_gm, m_mass;
 
     std::string m_name;
@@ -28,11 +28,11 @@ class Body {
 public:
     Body(std::string name, Vector3 pos0, Vector3 vel0,
          double gm, double radius) {
-        r0 = pos0;
-        r = r0;
+        m_r0 = pos0;
+        m_r = m_r0;
 
-        v0 = vel0;
-        v = v0;
+        m_v0 = vel0;
+        m_v = m_v0;
 
         m_gm = gm;
 
@@ -44,20 +44,20 @@ public:
     }
 
     Vector3 get_position() const{
-        return r;
+        return m_r;
     };
 
     Vector3 get_velocity() const{
-        return v;
+        return m_v;
     };
 
 
     void set_position(const Vector3& pos) {
-        r = pos;
+        m_r = pos;
     };
 
     void set_velocity(const Vector3& vel) {
-        v = vel;
+        m_v = vel;
     };
 
 
@@ -74,10 +74,14 @@ public:
     };
 
     double get_kinetic_energy(){
-        return 0.5 * m_mass * v.norm2();
+        return 0.5 * m_mass * m_v.norm2();
     }
     Vector3 get_momentum(){
-        return m_mass * v;
+        return m_mass * m_v;
+    }
+
+    Vector3 get_angular_momentum(){
+        return m_r * get_momentum();
     }
 
 };
