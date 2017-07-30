@@ -36,6 +36,17 @@ PlanetData::PlanetData(const std::vector<std::string> &names){
     structs_to_arrays();
 }
 
+// Adapted from: https://stackoverflow.com/questions/14265581/parse-split-a-string-in-c-using-string-delimiter-standard-c
+std::vector<std::string> split(std::string str, const std::string& delim) {
+    size_t pos = 0;
+    std::vector<std::string> result;
+    while ((pos = str.find(delim)) != std::string::npos) {
+        result.push_back(str.substr(0, pos));
+        str.erase(0, pos + delim.length());
+    }
+    return result;
+}
+
 std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string planet) {
     std::string path = "../data/" + planet + ".txt";
     std::transform(path.begin(), path.end(), path.begin(), ::tolower);
@@ -51,58 +62,31 @@ std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string plan
     filereader.open(path);
 
     if (filereader.is_open()) {
+        // Use a state machine to control
+        // the file reading.
+        bool reading = false;
         while (!filereader.eof()) {
 
             std::getline(filereader, buffer);
 
             if (buffer == "$$SOE") {
-                std::getline(filereader, buffer, ',');
-                std::getline(filereader, buffer, ',');
-                std::getline(filereader, buffer, ',');
-                h.x = stod(buffer)*1000;
-                std::getline(filereader, buffer, ',');
-                h.y = stod(buffer)*1000;
-                std::getline(filereader, buffer, ',');
-                h.z = stod(buffer)*1000;
-                std::getline(filereader, buffer, ',');
-                h.vx = stod(buffer)*1000;
-                std::getline(filereader, buffer, ',');
-                h.vy = stod(buffer)*1000;
-                std::getline(filereader, buffer, ',');
-                h.vz = stod(buffer)*1000;
-                std::getline(filereader, buffer, ',');
-                std::getline(filereader, buffer, ',');
-                std::getline(filereader, buffer, ',');
-                std::getline(filereader, buffer);
+                reading = true;
+            } else if (buffer == "$$EOE") {
+                reading = false;
+            } else if (reading) {
+                std::vector<std::string> vals = split(buffer, ",");
+                h.x  = stod(vals[2])*1000;
+                h.y  = stod(vals[3])*1000;
+                h.z  = stod(vals[4])*1000;
+                h.vx = stod(vals[5])*1000;
+                h.vy = stod(vals[6])*1000;
+                h.vz = stod(vals[7])*1000;
                 data.emplace_back(h);
-
-                while (buffer != "$$EOE"){
-                    std::getline(filereader, buffer, ',');
-                    std::getline(filereader, buffer, ',');
-                    std::getline(filereader, buffer, ',');
-                    h.x = stod(buffer)*1000;
-                    std::getline(filereader, buffer, ',');
-                    h.y = stod(buffer)*1000;
-                    std::getline(filereader, buffer, ',');
-                    h.z = stod(buffer)*1000;
-                    std::getline(filereader, buffer, ',');
-                    h.vx = stod(buffer)*1000;
-                    std::getline(filereader, buffer, ',');
-                    h.vy = stod(buffer)*1000;
-                    std::getline(filereader, buffer, ',');
-                    h.vz = stod(buffer)*1000;
-                    std::getline(filereader, buffer, ',');
-                    std::getline(filereader, buffer, ',');
-                    std::getline(filereader, buffer, ',');
-                    std::getline(filereader, buffer);
-                    data.emplace_back(h);
-                }
-                filereader.close();
             }
-
         }
 
         std::cout << "Closing file" << std::endl;
+        filereader.close();
     }
     std::cout << "Returned vector is of size: " << data.size() << std::endl;
     return data;
