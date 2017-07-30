@@ -24,6 +24,7 @@
 #include <cmath>
 #include <fstream>
 #include <algorithm>
+#include <getopt.h>
 
 #include "vector3.h"
 #include "system.h"
@@ -81,10 +82,26 @@ void verlet(System &system, Trajectory &trajectory, double delta){
     std::cout << "Integration finished." << std::endl;
 }
 
+void help(char *name) {
+    std::cout << "Usage: " << name << " <options>" << std::endl;
+    std::cout << "-d <detail> : Number of time steps each day (default: 64)." << std::endl;
+}
 
-int main() {
+int main(int argc, char *argv[]) {
 
     auto detail = 64;
+    while (1)
+    {
+        char opt = getopt(argc, argv, "d:b:");
+        if (opt == -1)
+            break;
+        switch (opt)
+        {
+            case 'd' : detail = atol(optarg); break;
+            default  : help(argv[0]); exit(-1); break;
+        }
+    }
+
     double dt = 86400/detail;
     long rows = 1131*detail;
 
@@ -104,6 +121,8 @@ int main() {
 
     Trajectory tra (n_bodies,rows);
 
+    std::cout << std::endl;
+    std::cout << "detail = " << detail << std::endl;
 
     verlet(sol, tra, dt);
 
