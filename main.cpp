@@ -156,15 +156,10 @@ int main(int argc, char *argv[]) {
     std::vector<Vector3> earth_ref = horizons.get_body_positions(3);
     std::vector<Vector3> sun_sim = tra.get_trajectory_positions(0);
 
-    std::vector<Vector3> earth_corrected {};
-
-    for (int j = 0; j < rows; ++j) {
-        earth_corrected.push_back(earth_sim[j]-sun_sim[j]);
-    }
 
 
     for (int i = 0; i < 1131; ++i) {
-        Vector3 error = earth_corrected[i*detail]-earth_ref[i];
+        Vector3 error = earth_sim[i*detail]-earth_ref[i];
 
         double error_norm = error.norm();
         dists.emplace_back(error_norm);
