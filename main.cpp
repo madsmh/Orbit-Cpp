@@ -98,7 +98,7 @@ void verlet(System &system, Trajectory &trajectory, double delta){
     double diff_mech_energy =  std::abs(max_mech_energy-min_mech_energy);
     double rel_mech_energy = diff_mech_energy/std::abs(max_mech_energy);
 
-    std::cout << "Mechanical energy, relative differnce "<< rel_mech_energy << "\n";
+    std::cout << "Mechanical energy, relative difference "<< rel_mech_energy << "\n";
     std::cout << "Abs. difference " << diff_mech_energy << "\n";
 
 }
