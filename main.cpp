@@ -110,7 +110,7 @@ void help(char *name) {
 
 int main(int argc, char *argv[]) {
 
-    auto detail = 64;
+    double detail = 64.0;
     long bodies = 0;
     while (1)
     {
@@ -119,13 +119,13 @@ int main(int argc, char *argv[]) {
             break;
         switch (opt)
         {
-            case 'd' : detail = atol(optarg); break;
+            case 'd' : detail = atof(optarg); break;
             case 'b' : bodies = atol(optarg); break;
             default  : help(argv[0]); exit(-1); break;
         }
     }
 
-    double dt = 86400/detail;
+    double dt = 86400.0/detail;
     long rows = 1131*detail;
 
 
