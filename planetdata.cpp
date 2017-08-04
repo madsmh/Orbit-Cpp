@@ -48,7 +48,7 @@ std::vector<std::string> split(std::string str, const std::string& delim) {
 }
 
 std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string planet) {
-    std::string path = "../data/" + planet + ".txt";
+    std::string path = "data/" + planet + ".txt";
     std::transform(path.begin(), path.end(), path.begin(), ::tolower);
 
     std::ifstream filereader;

@@ -22,7 +22,7 @@
 #include "propertiesfile.h"
 
 PhysicalProperties::PhysicalProperties(long n){
-    std::string path = "../physical_properties/properties.csv";
+    std::string path = "physical_properties/properties.csv";
     std::ifstream filereader;
 
     PropertiesFile p;
