@@ -80,7 +80,7 @@ void Trajectory::save_trajectory_positions(int tra, std::string name, double sta
     if (myfile.good()) {
 
         for (int i = 0; i < self_n_rows; ++i) {
-            std::string t = boost::lexical_cast<std::string>(start_time + i * dt);
+            std::string t = boost::lexical_cast<std::string>(start_time + (double) i * dt);
             std::string x_coord = boost::lexical_cast<std::string>(current_trajectory[i].x());
             std::string y_coord = boost::lexical_cast<std::string>(current_trajectory[i].y());
             std::string z_coord = boost::lexical_cast<std::string>(current_trajectory[i].z());
