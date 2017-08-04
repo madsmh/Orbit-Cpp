@@ -167,9 +167,9 @@ int main(int argc, char *argv[]) {
     compare_with_horizon(tra, horizons, prop.get_names(), detail, 1131);
 
     // Saving the trajectories to file
-    for (int j = 0; j < n_bodies; ++j) {
+    /*for (int j = 0; j < n_bodies; ++j) {
         tra.save_trajectory_positions(j, prop.get_names()[j], 0.0, dt);
-    }
+    }*/
     return 0;
 }
 
