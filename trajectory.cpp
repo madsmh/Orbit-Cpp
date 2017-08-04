@@ -71,6 +71,7 @@ std::vector<Vector3> Trajectory::get_velocities_at_index(int index)  const {
 void Trajectory::save_trajectory_positions(int tra, std::string name, double start_time, double dt) {
 
     std::string path = "trajectory/" + name + ".csv";
+    std::ofstream myfile (path);
 
     std::vector<Vector3> current_trajectory = self_positions[tra];
 
