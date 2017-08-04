@@ -33,6 +33,26 @@
 #include "planetdata.h"
 #include "propertiesfile.h"
 
+void compare_with_horizon(Trajectory tra, PlanetData data,
+                          std::vector<std::string> names,double detail, long ref_rows){
+
+    for (int j = 0; j < tra.get_number_of_trajectories(); ++j) {
+        std::vector<Vector3> sim_vector = tra.get_trajectory_positions(j);
+        std::vector<Vector3> ref_vector = data.get_body_positions(j);
+
+        std::vector<double> dists;
+
+        for (int i = 0; i < ref_rows; ++i) {
+            double error = (sim_vector[i*detail]-ref_vector[i]).norm();
+            dists.emplace_back(error);
+        }
+
+        double max_dist = *std::max_element(dists.begin(), dists.end())/1000;
+        std::cout << "Error for " << names[j] << " is : " << max_dist << " km" << std::endl;
+
+    }
+
+}
 
 void verlet(System &system, Trajectory &trajectory, double delta){
     boost::timer t;
@@ -144,21 +164,7 @@ int main(int argc, char *argv[]) {
 
     verlet(sol, tra, dt);
 
-    std::vector<double> dists;
-
-    // Get the earths trajectory
-    std::vector<Vector3> earth_sim = tra.get_trajectory_positions(3);
-    std::vector<Vector3> earth_ref = horizons.get_body_positions(3);
-
-    for (int i = 0; i < 1131; ++i) {
-        double error = (earth_sim[i*detail]-earth_ref[i]).norm();
-        dists.emplace_back(error);
-    }
-
-    std::cout << "Calculated the errors: ";
-
-     double max_dist = *std::max_element(dists.begin(), dists.end())/1000;
-    std::cout << max_dist << " km" << std::endl;
+    compare_with_horizon(tra, horizons, prop.get_names(), detail, 1131);
 
     // Saving the trajectories to file
     for (int j = 0; j < n_bodies; ++j) {
