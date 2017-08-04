@@ -56,8 +56,6 @@ void verlet(System &system, Trajectory &trajectory, double delta){
             system.set_positions(x0);
             system.set_velocities(v0);
 
-            momentum.emplace_back(system.get_total_momentum());
-            angular_momentum.emplace_back(system.get_total_angular_momentum());
             mechanical_energy.emplace_back(system.get_total_mechanical_energy());
         }
         else {
@@ -85,8 +83,6 @@ void verlet(System &system, Trajectory &trajectory, double delta){
 
             system.set_velocities(v1);
 
-            momentum.emplace_back(system.get_total_momentum());
-            angular_momentum.emplace_back(system.get_total_angular_momentum());
             mechanical_energy.emplace_back(system.get_total_mechanical_energy());
 
             trajectory.set_position(x1, v1);
@@ -98,8 +94,7 @@ void verlet(System &system, Trajectory &trajectory, double delta){
     double diff_mech_energy =  std::abs(max_mech_energy-min_mech_energy);
     double rel_mech_energy = diff_mech_energy/std::abs(max_mech_energy);
 
-    std::cout << "Mechanical energy, relative difference "<< rel_mech_energy << "\n";
-    std::cout << "Abs. difference " << diff_mech_energy << "\n";
+    std::cout << "Mechanical energy, relative difference "<< rel_mech_energy << std::endl;
 
 }
 
@@ -154,15 +149,10 @@ int main(int argc, char *argv[]) {
     // Get the earths trajectory
     std::vector<Vector3> earth_sim = tra.get_trajectory_positions(3);
     std::vector<Vector3> earth_ref = horizons.get_body_positions(3);
-    std::vector<Vector3> sun_sim = tra.get_trajectory_positions(0);
-
-
 
     for (int i = 0; i < 1131; ++i) {
-        Vector3 error = earth_sim[i*detail]-earth_ref[i];
-
-        double error_norm = error.norm();
-        dists.emplace_back(error_norm);
+        double error = (earth_sim[i*detail]-earth_ref[i]).norm();
+        dists.emplace_back(error);
     }
 
     std::cout << "Calculated the errors: ";
@@ -170,6 +160,10 @@ int main(int argc, char *argv[]) {
      double max_dist = *std::max_element(dists.begin(), dists.end())/1000;
     std::cout << max_dist << " km" << std::endl;
 
+    // Saving the trajectories to file
+    for (int j = 0; j < n_bodies; ++j) {
+        tra.save_trajectory_positions(j, prop.get_names()[j], 0.0, dt);
+    }
     return 0;
 }
 
