@@ -71,11 +71,11 @@ std::vector<Vector3> Trajectory::get_velocities_at_index(int index)  const {
 void Trajectory::save_trajectory_positions(int tra, std::string name, double start_time, double dt) {
 
     std::string path = "trajectory/" + name + ".csv";
-    std::ofstream myfile (path);
-    //myfile.open(path);
-
 
     std::vector<Vector3> current_trajectory = self_positions[tra];
+
+    std::cout << "Writing data for " << name << "." << std::endl;
+
     if (myfile.good()) {
 
         for (int i = 0; i < self_n_rows; ++i) {
@@ -86,8 +86,11 @@ void Trajectory::save_trajectory_positions(int tra, std::string name, double sta
             myfile << t << "," << x_coord << "," << y_coord << "," << z_coord << std::endl;
         }
     } else {
-        std::cout << "Error opening file" << "\n";
+        std::cout << "Error opening file." << std::endl;
     }
+
+    myfile.close();
+    std::cout << "Finshed writing data for " << name << "." << std::endl;
 }
 
 
