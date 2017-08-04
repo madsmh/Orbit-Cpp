@@ -23,6 +23,11 @@
 
 #include "vector3.h"
 #include <vector>
+#include <iostream>
+#include <fstream>
+#include <string>
+
+#include <boost/lexical_cast.hpp>
 
 class Trajectory{
 
@@ -45,6 +50,9 @@ public:
     std::vector<Vector3> get_velocities_at_index(int index) const;
 
     long get_number_of_rows() const { return self_n_rows; }
+
+    void save_trajectory_positions(int tra, std::string name, double start_time, double dt);
+
 };
 
 

@@ -68,3 +68,26 @@ std::vector<Vector3> Trajectory::get_velocities_at_index(int index)  const {
     return velocities;
 }
 
+void Trajectory::save_trajectory_positions(int tra, std::string name, double start_time, double dt) {
+
+    std::string path = "trajectory/" + name + ".csv";
+    std::ofstream myfile (path);
+    //myfile.open(path);
+
+
+    std::vector<Vector3> current_trajectory = self_positions[tra];
+    if (myfile.good()) {
+
+        for (int i = 0; i < self_n_rows; ++i) {
+            std::string t = boost::lexical_cast<std::string>(start_time + i * dt);
+            std::string x_coord = boost::lexical_cast<std::string>(current_trajectory[i].x());
+            std::string y_coord = boost::lexical_cast<std::string>(current_trajectory[i].y());
+            std::string z_coord = boost::lexical_cast<std::string>(current_trajectory[i].z());
+            myfile << t << "," << x_coord << "," << y_coord << "," << z_coord << std::endl;
+        }
+    } else {
+        std::cout << "Error opening file" << "\n";
+    }
+}
+
+
