@@ -26,8 +26,8 @@ Scene::Scene(Qt3DCore::QEntity *rootEntity, int n, std::vector<double> radii, st
     for (int i = 0; i < n; ++i) {
 
         auto *mesh = new Qt3DExtras::QSphereMesh();
-        mesh->setRings(20);
-        mesh->setSlices(20);
+        mesh->setRings(50);
+        mesh->setSlices(50);
         mesh->setRadius((float) radii[i]);
 
         auto *transform = new Qt3DCore::QTransform();
@@ -40,7 +40,7 @@ Scene::Scene(Qt3DCore::QEntity *rootEntity, int n, std::vector<double> radii, st
         auto *material = new Qt3DExtras::QPhongMaterial();
         material->setDiffuse(QColor(QRgb(0xa69929)));
 
-        self_heavenly_entities.append(new Qt3DCore::QEntity(&self_rootEntity));
+        self_heavenly_entities.append(new Qt3DCore::QEntity(rootEntity));
 
         self_heavenly_entities[i]->addComponent(mesh);
         self_heavenly_entities[i]->addComponent(transform);

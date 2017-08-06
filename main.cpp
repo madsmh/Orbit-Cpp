@@ -59,6 +59,7 @@
 
 #include <Qt3DExtras/qt3dwindow.h>
 #include <Qt3DExtras/qfirstpersoncameracontroller.h>
+#include <Qt3DExtras/QOrbitCameraController>
 
 void compare_with_horizon(Trajectory tra, PlanetData data,
                           std::vector<std::string> names,double detail, long ref_rows){
@@ -225,13 +226,12 @@ int main(int argc, char *argv[]) {
     auto *rootEntity = new Qt3DCore::QEntity();
 
     Qt3DRender::QCamera *cameraEntity = view->camera();
-
-    Vector3 jup_start_pos = horizons.get_starting_positions()[5];
+    ;
     Vector3 europa_start_pos = horizons.get_starting_positions()[18];
 
-    const QVector3D start_cam_pos ((float) (jup_start_pos.x()+100e6),
-                                   (float) (jup_start_pos.y()+100e6),
-                                   (float) (jup_start_pos.z()+100e6));
+    const QVector3D start_cam_pos ((float) (europa_start_pos.x()+5e6),
+                                   (float) (europa_start_pos.y()+5e6),
+                                   (float) (europa_start_pos.z()+5e6));
 
     const QVector3D europa_pos ((float) europa_start_pos.x(),
                                 (float) europa_start_pos.y(),
@@ -255,7 +255,7 @@ int main(int argc, char *argv[]) {
     lightEntity->addComponent(lightTransform);
 
     // For camera controls
-    auto *camController = new Qt3DExtras::QFirstPersonCameraController(rootEntity);
+    auto *camController = new Qt3DExtras::QOrbitCameraController(rootEntity);
     camController->setCamera(cameraEntity);
 
     Scene *scn = new Scene(rootEntity, prop.get_radii().size(), prop.get_radii(), horizons.get_starting_positions());
