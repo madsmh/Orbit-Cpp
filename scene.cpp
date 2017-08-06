@@ -50,3 +50,7 @@ Scene::Scene(Qt3DCore::QEntity *rootEntity, int n, std::vector<double> radii, st
     }
 
 }
+
+Scene::~Scene() {
+
+}
