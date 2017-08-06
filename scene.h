@@ -45,7 +45,7 @@ public:
 private:
     Qt3DCore::QEntity self_rootEntity;
 
-    std::vector<Qt3DCore::QEntity> self_heavenly_entities;
+    std::vector<Qt3DCore::QEntity*> self_heavenly_entities;
 
 };
 

@@ -40,17 +40,14 @@ Scene::Scene(Qt3DCore::QEntity *rootEntity, int n, std::vector<double> radii, st
         auto *material = new Qt3DExtras::QPhongMaterial();
         material->setDiffuse(QColor(QRgb(0xa69929)));
 
-        auto sphere = new Qt3DCore::QEntity(self_rootEntity);
-        sphere->addComponent(mesh);
-        sphere->addComponent(transform);
-        sphere->addComponent(material);
+        self_heavenly_entities.emplace_back(new Qt3DCore::QEntity(self_rootEntity));
 
-        self_heavenly_entities.emplace_back(sphere);
+        self_heavenly_entities[i]->addComponent(mesh);
+        self_heavenly_entities[i]->addComponent(transform);
+        self_heavenly_entities[i]->addComponent(material);
 
     }
 
 }
 
-Scene::~Scene() {
-
-}
+Scene::~Scene() = default;
