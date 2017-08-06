@@ -17,21 +17,48 @@
  *
  * */
 
-
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include <cmath>
-#include <fstream>
-#include <algorithm>
-#include <getopt.h>
-#include <boost/timer.hpp>
-
 #include "vector3.h"
 #include "system.h"
 #include "trajectory.h"
 #include "planetdata.h"
 #include "propertiesfile.h"
+#include "scene.h"
+
+#include <boost/timer.hpp>
+
+#include <QGuiApplication>
+
+#include <Qt3DRender/qcamera.h>
+#include <Qt3DCore/qentity.h>
+#include <Qt3DRender/qcameralens.h>
+
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QWidget>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QCheckBox>
+#include <QtWidgets/QCommandLinkButton>
+#include <QtGui/QScreen>
+
+#include <Qt3DInput/QInputAspect>
+
+#include <Qt3DExtras/qtorusmesh.h>
+#include <Qt3DRender/qmesh.h>
+#include <Qt3DRender/qtechnique.h>
+#include <Qt3DRender/qmaterial.h>
+#include <Qt3DRender/qeffect.h>
+#include <Qt3DRender/qtexture.h>
+#include <Qt3DRender/qrenderpass.h>
+#include <Qt3DRender/qsceneloader.h>
+#include <Qt3DRender/qpointlight.h>
+
+#include <Qt3DCore/qtransform.h>
+#include <Qt3DCore/qaspectengine.h>
+
+#include <Qt3DRender/qrenderaspect.h>
+#include <Qt3DExtras/qforwardrenderer.h>
+
+#include <Qt3DExtras/qt3dwindow.h>
+#include <Qt3DExtras/qfirstpersoncameracontroller.h>
 
 void compare_with_horizon(Trajectory tra, PlanetData data,
                           std::vector<std::string> names,double detail, long ref_rows){
@@ -162,14 +189,83 @@ int main(int argc, char *argv[]) {
     std::cout << std::endl;
     std::cout << "detail = " << detail << std::endl;
 
-    verlet(sol, tra, dt);
+    //verlet(sol, tra, dt);
 
-    compare_with_horizon(tra, horizons, prop.get_names(), detail, 1131);
+    // compare_with_horizon(tra, horizons, prop.get_names(), detail, 1131);
 
     // Saving the trajectories to file
     /*for (int j = 0; j < n_bodies; ++j) {
         tra.save_trajectory_positions(j, prop.get_names()[j], 0.0, dt);
     }*/
-    return 0;
+
+
+    // Code for GUI
+    //Adapted from https://doc.qt.io/qt-5/qt3d-basicshapes-cpp-main-cpp.html
+
+    QApplication app (argc, argv);
+    auto *view = new Qt3DExtras::Qt3DWindow();
+
+    QWidget *container = QWidget::createWindowContainer(view);
+    QSize screenSize = view->screen()->size();
+    container->setMinimumSize(QSize(200, 100));
+    container->setMaximumSize(screenSize);
+
+    auto *widget = new QWidget;
+    auto *hlayout = new QHBoxLayout(widget);
+    auto *vlayout = new QVBoxLayout();
+    vlayout->setAlignment(Qt::AlignTop);
+    hlayout->addWidget(container, 1);
+    hlayout->addLayout(vlayout);
+
+    widget->setWindowTitle(QStringLiteral("Orbit Solar System Simulator"));
+
+    auto *input = new Qt3DInput::QInputAspect;
+    view->registerAspect(input);
+
+    auto *rootEntity = new Qt3DCore::QEntity();
+
+    Qt3DRender::QCamera *cameraEntity = view->camera();
+
+    Vector3 jup_start_pos = horizons.get_starting_positions()[5];
+    Vector3 europa_start_pos = horizons.get_starting_positions()[18];
+
+    const QVector3D start_cam_pos ((float) (jup_start_pos.x()+100e6),
+                                   (float) (jup_start_pos.y()+100e6),
+                                   (float) (jup_start_pos.z()+100e6));
+
+    const QVector3D europa_pos ((float) europa_start_pos.x(),
+                                (float) europa_start_pos.y(),
+                                (float) europa_start_pos.z());
+
+    cameraEntity->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 0.1f, 1000.0f);
+    cameraEntity->setPosition(start_cam_pos);
+    cameraEntity->setUpVector(QVector3D(0, 1, 0));
+    cameraEntity->setViewCenter(europa_pos);
+
+    auto *lightEntity = new Qt3DCore::QEntity(rootEntity);
+    auto *light = new Qt3DRender::QPointLight(lightEntity);
+
+    light->setColor("white");
+    light->setIntensity(1);
+    lightEntity->addComponent(light);
+
+    auto *lightTransform = new Qt3DCore::QTransform(lightEntity);
+
+    lightTransform->setTranslation(cameraEntity->position());
+    lightEntity->addComponent(lightTransform);
+
+    // For camera controls
+    auto *camController = new Qt3DExtras::QFirstPersonCameraController(rootEntity);
+    camController->setCamera(cameraEntity);
+
+    Scene *scn = new Scene(rootEntity, prop.get_radii().size(), prop.get_radii(), horizons.get_starting_positions());
+
+    view->setRootEntity(rootEntity);
+
+    widget->show();
+    widget->resize(1200, 800);
+
+    return app.exec();
+
 }
 

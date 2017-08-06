@@ -20,7 +20,7 @@
 #ifndef ORBIT3D_SCENE_H
 #define ORBIT3D_SCENE_H
 
-#include <vector>
+#include <QVector>
 
 #include <QtCore/QObject>
 
@@ -38,14 +38,14 @@ class Scene : public QObject {
 public:
     Scene(Qt3DCore::QEntity *rootEntity, int n, std::vector<double> radii, std::vector<Vector3> initial_pos);
 
-    ~Scene();
+    ~Scene() {};
 
     // public slots:
 
 private:
     Qt3DCore::QEntity self_rootEntity;
 
-    std::vector<Qt3DCore::QEntity*> self_heavenly_entities;
+    QVector<Qt3DCore::QEntity*> self_heavenly_entities {};
 
 };
 
