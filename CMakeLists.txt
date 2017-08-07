@@ -26,7 +26,7 @@ set(SOURCE_FILES
         propertiesfile.h
         scene.cpp
         scene.h
-        )
+        scale.h)
 add_executable(orbit3d ${SOURCE_FILES} )
 add_dependencies(orbit3d copy-runtime-files)
 target_link_libraries(orbit3d

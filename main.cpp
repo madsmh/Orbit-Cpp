@@ -23,6 +23,7 @@
 #include "planetdata.h"
 #include "propertiesfile.h"
 #include "scene.h"
+#include "scale.h"
 
 #include <boost/timer.hpp>
 
@@ -155,12 +156,14 @@ void help(char *name) {
 
 int main(int argc, char **argv) {
     // Adapted from https://doc.qt.io/qt-5/qt3d-basicshapes-cpp-main-cpp.html
+
+    PhysicalProperties prop;
+    PlanetData horizons(prop.get_names());
+    std::vector<Vector3> starting_pos = horizons.get_starting_positions();
     QApplication app (argc, argv);
     auto *view = new Qt3DExtras::Qt3DWindow();
 
-    PhysicalProperties prop;
-    PlanetData horzons(prop.get_names());
-    std::vector<Vector3> starting_pos = horzons.get_starting_positions();
+    Scale s(1.0e-5);
 
     QWidget *container = QWidget::createWindowContainer(view);
     QSize screenSize = view->screen()->size();
@@ -183,40 +186,36 @@ int main(int argc, char **argv) {
 
     Qt3DRender::QCamera *cameraEntity = view->camera();
 
-    Vector3 earth_pos = starting_pos[3];
-    double earth_rad = prop.get_radii()[3];
+    QVector3D earth_pos = s.vector(starting_pos[3]);
+    float earth_rad = s.scalar(prop.get_radii()[3]);
 
-    QVector3D start_cam_pos ((float) (earth_pos.x() +  2*earth_rad),
-                             (float) (earth_pos.y() +  2*earth_rad),
-                             (float) (earth_pos.z() +  2*earth_rad)
+    QVector3D start_cam_pos (earth_pos.x() +  2*earth_rad,
+                             earth_pos.y() +  2*earth_rad,
+                             earth_pos.z() +  2*earth_rad
     );
 
 
     cameraEntity->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 0.1f, 1000.0f);
     cameraEntity->setPosition(start_cam_pos);
-    cameraEntity->setViewCenter(QVector3D(
-            (float) starting_pos[3].x(),
-            (float) starting_pos[3].y(),
-            (float) starting_pos[3].z()) );
+    cameraEntity->setViewCenter(earth_pos);
 
 
     // For camera controls
-    auto *camController = new Qt3DExtras::QOrbitCameraController(rootEntity);
+    auto *camController = new Qt3DExtras::QFirstPersonCameraController(rootEntity);
     camController->setCamera(cameraEntity);
-
-    view->setRootEntity(rootEntity);
 
     auto *scn = new Scene(rootEntity);
 
-    //The sun
-    //scn->createStar(horizons.get_starting_positions()[0], prop.get_radii()[0]);
+    // The sun
+    scn->createStar(s.vector(starting_pos[0]), s.scalar(prop.get_radii()[0]));
 
     // The Earth
-    scn->createBody(starting_pos[3], earth_rad);
+    scn->createBody(earth_pos, earth_rad);
 
     // The Moon
-    scn->createBody(starting_pos[10], prop.get_radii()[10]);
+    scn->createBody(s.vector(starting_pos[10]), s.scalar(prop.get_radii()[10]));
 
+    view->setRootEntity(rootEntity);
 
 
     widget->show();

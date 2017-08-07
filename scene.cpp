@@ -24,19 +24,16 @@ Scene::Scene(Qt3DCore::QEntity *rootEntity)
 
 }
 
-void Scene::createStar(Vector3 pos, double radius) {
+void Scene::createStar(QVector3D pos, float radius) {
 
-    QVector3D position ((float) pos.x(),
-                        (float) pos.y(),
-                        (float) pos.z());
 
     auto *mesh = new Qt3DExtras::QSphereMesh();
     mesh->setRings(50);
     mesh->setSlices(50);
-    mesh->setRadius((float) radius);
+    mesh->setRadius(radius);
 
     auto *transform = new Qt3DCore::QTransform();
-    transform->setTranslation(position);
+    transform->setTranslation(pos);
 
     auto *material = new Qt3DExtras::QPhongMaterial();
     material->setDiffuse(QColor(QRgb(0xa69929)));
@@ -58,25 +55,20 @@ void Scene::createStar(Vector3 pos, double radius) {
 
     auto *lightTransform = new Qt3DCore::QTransform(self_light_entities.last());
 
-    lightTransform->setTranslation(position);
+    lightTransform->setTranslation(pos);
     self_light_entities.last()->addComponent(lightTransform);
-
 
 }
 
-void Scene::createBody(Vector3 pos, double radius) {
-
-    QVector3D position ((float) pos.x(),
-                        (float) pos.y(),
-                        (float) pos.z());
+void Scene::createBody(QVector3D pos, float radius) {
 
     auto *mesh = new Qt3DExtras::QSphereMesh();
     mesh->setRings(50);
     mesh->setSlices(50);
-    mesh->setRadius((float) radius);
+    mesh->setRadius(radius);
 
     auto *transform = new Qt3DCore::QTransform();
-    transform->setTranslation(position);
+    transform->setTranslation(pos);
 
     auto *material = new Qt3DExtras::QPhongMaterial();
     //material->setDiffuse(QColor(QRgb(0xa69929)));

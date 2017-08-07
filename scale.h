@@ -17,41 +17,34 @@
  *
  * */
 
-#ifndef ORBIT3D_SCENE_H
-#define ORBIT3D_SCENE_H
+#ifndef ORBIT3D_SCALE_H
+#define ORBIT3D_SCALE_H
 
-#include <QVector>
-
-#include <QtCore/QObject>
-
-#include <Qt3DCore/qentity.h>
-#include <Qt3DCore/qtransform.h>
-
-#include <Qt3DExtras/QSphereMesh>
-#include <Qt3DExtras/QPhongMaterial>
-
-#include <Qt3DRender/qpointlight.h>
+#include <Qt3DCore>
 
 #include "vector3.h"
 
-class Scene : public QObject {
-    Q_OBJECT
+class Scale {
+    double factor;
 
 public:
-    explicit Scene(Qt3DCore::QEntity *rootEntity);
 
-    ~Scene() {};
+    explicit Scale (double s){
+        factor = s;
+    }
 
-public slots:
-    void createStar(QVector3D pos, float radius);
+    float scalar(double x){
+        return (float) (x*factor);
+    }
 
-    void createBody(QVector3D pos, float radius);
-private:
-    Qt3DCore::QEntity self_rootEntity;
+    QVector3D vector(Vector3 v){
 
-    QVector<Qt3DCore::QEntity*> self_heavenly_entities {};
-    QVector<Qt3DCore::QEntity*> self_light_entities {};
+        return {(float) (v.x() * factor),
+                (float) (v.y() * factor),
+                (float) (v.z() * factor)};
+    }
+
 };
 
 
-#endif //ORBIT3D_SCENE_H
+#endif //ORBIT3D_SCALE_H
