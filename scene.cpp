@@ -19,33 +19,70 @@
 
 #include "scene.h"
 
-Scene::Scene(Qt3DCore::QEntity *rootEntity, int n, std::vector<double> radii, std::vector<Vector3> initial_pos)
-        : self_rootEntity(rootEntity) {
+Scene::Scene(Qt3DCore::QEntity *rootEntity)
+        : self_rootEntity(rootEntity) {}
+
+void Scene::createStar(Vector3 pos, double radius) {
+
+    QVector3D position ((float) pos.x(),
+                        (float) pos.y(),
+                        (float) pos.z());
+
+    auto *mesh = new Qt3DExtras::QSphereMesh();
+    mesh->setRings(50);
+    mesh->setSlices(50);
+    mesh->setRadius((float) radius);
+
+    auto *transform = new Qt3DCore::QTransform();
+    transform->setTranslation(position);
+
+    auto *material = new Qt3DExtras::QPhongMaterial();
+    material->setDiffuse(QColor(QRgb(0xa69929)));
+
+    self_heavenly_entities.append(new Qt3DCore::QEntity(&self_rootEntity));
+
+    self_heavenly_entities.last()->addComponent(mesh);
+    self_heavenly_entities.last()->addComponent(transform);
+    self_heavenly_entities.last()->addComponent(material);
+
+    // Create starlight
+    self_light_entities.push_back(new Qt3DCore::QEntity(&self_rootEntity));
+
+    auto *light = new Qt3DRender::QPointLight(self_light_entities.last());
+
+    light->setColor("white");
+    light->setIntensity(1);
+    self_light_entities.last()->addComponent(light);
+
+    auto *lightTransform = new Qt3DCore::QTransform(self_light_entities.last());
+
+    lightTransform->setTranslation(position);
+    self_light_entities.last()->addComponent(lightTransform);
 
 
-    for (int i = 0; i < n; ++i) {
+}
 
-        auto *mesh = new Qt3DExtras::QSphereMesh();
-        mesh->setRings(50);
-        mesh->setSlices(50);
-        mesh->setRadius((float) radii[i]);
+void Scene::createBody(Vector3 pos, double radius) {
 
-        auto *transform = new Qt3DCore::QTransform();
-        transform->setTranslation(
-                QVector3D((float) initial_pos[i].x(),
-                          (float) initial_pos[i].y(),
-                          (float) initial_pos[i].z())
-        );
+    QVector3D position ((float) pos.x(),
+                        (float) pos.y(),
+                        (float) pos.z());
 
-        auto *material = new Qt3DExtras::QPhongMaterial();
-        material->setDiffuse(QColor(QRgb(0xa69929)));
+    auto *mesh = new Qt3DExtras::QSphereMesh();
+    mesh->setRings(50);
+    mesh->setSlices(50);
+    mesh->setRadius((float) radius);
 
-        self_heavenly_entities.append(new Qt3DCore::QEntity(rootEntity));
+    auto *transform = new Qt3DCore::QTransform();
+    transform->setTranslation(position);
 
-        self_heavenly_entities[i]->addComponent(mesh);
-        self_heavenly_entities[i]->addComponent(transform);
-        self_heavenly_entities[i]->addComponent(material);
+    auto *material = new Qt3DExtras::QPhongMaterial();
+    // material->setDiffuse(QColor(QRgb(0xa69929)));
 
-    }
+    self_heavenly_entities.append(new Qt3DCore::QEntity(&self_rootEntity));
+
+    self_heavenly_entities.last()->addComponent(mesh);
+    self_heavenly_entities.last()->addComponent(transform);
+    self_heavenly_entities.last()->addComponent(material);
 
 }

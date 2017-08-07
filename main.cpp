@@ -49,7 +49,7 @@
 #include <Qt3DRender/qtexture.h>
 #include <Qt3DRender/qrenderpass.h>
 #include <Qt3DRender/qsceneloader.h>
-#include <Qt3DRender/qpointlight.h>
+
 
 #include <Qt3DCore/qtransform.h>
 #include <Qt3DCore/qaspectengine.h>
@@ -226,7 +226,7 @@ int main(int argc, char *argv[]) {
     auto *rootEntity = new Qt3DCore::QEntity();
 
     Qt3DRender::QCamera *cameraEntity = view->camera();
-    ;
+
     Vector3 europa_start_pos = horizons.get_starting_positions()[18];
 
     const QVector3D start_cam_pos ((float) (europa_start_pos.x()+5e6),
@@ -242,23 +242,20 @@ int main(int argc, char *argv[]) {
     cameraEntity->setUpVector(QVector3D(0, 1, 0));
     cameraEntity->setViewCenter(europa_pos);
 
-    auto *lightEntity = new Qt3DCore::QEntity(rootEntity);
-    auto *light = new Qt3DRender::QPointLight(lightEntity);
-
-    light->setColor("white");
-    light->setIntensity(1);
-    lightEntity->addComponent(light);
-
-    auto *lightTransform = new Qt3DCore::QTransform(lightEntity);
-
-    lightTransform->setTranslation(cameraEntity->position());
-    lightEntity->addComponent(lightTransform);
 
     // For camera controls
     auto *camController = new Qt3DExtras::QOrbitCameraController(rootEntity);
     camController->setCamera(cameraEntity);
+    camController->setLookSpeed(4000.0f);
 
-    Scene *scn = new Scene(rootEntity, prop.get_radii().size(), prop.get_radii(), horizons.get_starting_positions());
+    auto *scn = new Scene(rootEntity);
+
+    std::vector<Vector3> starting_pos = horizons.get_starting_positions();
+    scn->createStar(starting_pos[1], prop.get_radii()[0]);
+
+    for (int j = 1; j < n_bodies ; ++j) {
+        scn->createBody(starting_pos[j], prop.get_radii()[j]);
+    }
 
     view->setRootEntity(rootEntity);
 

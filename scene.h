@@ -30,23 +30,27 @@
 #include <Qt3DExtras/QSphereMesh>
 #include <Qt3DExtras/QPhongMaterial>
 
+#include <Qt3DRender/qpointlight.h>
+
 #include "vector3.h"
 
 class Scene : public QObject {
     Q_OBJECT
 
 public:
-    Scene(Qt3DCore::QEntity *rootEntity, int n, std::vector<double> radii, std::vector<Vector3> initial_pos);
+    explicit Scene(Qt3DCore::QEntity *rootEntity);
 
     ~Scene() {};
 
-    // public slots:
+public slots:
+    void createStar(Vector3 pos, double radius);
 
+    void createBody(Vector3 pos, double radius);
 private:
     Qt3DCore::QEntity self_rootEntity;
 
     QVector<Qt3DCore::QEntity*> self_heavenly_entities {};
-
+    QVector<Qt3DCore::QEntity*> self_light_entities {};
 };
 
 
