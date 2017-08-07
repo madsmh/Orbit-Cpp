@@ -20,7 +20,9 @@
 #include "scene.h"
 
 Scene::Scene(Qt3DCore::QEntity *rootEntity)
-        : self_rootEntity(rootEntity) {}
+        : self_rootEntity(rootEntity) {
+
+}
 
 void Scene::createStar(Vector3 pos, double radius) {
 
@@ -77,9 +79,9 @@ void Scene::createBody(Vector3 pos, double radius) {
     transform->setTranslation(position);
 
     auto *material = new Qt3DExtras::QPhongMaterial();
-    // material->setDiffuse(QColor(QRgb(0xa69929)));
+    //material->setDiffuse(QColor(QRgb(0xa69929)));
 
-    self_heavenly_entities.append(new Qt3DCore::QEntity(&self_rootEntity));
+    self_heavenly_entities.push_back(new Qt3DCore::QEntity(&self_rootEntity));
 
     self_heavenly_entities.last()->addComponent(mesh);
     self_heavenly_entities.last()->addComponent(transform);

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.7)
 project(orbit3d)
 
+set(CMAKE_AUTOMOC ON)
+
 set(CMAKE_CXX_STANDARD 14)
 
 add_custom_target(copy-runtime-files ALL
@@ -9,7 +11,7 @@ add_custom_target(copy-runtime-files ALL
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/trajectory)
 
 find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets 3DCore 3DRender 3DInput 3DExtras )
-set(CMAKE_AUTOMOC ON)
+
 set(SOURCE_FILES
         main.cpp
         body.h

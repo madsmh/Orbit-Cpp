@@ -49,7 +49,7 @@
 #include <Qt3DRender/qtexture.h>
 #include <Qt3DRender/qrenderpass.h>
 #include <Qt3DRender/qsceneloader.h>
-
+#include <Qt3DRender/qpointlight.h>
 
 #include <Qt3DCore/qtransform.h>
 #include <Qt3DCore/qaspectengine.h>
@@ -59,7 +59,9 @@
 
 #include <Qt3DExtras/qt3dwindow.h>
 #include <Qt3DExtras/qfirstpersoncameracontroller.h>
-#include <Qt3DExtras/QOrbitCameraController>
+#include <Qt3DExtras/qorbitcameracontroller.h>
+
+
 
 void compare_with_horizon(Trajectory tra, PlanetData data,
                           std::vector<std::string> names,double detail, long ref_rows){
@@ -151,60 +153,14 @@ void help(char *name) {
     std::cout << "-d <detail> : Number of time steps each day (default: 64)." << std::endl;
 }
 
-int main(int argc, char *argv[]) {
-
-    double detail = 64.0;
-    long bodies = 0;
-    while (1)
-    {
-        char opt = getopt(argc, argv, "d:b:");
-        if (opt == -1)
-            break;
-        switch (opt)
-        {
-            case 'd' : detail = atof(optarg); break;
-            case 'b' : bodies = atol(optarg); break;
-            default  : help(argv[0]); exit(-1); break;
-        }
-    }
-
-    double dt = 86400.0/detail;
-    long rows = 1131*detail;
-
-
-    PhysicalProperties prop(bodies);
-    PlanetData horizons (prop.get_names());
-
-
-    System sol (prop.get_names(),
-                horizons.get_starting_positions(),
-                horizons.get_starting_velocities(),
-                prop.get_GMs(),
-                prop.get_radii());
-
-
-    long n_bodies = prop.get_names().size();
-
-    Trajectory tra (n_bodies,rows);
-
-    std::cout << std::endl;
-    std::cout << "detail = " << detail << std::endl;
-
-    //verlet(sol, tra, dt);
-
-    // compare_with_horizon(tra, horizons, prop.get_names(), detail, 1131);
-
-    // Saving the trajectories to file
-    /*for (int j = 0; j < n_bodies; ++j) {
-        tra.save_trajectory_positions(j, prop.get_names()[j], 0.0, dt);
-    }*/
-
-
-    // Code for GUI
-    //Adapted from https://doc.qt.io/qt-5/qt3d-basicshapes-cpp-main-cpp.html
-
+int main(int argc, char **argv) {
+    // Adapted from https://doc.qt.io/qt-5/qt3d-basicshapes-cpp-main-cpp.html
     QApplication app (argc, argv);
     auto *view = new Qt3DExtras::Qt3DWindow();
+
+    PhysicalProperties prop;
+    PlanetData horzons(prop.get_names());
+    std::vector<Vector3> starting_pos = horzons.get_starting_positions();
 
     QWidget *container = QWidget::createWindowContainer(view);
     QSize screenSize = view->screen()->size();
@@ -227,37 +183,41 @@ int main(int argc, char *argv[]) {
 
     Qt3DRender::QCamera *cameraEntity = view->camera();
 
-    Vector3 europa_start_pos = horizons.get_starting_positions()[18];
+    Vector3 earth_pos = starting_pos[3];
+    double earth_rad = prop.get_radii()[3];
 
-    const QVector3D start_cam_pos ((float) (europa_start_pos.x()+5e6),
-                                   (float) (europa_start_pos.y()+5e6),
-                                   (float) (europa_start_pos.z()+5e6));
+    QVector3D start_cam_pos ((float) (earth_pos.x() +  2*earth_rad),
+                             (float) (earth_pos.y() +  2*earth_rad),
+                             (float) (earth_pos.z() +  2*earth_rad)
+    );
 
-    const QVector3D europa_pos ((float) europa_start_pos.x(),
-                                (float) europa_start_pos.y(),
-                                (float) europa_start_pos.z());
 
     cameraEntity->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 0.1f, 1000.0f);
     cameraEntity->setPosition(start_cam_pos);
-    cameraEntity->setUpVector(QVector3D(0, 1, 0));
-    cameraEntity->setViewCenter(europa_pos);
+    cameraEntity->setViewCenter(QVector3D(
+            (float) starting_pos[3].x(),
+            (float) starting_pos[3].y(),
+            (float) starting_pos[3].z()) );
 
 
     // For camera controls
     auto *camController = new Qt3DExtras::QOrbitCameraController(rootEntity);
     camController->setCamera(cameraEntity);
-    camController->setLookSpeed(4000.0f);
+
+    view->setRootEntity(rootEntity);
 
     auto *scn = new Scene(rootEntity);
 
-    std::vector<Vector3> starting_pos = horizons.get_starting_positions();
-    scn->createStar(starting_pos[1], prop.get_radii()[0]);
+    //The sun
+    //scn->createStar(horizons.get_starting_positions()[0], prop.get_radii()[0]);
 
-    for (int j = 1; j < n_bodies ; ++j) {
-        scn->createBody(starting_pos[j], prop.get_radii()[j]);
-    }
+    // The Earth
+    scn->createBody(starting_pos[3], earth_rad);
 
-    view->setRootEntity(rootEntity);
+    // The Moon
+    scn->createBody(starting_pos[10], prop.get_radii()[10]);
+
+
 
     widget->show();
     widget->resize(1200, 800);
