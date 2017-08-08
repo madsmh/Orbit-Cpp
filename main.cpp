@@ -38,6 +38,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QCommandLinkButton>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QLabel>
@@ -166,6 +167,13 @@ int main(int argc, char **argv) {
     PlanetData horizons(prop.get_names());
 
     std::vector<Vector3> starting_pos = horizons.get_starting_positions();
+    std::vector<Vector3> above_planets {};
+
+    for (int l = 0; l < prop.get_names().size(); ++l) {
+        above_planets.emplace_back(starting_pos[l] + Vector3(-3.0 * prop.get_radii()[l],
+                                                             0,
+                                                             -3.0 * prop.get_radii()[l]));
+    }
 
     QApplication app (argc, argv);
     auto *view = new Qt3DExtras::Qt3DWindow();
@@ -214,16 +222,14 @@ int main(int argc, char **argv) {
     auto *camController = new Qt3DExtras::QFirstPersonCameraController(rootEntity);
     camController->setCamera(cameraEntity);
     camController->setLinearSpeed(100.0);
+    camController->setLookSpeed(100.0);
 
     auto *scn = new Scene(rootEntity);
 
     // The sun
     scn->createStar(s.vector(starting_pos[0]), s.scalar(prop.get_radii()[0]));
 
-    // Jupiter
-    //scn->createBody(saturn_pos, saturn_rad);
-
-    // Jupers moons
+    // Make all the bodies
     for (int j = 1; j < prop.get_names().size(); ++j) {
         scn->createBody(s.vector(starting_pos[j]), s.scalar(prop.get_radii()[j]));
     }
@@ -253,7 +259,9 @@ int main(int argc, char **argv) {
     camGroupBoxLayout->addWidget(centerLabel);
     camGroupBoxLayout->addWidget(setCamCenterCombo);
 
-
+    auto *quitButton = new QPushButton(widget);
+    quitButton->setText(QString ("Quit"));
+    quitButton->setToolTip(QString ("Quit Orbit"));
 
     camGoupBox->setTitle(QString("Camera control"));
     camGoupBox->setLayout(camGroupBoxLayout);
@@ -261,9 +269,15 @@ int main(int argc, char **argv) {
     QObject::connect(setCamCenterCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
                      [&]( int ix ) { cameraEntity->setViewCenter(s.vector(starting_pos[ix])); } );
 
+    QObject::connect(setCamPosCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+                     [&]( int ix ) { cameraEntity->setPosition(s.vector(above_planets[ix])); } );
+
+    QObject::connect(quitButton, &QPushButton::clicked, widget, &QWidget::close);
+
     vlayout->addWidget(camGoupBox);
+    vlayout->addWidget(quitButton);
     widget->show();
-    //widget->resize(1200, 800);
+
     widget->showMaximized();
     return app.exec();
 
