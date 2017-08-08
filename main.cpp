@@ -267,7 +267,9 @@ int main(int argc, char **argv) {
     camGoupBox->setLayout(camGroupBoxLayout);
 
     QObject::connect(setCamCenterCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-                     [&]( int ix ) { cameraEntity->setViewCenter(s.vector(starting_pos[ix])); } );
+                     [&]( int ix ) { cameraEntity->setViewCenter(s.vector(starting_pos[ix]));
+                     }
+    );
 
     QObject::connect(setCamPosCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
                      [&]( int ix ) { cameraEntity->setPosition(s.vector(above_planets[ix]));
