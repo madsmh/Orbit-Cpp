@@ -27,37 +27,28 @@
 
 #include <boost/timer.hpp>
 
-#include <QGuiApplication>
 
 #include <Qt3DRender/qcamera.h>
-#include <Qt3DCore/qentity.h>
-#include <Qt3DRender/qcameralens.h>
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QWidget>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QCommandLinkButton>
-#include <QtWidgets/QPushButton>
+
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QLabel>
-#include <QtGui/QScreen>
+
 
 #include <Qt3DInput/QInputAspect>
 
 #include <Qt3DExtras/qtorusmesh.h>
 #include <Qt3DRender/qmesh.h>
 #include <Qt3DRender/qtechnique.h>
-#include <Qt3DRender/qmaterial.h>
 #include <Qt3DRender/qeffect.h>
 #include <Qt3DRender/qtexture.h>
-#include <Qt3DRender/qrenderpass.h>
 #include <Qt3DRender/qsceneloader.h>
-#include <Qt3DRender/qpointlight.h>
-
-#include <Qt3DCore/qtransform.h>
-#include <Qt3DCore/qaspectengine.h>
 
 #include <Qt3DRender/qrenderaspect.h>
 #include <Qt3DExtras/qforwardrenderer.h>
@@ -178,7 +169,7 @@ int main(int argc, char **argv) {
     QApplication app (argc, argv);
     auto *view = new Qt3DExtras::Qt3DWindow();
 
-    Scale s(1e-6);
+    Scale s(1.0e-6);
 
     QWidget *container = QWidget::createWindowContainer(view);
     QSize screenSize = view->screen()->size();
@@ -203,20 +194,10 @@ int main(int argc, char **argv) {
 
     Qt3DRender::QCamera *cameraEntity = view->camera();
 
-
-    QVector3D earth_pos = s.vector(starting_pos[3]);
-    float earth_rad = s.scalar(prop.get_radii()[3]);
-
-    QVector3D start_cam_pos (earth_pos.x() +  -3.0f*earth_rad,
-                             earth_pos.y() +  0.0f*earth_rad,
-                             earth_pos.z() +  -3.0f*earth_rad
-    );
-
-
-    cameraEntity->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 0.1f, 100000.0f);
+    cameraEntity->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 00000.1f, 100000.0f);
     //cameraEntity->setPosition(start_cam_pos);
     //cameraEntity->setViewCenter(earth_pos);
-    //cameraEntity->setUpVector(QVector3D (0.0f, 1.0f, 0.0f))
+    cameraEntity->setUpVector(QVector3D (0.0f, 1.0f, 0.0f));
 
     // For camera controls
     auto *camController = new Qt3DExtras::QFirstPersonCameraController(rootEntity);
@@ -250,7 +231,7 @@ int main(int argc, char **argv) {
     auto *posLabel = new QLabel(camGoupBox);
     posLabel->setText(QString ("Position:"));
     auto *centerLabel = new QLabel(camGoupBox);
-    centerLabel->setText(QString ("Focus:"));
+    centerLabel->setText(QString ("Center:"));
 
     auto *camGroupBoxLayout = new QVBoxLayout;
 
@@ -272,8 +253,9 @@ int main(int argc, char **argv) {
     );
 
     QObject::connect(setCamPosCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-                     [&]( int ix ) { cameraEntity->setPosition(s.vector(above_planets[ix]));
-                                     setCamCenterCombo->setCurrentIndex(ix);
+                     [&]( int ix ) {//setCamCenterCombo->setCurrentIndex(ix);
+                                    cameraEntity->setPosition(s.vector(above_planets[ix]));
+
                      }
     );
 
