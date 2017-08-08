@@ -38,6 +38,9 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QCommandLinkButton>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QLabel>
 #include <QtGui/QScreen>
 
 #include <Qt3DInput/QInputAspect>
@@ -157,18 +160,22 @@ void help(char *name) {
 int main(int argc, char **argv) {
     // Adapted from https://doc.qt.io/qt-5/qt3d-basicshapes-cpp-main-cpp.html
 
+
+
     PhysicalProperties prop;
     PlanetData horizons(prop.get_names());
     std::vector<Vector3> starting_pos = horizons.get_starting_positions();
+
     QApplication app (argc, argv);
     auto *view = new Qt3DExtras::Qt3DWindow();
 
-    Scale s(1.0e-5);
+    Scale s(1e-6);
 
     QWidget *container = QWidget::createWindowContainer(view);
     QSize screenSize = view->screen()->size();
     container->setMinimumSize(QSize(200, 100));
     container->setMaximumSize(screenSize);
+
 
     auto *widget = new QWidget;
     auto *hlayout = new QHBoxLayout(widget);
@@ -179,6 +186,7 @@ int main(int argc, char **argv) {
 
     widget->setWindowTitle(QStringLiteral("Orbit Solar System Simulator"));
 
+
     auto *input = new Qt3DInput::QInputAspect;
     view->registerAspect(input);
 
@@ -186,16 +194,17 @@ int main(int argc, char **argv) {
 
     Qt3DRender::QCamera *cameraEntity = view->camera();
 
+
     QVector3D earth_pos = s.vector(starting_pos[3]);
     float earth_rad = s.scalar(prop.get_radii()[3]);
 
-    QVector3D start_cam_pos (earth_pos.x() +  2*earth_rad,
-                             earth_pos.y() +  2*earth_rad,
-                             earth_pos.z() +  2*earth_rad
+    QVector3D start_cam_pos (earth_pos.x() +  -3.0f*earth_rad,
+                             earth_pos.y() +  0.0f*earth_rad,
+                             earth_pos.z() +  -3.0f*earth_rad
     );
 
 
-    cameraEntity->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 0.1f, 1000.0f);
+    cameraEntity->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 0.1f, 100000.0f);
     cameraEntity->setPosition(start_cam_pos);
     cameraEntity->setViewCenter(earth_pos);
 
@@ -203,24 +212,57 @@ int main(int argc, char **argv) {
     // For camera controls
     auto *camController = new Qt3DExtras::QFirstPersonCameraController(rootEntity);
     camController->setCamera(cameraEntity);
+    camController->setLinearSpeed(100.0);
 
     auto *scn = new Scene(rootEntity);
 
     // The sun
     scn->createStar(s.vector(starting_pos[0]), s.scalar(prop.get_radii()[0]));
 
-    // The Earth
-    scn->createBody(earth_pos, earth_rad);
+    // Jupiter
+    //scn->createBody(saturn_pos, saturn_rad);
 
-    // The Moon
-    scn->createBody(s.vector(starting_pos[10]), s.scalar(prop.get_radii()[10]));
+    // Jupers moons
+    for (int j = 1; j < prop.get_names().size(); ++j) {
+        scn->createBody(s.vector(starting_pos[j]), s.scalar(prop.get_radii()[j]));
+    }
 
     view->setRootEntity(rootEntity);
 
+    auto *camGoupBox = new QGroupBox(widget);
 
+    auto *setCamPosCombo = new QComboBox(camGoupBox);
+    auto *setCamCenterCombo = new QComboBox(camGoupBox);
+
+    for (int k = 0; k < prop.get_names().size(); ++k) {
+        QString item = QString::fromUtf8(prop.get_names()[k].c_str());
+        setCamPosCombo->addItem(item);
+        setCamCenterCombo->addItem(item);
+    }
+
+    auto *posLabel = new QLabel(camGoupBox);
+    posLabel->setText(QString ("Position:"));
+    auto *centerLabel = new QLabel(camGoupBox);
+    centerLabel->setText(QString ("Focus:"));
+
+    auto *camGroupBoxLayout = new QVBoxLayout;
+
+    camGroupBoxLayout->addWidget(posLabel);
+    camGroupBoxLayout->addWidget(setCamPosCombo);
+    camGroupBoxLayout->addWidget(centerLabel);
+    camGroupBoxLayout->addWidget(setCamCenterCombo);
+
+
+
+    camGoupBox->setTitle(QString("Camera control"));
+    camGoupBox->setLayout(camGroupBoxLayout);
+
+
+
+    vlayout->addWidget(camGoupBox);
     widget->show();
-    widget->resize(1200, 800);
-
+    //widget->resize(1200, 800);
+    widget->showMaximized();
     return app.exec();
 
 }
