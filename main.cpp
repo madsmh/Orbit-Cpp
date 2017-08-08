@@ -270,7 +270,10 @@ int main(int argc, char **argv) {
                      [&]( int ix ) { cameraEntity->setViewCenter(s.vector(starting_pos[ix])); } );
 
     QObject::connect(setCamPosCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-                     [&]( int ix ) { cameraEntity->setPosition(s.vector(above_planets[ix])); } );
+                     [&]( int ix ) { cameraEntity->setPosition(s.vector(above_planets[ix]));
+                                     cameraEntity->setViewCenter(s.vector(starting_pos[ix]));
+                     }
+    );
 
     QObject::connect(quitButton, &QPushButton::clicked, widget, &QWidget::close);
 
