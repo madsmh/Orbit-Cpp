@@ -24,25 +24,7 @@ Scene::Scene(Qt3DCore::QEntity *rootEntity)
 
 }
 
-void Scene::createStar(QVector3D pos, float radius) {
-
-
-    auto *mesh = new Qt3DExtras::QSphereMesh();
-    mesh->setRings(50);
-    mesh->setSlices(50);
-    mesh->setRadius(radius);
-
-    auto *transform = new Qt3DCore::QTransform();
-    transform->setTranslation(pos);
-
-    auto *material = new Qt3DExtras::QPhongMaterial();
-    material->setDiffuse(QColor(QRgb(0xa69929)));
-
-    self_heavenly_entities.append(new Qt3DCore::QEntity(&self_rootEntity));
-
-    self_heavenly_entities.last()->addComponent(mesh);
-    self_heavenly_entities.last()->addComponent(transform);
-    self_heavenly_entities.last()->addComponent(material);
+void Scene::createStar(QVector3D pos) {
 
     // Create starlight
     self_light_entities.push_back(new Qt3DCore::QEntity(&self_rootEntity));

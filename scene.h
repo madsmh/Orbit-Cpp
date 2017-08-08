@@ -40,10 +40,10 @@ class Scene : public QObject {
 public:
     explicit Scene(Qt3DCore::QEntity *rootEntity);
 
-    ~Scene() {};
+    ~Scene() = default;;
 
 public slots:
-    void createStar(QVector3D pos, float radius);
+    void createStar(QVector3D pos);
 
     void createBody(QVector3D pos, float radius);
 private:

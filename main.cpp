@@ -169,7 +169,7 @@ int main(int argc, char **argv) {
     QApplication app (argc, argv);
     auto *view = new Qt3DExtras::Qt3DWindow();
 
-    Scale s(1.0e-6);
+    Scale s(1.0e-5);
 
     QWidget *container = QWidget::createWindowContainer(view);
     QSize screenSize = view->screen()->size();
@@ -194,7 +194,7 @@ int main(int argc, char **argv) {
 
     Qt3DRender::QCamera *cameraEntity = view->camera();
 
-    cameraEntity->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 00000.1f, 100000.0f);
+    cameraEntity->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 000.1f, 1.0e16f);
     //cameraEntity->setPosition(start_cam_pos);
     //cameraEntity->setViewCenter(earth_pos);
     cameraEntity->setUpVector(QVector3D (0.0f, 1.0f, 0.0f));
@@ -202,13 +202,13 @@ int main(int argc, char **argv) {
     // For camera controls
     auto *camController = new Qt3DExtras::QFirstPersonCameraController(rootEntity);
     camController->setCamera(cameraEntity);
-    camController->setLinearSpeed(30.0f);
+    camController->setLinearSpeed(75.0f);
     camController->setLookSpeed(75.0f);
 
     auto *scn = new Scene(rootEntity);
 
     // The sun
-    scn->createStar(s.vector(starting_pos[0]), s.scalar(prop.get_radii()[0]));
+    scn->createStar(s.vector(starting_pos[0]));
 
     // Make all the bodies
     for (int j = 1; j < prop.get_names().size(); ++j) {
