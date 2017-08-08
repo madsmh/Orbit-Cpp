@@ -214,15 +214,15 @@ int main(int argc, char **argv) {
 
 
     cameraEntity->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 0.1f, 100000.0f);
-    cameraEntity->setPosition(start_cam_pos);
-    cameraEntity->setViewCenter(earth_pos);
-
+    //cameraEntity->setPosition(start_cam_pos);
+    //cameraEntity->setViewCenter(earth_pos);
+    //cameraEntity->setUpVector(QVector3D (0.0f, 1.0f, 0.0f))
 
     // For camera controls
     auto *camController = new Qt3DExtras::QFirstPersonCameraController(rootEntity);
     camController->setCamera(cameraEntity);
-    camController->setLinearSpeed(100.0);
-    camController->setLookSpeed(100.0);
+    camController->setLinearSpeed(30.0f);
+    camController->setLookSpeed(75.0f);
 
     auto *scn = new Scene(rootEntity);
 
@@ -271,11 +271,13 @@ int main(int argc, char **argv) {
 
     QObject::connect(setCamPosCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
                      [&]( int ix ) { cameraEntity->setPosition(s.vector(above_planets[ix]));
-                                     cameraEntity->setViewCenter(s.vector(starting_pos[ix]));
+                                     setCamCenterCombo->setCurrentIndex(ix);
                      }
     );
 
     QObject::connect(quitButton, &QPushButton::clicked, widget, &QWidget::close);
+
+    setCamPosCombo->setCurrentIndex(3);
 
     vlayout->addWidget(camGoupBox);
     vlayout->addWidget(quitButton);
