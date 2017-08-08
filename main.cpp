@@ -164,6 +164,7 @@ int main(int argc, char **argv) {
 
     PhysicalProperties prop;
     PlanetData horizons(prop.get_names());
+
     std::vector<Vector3> starting_pos = horizons.get_starting_positions();
 
     QApplication app (argc, argv);
@@ -257,7 +258,8 @@ int main(int argc, char **argv) {
     camGoupBox->setTitle(QString("Camera control"));
     camGoupBox->setLayout(camGroupBoxLayout);
 
-
+    QObject::connect(setCamCenterCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+                     [&]( int ix ) { cameraEntity->setViewCenter(s.vector(starting_pos[ix])); } );
 
     vlayout->addWidget(camGoupBox);
     widget->show();
