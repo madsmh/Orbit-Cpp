@@ -22,6 +22,7 @@
 
 #include <vector>
 #include "vector3.h"
+#include <sstream>
 
 struct HorizonsFile {
     double x;

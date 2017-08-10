@@ -75,12 +75,29 @@ std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string plan
                 reading = false;
             } else if (reading) {
                 std::vector<std::string> vals = split(buffer, ",");
-                h.x  = stod(vals[2])*1000;
-                h.y  = stod(vals[3])*1000;
-                h.z  = stod(vals[4])*1000;
-                h.vx = stod(vals[5])*1000;
-                h.vy = stod(vals[6])*1000;
-                h.vz = stod(vals[7])*1000;
+                std::istringstream o1(vals[2]);
+                o1 >> h.x;
+                h.x *= 1000.0;
+
+                std::istringstream o2 (vals[3]);
+                o2 >> h.y;
+                h.y *= 1000.0;
+
+                std::istringstream o3 (vals[4]);
+                o3 >> h.z;
+                h.z *= 1000.0;
+
+                std::istringstream o4 (vals[5]);
+                o4 >> h.vx;
+                h.vx *= 1000.0;
+
+                std::istringstream o5 (vals[6]);
+                o5 >> h.vy;
+                h.vy *= 1000.0;
+
+                std::istringstream o6 (vals[7]);
+                o6 >> h.vz;
+                h.vz *= 1000.0;
                 data.emplace_back(h);
             }
         }

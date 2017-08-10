@@ -18,6 +18,10 @@ MainWindow::MainWindow(QWidget *parent) :
     std::vector<double> radii = prop.get_radii();
     std::vector<Vector3> start_pos = horizons.get_starting_positions();
 
+    for (int m = 0; m < start_pos.size(); ++m) {
+        std::cout << start_pos[m] << std::endl;
+    }
+
     std::vector<Vector3> start_pos_offset {};
 
     // Setting the Comboboxes
