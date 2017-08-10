@@ -91,12 +91,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->ui->comboBoxCamPos->setCurrentIndex(3);
 
-    /*vtkSmartPointer<vtkRenderWindowInteractor> interactor = this->ui->widget->GetInteractor();
+    vtkSmartPointer<vtkRenderWindowInteractor> interactor = this->ui->widget->GetInteractor();
 
     vtkSmartPointer<vtkInteractorStyleFlight> style =
             vtkSmartPointer<vtkInteractorStyleFlight>::New(); //like paraview
     interactor->SetInteractorStyle(style);
-    */
+
 
     this->ui->widget->GetRenderWindow()->AddRenderer(renderer);
 }
