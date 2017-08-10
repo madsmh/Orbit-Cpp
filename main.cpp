@@ -23,39 +23,13 @@
 #include "planetdata.h"
 #include "propertiesfile.h"
 #include "scene.h"
-#include "scale.h"
+#include "mainwindow.h"
 
 #include <boost/timer.hpp>
 
 
-#include <Qt3DRender/qcamera.h>
 
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QWidget>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QCheckBox>
-#include <QtWidgets/QCommandLinkButton>
-
-#include <QtWidgets/QGroupBox>
-#include <QtWidgets/QComboBox>
-#include <QtWidgets/QLabel>
-
-
-#include <Qt3DInput/QInputAspect>
-
-#include <Qt3DExtras/qtorusmesh.h>
-#include <Qt3DRender/qmesh.h>
-#include <Qt3DRender/qtechnique.h>
-#include <Qt3DRender/qeffect.h>
-#include <Qt3DRender/qtexture.h>
-#include <Qt3DRender/qsceneloader.h>
-
-#include <Qt3DRender/qrenderaspect.h>
-#include <Qt3DExtras/qforwardrenderer.h>
-
-#include <Qt3DExtras/qt3dwindow.h>
-#include <Qt3DExtras/qfirstpersoncameracontroller.h>
-#include <Qt3DExtras/qorbitcameracontroller.h>
+#include <QApplication>
 
 
 
@@ -157,117 +131,11 @@ int main(int argc, char **argv) {
     PhysicalProperties prop;
     PlanetData horizons(prop.get_names());
 
-    std::vector<Vector3> starting_pos = horizons.get_starting_positions();
-    std::vector<Vector3> above_planets {};
-
-    for (int l = 0; l < prop.get_names().size(); ++l) {
-        above_planets.emplace_back(starting_pos[l] + Vector3(-3.0 * prop.get_radii()[l],
-                                                             0,
-                                                             -3.0 * prop.get_radii()[l]));
-    }
 
     QApplication app (argc, argv);
-    auto *view = new Qt3DExtras::Qt3DWindow();
+    MainWindow mainWindow;
+    mainWindow.show();
 
-    Scale s(1.0e-5);
-
-    QWidget *container = QWidget::createWindowContainer(view);
-    QSize screenSize = view->screen()->size();
-    container->setMinimumSize(QSize(200, 100));
-    container->setMaximumSize(screenSize);
-
-
-    auto *widget = new QWidget;
-    auto *hlayout = new QHBoxLayout(widget);
-    auto *vlayout = new QVBoxLayout();
-    vlayout->setAlignment(Qt::AlignTop);
-    hlayout->addWidget(container, 1);
-    hlayout->addLayout(vlayout);
-
-    widget->setWindowTitle(QStringLiteral("Orbit Solar System Simulator"));
-
-
-    auto *input = new Qt3DInput::QInputAspect;
-    view->registerAspect(input);
-
-    auto *rootEntity = new Qt3DCore::QEntity();
-
-    Qt3DRender::QCamera *cameraEntity = view->camera();
-
-    cameraEntity->lens()->setPerspectiveProjection(45.0f, 16.0f/9.0f, 000.1f, 1.0e16f);
-    //cameraEntity->setPosition(start_cam_pos);
-    //cameraEntity->setViewCenter(earth_pos);
-    cameraEntity->setUpVector(QVector3D (0.0f, 1.0f, 0.0f));
-
-    // For camera controls
-    auto *camController = new Qt3DExtras::QFirstPersonCameraController(rootEntity);
-    camController->setCamera(cameraEntity);
-    camController->setLinearSpeed(75.0f);
-    camController->setLookSpeed(75.0f);
-
-    auto *scn = new Scene(rootEntity);
-
-    // The sun
-    scn->createStar(s.vector(starting_pos[0]));
-
-    // Make all the bodies
-    for (int j = 1; j < prop.get_names().size(); ++j) {
-        scn->createBody(s.vector(starting_pos[j]), s.scalar(prop.get_radii()[j]));
-    }
-
-    view->setRootEntity(rootEntity);
-
-    auto *camGoupBox = new QGroupBox(widget);
-
-    auto *setCamPosCombo = new QComboBox(camGoupBox);
-    auto *setCamCenterCombo = new QComboBox(camGoupBox);
-
-    for (int k = 0; k < prop.get_names().size(); ++k) {
-        QString item = QString::fromUtf8(prop.get_names()[k].c_str());
-        setCamPosCombo->addItem(item);
-        setCamCenterCombo->addItem(item);
-    }
-
-    auto *posLabel = new QLabel(camGoupBox);
-    posLabel->setText(QString ("Position:"));
-    auto *centerLabel = new QLabel(camGoupBox);
-    centerLabel->setText(QString ("Center:"));
-
-    auto *camGroupBoxLayout = new QVBoxLayout;
-
-    camGroupBoxLayout->addWidget(posLabel);
-    camGroupBoxLayout->addWidget(setCamPosCombo);
-    camGroupBoxLayout->addWidget(centerLabel);
-    camGroupBoxLayout->addWidget(setCamCenterCombo);
-
-    auto *quitButton = new QPushButton(widget);
-    quitButton->setText(QString ("Quit"));
-    quitButton->setToolTip(QString ("Quit Orbit"));
-
-    camGoupBox->setTitle(QString("Camera control"));
-    camGoupBox->setLayout(camGroupBoxLayout);
-
-    QObject::connect(setCamCenterCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-                     [&]( int ix ) { cameraEntity->setViewCenter(s.vector(starting_pos[ix]));
-                     }
-    );
-
-    QObject::connect(setCamPosCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-                     [&]( int ix ) {//setCamCenterCombo->setCurrentIndex(ix);
-                                    cameraEntity->setPosition(s.vector(above_planets[ix]));
-
-                     }
-    );
-
-    QObject::connect(quitButton, &QPushButton::clicked, widget, &QWidget::close);
-
-    setCamPosCombo->setCurrentIndex(3);
-
-    vlayout->addWidget(camGoupBox);
-    vlayout->addWidget(quitButton);
-    widget->show();
-
-    widget->showMaximized();
     return app.exec();
 
 }
