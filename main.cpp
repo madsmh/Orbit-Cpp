@@ -126,12 +126,6 @@ void help(char *name) {
 int main(int argc, char **argv) {
     // Adapted from https://doc.qt.io/qt-5/qt3d-basicshapes-cpp-main-cpp.html
 
-
-
-    PhysicalProperties prop;
-    PlanetData horizons(prop.get_names());
-
-
     QApplication app (argc, argv);
     MainWindow mainWindow;
     mainWindow.show();
