@@ -23,6 +23,7 @@
 #include "planetdata.h"
 #include "propertiesfile.h"
 #include "scale.h"
+#include "importdata.h"
 
 #include <QMainWindow>
 #include <vtkPolyDataMapper.h>
@@ -50,6 +51,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    void populateCombos(std::vector<std::string> names);
 };
 
 #endif // MAINWINDOW_H

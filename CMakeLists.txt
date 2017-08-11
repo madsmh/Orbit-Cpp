@@ -34,6 +34,9 @@ set(SOURCE_FILES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        importdata.cpp
+        importdata.h
+        importdata.ui
         )
 add_executable(orbit3d ${SOURCE_FILES} )
 add_dependencies(orbit3d copy-runtime-files)

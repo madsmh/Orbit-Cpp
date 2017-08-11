@@ -31,12 +31,30 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    PhysicalProperties prop;
+    std::vector<std::string> names;
+    std::vector<Vector3> start_pos;
+    std::vector<double> radii;
+
+    auto *importDataDialog = new importdata(this);
+
+    QObject::connect(this->ui->importDataButton, &QPushButton::clicked,
+                     importDataDialog, &QDialog::open);
+
+    QObject::connect(importDataDialog, &QDialog::acceptDrops,
+                    [&](){
+                        start_pos = importDataDialog->get_pos();
+                        radii = importDataDialog->get_radii();
+                        names = importDataDialog->get_names();
+                        this->populateCombos(names);
+                        this->ui->comboBoxCamPos->setEnabled(true);
+                        this->ui->comboBoxCamCenter->setEnabled(true);
+                    });
+
+
+    /*PhysicalProperties prop;
     PlanetData horizons(prop.get_names());
     Scale s (1.0/4000.0);
 
-    std::vector<double> radii {};
-    std::vector<Vector3> start_pos {};
 
     for (int m = 0; m < prop.get_names().size(); ++m) {
         start_pos.push_back(s.vector(horizons.get_starting_positions()[m]));
@@ -52,16 +70,19 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     // Setting the Comboboxes
-    for (int l = 0; l < prop.get_names().size(); ++l) {
-        QString name = QString::fromUtf8(prop.get_names()[l].c_str());
-        this->ui->comboBoxCamCenter->addItem(name);
-        this->ui->comboBoxCamPos->addItem(name);
-    }
 
+
+    //Set up renderer
+    vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+
+    this->ui->widget->GetRenderWindow()->AddRenderer(renderer);
+
+    // Get aactive camera
+    vtkSmartPointer<vtkCamera> camera = renderer->GetActiveCamera();
 
     std::vector<vtkSmartPointer<vtkActor> > actors {};
 
-    // Adding bodies to vector
+    // Adding bodies to vector and to the renderer
     for (int i = 0; i < radii.size(); ++i) {
         vtkSmartPointer<vtkSphereSource> sphereSource = vtkSmartPointer<vtkSphereSource>::New();
         sphereSource->SetRadius(radii[i]);
@@ -80,17 +101,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
         actors.push_back(actor);
 
-    }
-
-    //Set up renderer
-    vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-
-    // Create new camera
-    vtkSmartPointer<vtkCamera> camera = vtkSmartPointer<vtkCamera>::New();
-    renderer->SetActiveCamera(camera);
-
-    for (int j = 0; j < radii.size(); ++j) {
-        renderer->AddActor(actors[j]);
+        renderer->AddActor(actors.back());
     }
 
     QObject::connect(this->ui->comboBoxCamPos,
@@ -112,21 +123,25 @@ MainWindow::MainWindow(QWidget *parent) :
                      }
     );
 
-    this->ui->comboBoxCamPos->setCurrentIndex(3);
+*/
+    //  this->ui->comboBoxCamPos->setCurrentIndex(3);
 
-    vtkSmartPointer<vtkRenderWindowInteractor> interactor = this->ui->widget->GetInteractor();
+    //vtkSmartPointer<vtkRenderWindowInteractor> interactor = this->ui->widget->GetInteractor();
 
-    /*vtkSmartPointer<vtkInteractorStyleFlight> style =
-            vtkSmartPointer<vtkInteractorStyleFlight>::New(); //like paraview
-    interactor->SetInteractorStyle(style);*/
-
-
-    this->ui->widget->GetRenderWindow()->AddRenderer(renderer);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::populateCombos(std::vector<std::string> names) {
+    for (int l = 0; l < names.size(); ++l) {
+        QString name = QString::fromUtf8(names[l].c_str());
+        this->ui->comboBoxCamCenter->addItem(name);
+        this->ui->comboBoxCamPos->addItem(name);
+    }
+
 }
 
 

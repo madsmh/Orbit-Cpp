@@ -64,6 +64,9 @@
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
             <widget class="QComboBox" name="comboBoxCamPos">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -77,6 +80,9 @@
            </item>
            <item>
             <widget class="QComboBox" name="comboBoxCamCenter">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -86,6 +92,13 @@
             </widget>
            </item>
           </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="importDataButton">
+          <property name="text">
+           <string>Import data</string>
+          </property>
          </widget>
         </item>
         <item>
