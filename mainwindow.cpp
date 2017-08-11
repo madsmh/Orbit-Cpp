@@ -14,15 +14,23 @@ MainWindow::MainWindow(QWidget *parent) :
 
     PhysicalProperties prop;
     PlanetData horizons(prop.get_names());
+    Scale s (1.0/4000.0);
 
-    std::vector<double> radii = prop.get_radii();
-    std::vector<Vector3> start_pos = horizons.get_starting_positions();
+    std::vector<double> radii {};
+    std::vector<Vector3> start_pos {};
 
-    for (int m = 0; m < start_pos.size(); ++m) {
-        std::cout << start_pos[m] << std::endl;
+    for (int m = 0; m < prop.get_names().size(); ++m) {
+        start_pos.push_back(s.vector(horizons.get_starting_positions()[m]));
+        radii.push_back(s.scalar(prop.get_radii()[m]));
     }
 
     std::vector<Vector3> start_pos_offset {};
+
+    // Genrating the offset positions
+    for (int k = 0; k < prop.get_names().size(); ++k) {
+        double radius = radii[k];
+        start_pos_offset.emplace_back(start_pos[k] + Vector3 (-3.0 * radius, 0, -3.0 * radius));
+    }
 
     // Setting the Comboboxes
     for (int l = 0; l < prop.get_names().size(); ++l) {
@@ -31,11 +39,6 @@ MainWindow::MainWindow(QWidget *parent) :
         this->ui->comboBoxCamPos->addItem(name);
     }
 
-    // Genrating the offset positions
-    for (int k = 0; k < prop.get_names().size(); ++k) {
-        double radius = radii[k];
-        start_pos_offset.emplace_back(start_pos[k] + Vector3 (-5.0 * radius, 0, -5.0 * radius));
-    }
 
     std::vector<vtkSmartPointer<vtkActor> > actors {};
 
@@ -60,11 +63,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     }
 
-
-
     //Set up renderer
     vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-
 
     // Create new camera
     vtkSmartPointer<vtkCamera> camera = vtkSmartPointer<vtkCamera>::New();

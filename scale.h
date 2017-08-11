@@ -20,8 +20,6 @@
 #ifndef ORBIT3D_SCALE_H
 #define ORBIT3D_SCALE_H
 
-#include <Qt3DCore>
-
 #include "vector3.h"
 
 class Scale {
@@ -34,14 +32,12 @@ public:
     }
 
     float scalar(double x){
-        return (float) (x*factor);
+        return x*factor;
     }
 
-    QVector3D vector(Vector3 v){
+    Vector3 vector(Vector3 v){
 
-        return {(float) (v.x() * factor),
-                (float) (v.y() * factor),
-                (float) (v.z() * factor)};
+        return v * factor;
     }
 
 };

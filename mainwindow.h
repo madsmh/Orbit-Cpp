@@ -3,6 +3,7 @@
 
 #include "planetdata.h"
 #include "propertiesfile.h"
+#include "scale.h"
 
 #include <QMainWindow>
 #include <vtkPolyDataMapper.h>
