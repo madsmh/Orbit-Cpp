@@ -16,6 +16,19 @@
     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  *
  * */
+#include <vtkPolyDataMapper.h>
+#include <vtkRenderer.h>
+#include <vtkRenderWindow.h>
+#include <vtkSphereSource.h>
+#include <vtkSmartPointer.h>
+#include <vtkProperty.h>
+#include <vtkCamera.h>
+#include <vtkRenderWindowInteractor.h>
+#include <vtkInteractorStyleFlight.h>
+#include <vtkVectorText.h>
+#include <vtkActor.h>
+#include <vtkFollower.h>
+#include <vtkCubeSource.h>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -71,11 +84,13 @@ void MainWindow::render(std::vector<std::string> names,
     // Genrating the offset positions
     for (int k = 0; k < names.size(); ++k) {
         double radius = radii[k];
-        start_pos_offset.emplace_back(start_pos[k] + Vector3 (-3.0 * radius, 0, -3.0 * radius));
+        start_pos_offset.emplace_back(start_pos[k] + Vector3 (-5.0 * radius, 0, -5.0 * radius));
     }
 
     //Set up renderer
     vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+
+    Scale s (1.0/5000.0);
 
     this->ui->widget->GetRenderWindow()->AddRenderer(renderer);
 
@@ -83,9 +98,30 @@ void MainWindow::render(std::vector<std::string> names,
     vtkSmartPointer<vtkCamera> camera = renderer->GetActiveCamera();
 
     std::vector<vtkSmartPointer<vtkActor> > actors{};
+    std::vector<vtkSmartPointer<vtkActor> > text_actors {};
 
     // Adding bodies to vector and to the renderer
     for (int i = 0; i < radii.size(); ++i) {
+
+        // Create some text
+        vtkSmartPointer<vtkVectorText> textSource = vtkSmartPointer<vtkVectorText>::New();
+        textSource->SetText( names[i].c_str() );
+
+        // Create a mapper
+        vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+        mapper->SetInputConnection(textSource->GetOutputPort());
+
+        // Create a subclass of vtkActor: a vtkFollower that remains facing the camera
+        vtkSmartPointer<vtkFollower> follower = vtkSmartPointer<vtkFollower>::New();
+        follower->SetMapper(mapper);
+        follower->GetProperty()->SetColor(1, 1, 1);
+        follower->SetPosition(start_pos_offset[i].x(),
+                              start_pos_offset[i].y(),
+                              start_pos_offset[i].y());
+        follower->SetCamera(camera);
+
+        text_actors.emplace_back(follower);
+
         vtkSmartPointer<vtkSphereSource> sphereSource = vtkSmartPointer<vtkSphereSource>::New();
         sphereSource->SetRadius(radii[i]);
         sphereSource->SetPhiResolution(100);
@@ -105,6 +141,7 @@ void MainWindow::render(std::vector<std::string> names,
 
         actors.push_back(actor);
 
+        renderer->AddActor(text_actors.back());
         renderer->AddActor(actors.back());
     }
 
@@ -131,7 +168,7 @@ void MainWindow::render(std::vector<std::string> names,
 
     this->ui->comboBoxCamPos->setCurrentIndex(3);
 
-    vtkSmartPointer<vtkRenderWindowInteractor> interactor = this->ui->widget->GetInteractor();
+   // vtkSmartPointer<vtkRenderWindowInteractor> interactor = this->ui->widget->GetInteractor();
 
 }
 

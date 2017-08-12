@@ -26,17 +26,7 @@
 #include "importdata.h"
 
 #include <QMainWindow>
-#include <vtkPolyDataMapper.h>
-#include <vtkRenderer.h>
-#include <vtkRenderWindow.h>
-#include <vtkSphereSource.h>
-#include <vtkSmartPointer.h>
-#include <vtkProperty.h>
-#include <vtkCamera.h>
-#include <vtkRenderWindowInteractor.h>
-#include <vtkInteractorStyleFlight.h>
 
-#include <vtkRenderWindowInteractor.h>
 namespace Ui {
 class MainWindow;
 }
