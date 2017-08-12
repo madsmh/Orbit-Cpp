@@ -49,6 +49,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void render(std::vector<std::string> names,
+                std::vector<Vector3> start_pos,
+                std::vector<double> radii);
+
 private:
     Ui::MainWindow *ui;
     void populateCombos(std::vector<std::string> names);

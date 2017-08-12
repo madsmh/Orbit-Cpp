@@ -31,10 +31,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    std::vector<std::string> names;
-    std::vector<Vector3> start_pos;
-    std::vector<double> radii;
-
     auto *importDataDialog = new importdata(this);
     Scale s (1.0);
 
@@ -42,84 +38,14 @@ MainWindow::MainWindow(QWidget *parent) :
                      importDataDialog, &QDialog::exec);
 
     QObject::connect(importDataDialog, &QDialog::accepted,
-    [=]() mutable {
-        names = importDataDialog->get_names();
-        start_pos = importDataDialog->get_pos();
-        radii = importDataDialog->get_radii();
-
-        this->populateCombos(names);
+    [=]() {
+        this->populateCombos(importDataDialog->get_names());
         this->ui->comboBoxCamPos->setEnabled(true);
-        this->ui->comboBoxCamCenter->setEnabled(true); }
+        this->ui->comboBoxCamCenter->setEnabled(true);
+        this->render(importDataDialog->get_names(),
+                     importDataDialog->get_pos(),
+                     importDataDialog->get_radii());}
     );
-
-    /*for (int i = 0; i < names.size(); ++i) {
-        std::cout << names[i];
-
-    }
-
-    std::vector<Vector3> start_pos_offset {};
-
-    // Genrating the offset positions
-    for (int k = 0; k < names.size(); ++k) {
-        double radius = radii[k];
-        start_pos_offset.emplace_back(start_pos[k] + Vector3 (-3.0 * radius, 0, -3.0 * radius));
-    }
-
-
-    //Set up renderer
-    vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-
-    this->ui->widget->GetRenderWindow()->AddRenderer(renderer);
-
-    // Get aactive camera
-    vtkSmartPointer<vtkCamera> camera = renderer->GetActiveCamera();
-
-    std::vector<vtkSmartPointer<vtkActor> > actors {};
-
-    // Adding bodies to vector and to the renderer
-    for (int i = 0; i < radii.size(); ++i) {
-        vtkSmartPointer<vtkSphereSource> sphereSource = vtkSmartPointer<vtkSphereSource>::New();
-        sphereSource->SetRadius(radii[i]);
-        sphereSource->SetPhiResolution(100);
-        sphereSource->SetThetaResolution(100);
-        sphereSource->Update();
-
-        vtkSmartPointer<vtkPolyDataMapper> sphereMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-        sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
-
-        vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-        actor->SetPosition(start_pos[i].x(), start_pos[i].y(), start_pos[i].z());
-        actor->SetMapper(sphereMapper);
-        actor->GetProperty()->SetInterpolationToFlat();
-        actor->GetProperty()->SetFrontfaceCulling(true);
-
-        actors.push_back(actor);
-
-        renderer->AddActor(actors.back());
-    }
-
-    QObject::connect(this->ui->comboBoxCamPos,
-                     static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-                     [=] (int ix){ camera->SetPosition(start_pos_offset[ix].x(),
-                                                       start_pos_offset[ix].y(),
-                                                       start_pos_offset[ix].z());
-                         this->ui->widget->update();
-                         this->ui->comboBoxCamCenter->setCurrentIndex(ix);
-                     }
-    );
-
-    QObject::connect(this->ui->comboBoxCamCenter,
-                     static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-                     [=](int ix){camera->SetFocalPoint(start_pos[ix].x(),
-                                                       start_pos[ix].y(),
-                                                       start_pos[ix].z());
-                     this->ui->widget->update();
-                     }
-    );*/
-
-    //  this->ui->comboBoxCamPos->setCurrentIndex(3);
-
-    //vtkSmartPointer<vtkRenderWindowInteractor> interactor = this->ui->widget->GetInteractor();
 
 }
 
@@ -134,6 +60,78 @@ void MainWindow::populateCombos(std::vector<std::string> names) {
         this->ui->comboBoxCamCenter->addItem(name);
         this->ui->comboBoxCamPos->addItem(name);
     }
+}
+
+void MainWindow::render(std::vector<std::string> names,
+                        std::vector<Vector3> start_pos,
+                        std::vector<double> radii) {
+
+    std::vector<Vector3> start_pos_offset {};
+
+    // Genrating the offset positions
+    for (int k = 0; k < names.size(); ++k) {
+        double radius = radii[k];
+        start_pos_offset.emplace_back(start_pos[k] + Vector3 (-3.0 * radius, 0, -3.0 * radius));
+    }
+
+    //Set up renderer
+    vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+
+    this->ui->widget->GetRenderWindow()->AddRenderer(renderer);
+
+    // Get active camera
+    vtkSmartPointer<vtkCamera> camera = renderer->GetActiveCamera();
+
+    std::vector<vtkSmartPointer<vtkActor> > actors{};
+
+    // Adding bodies to vector and to the renderer
+    for (int i = 0; i < radii.size(); ++i) {
+        vtkSmartPointer<vtkSphereSource> sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+        sphereSource->SetRadius(radii[i]);
+        sphereSource->SetPhiResolution(100);
+        sphereSource->SetThetaResolution(100);
+        sphereSource->Update();
+
+        vtkSmartPointer<vtkPolyDataMapper> sphereMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+        sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
+
+        vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
+        actor->SetPosition(start_pos[i].x(),
+                           start_pos[i].y(),
+                           start_pos[i].z());
+        actor->SetMapper(sphereMapper);
+        actor->GetProperty()->SetInterpolationToFlat();
+        actor->GetProperty()->SetFrontfaceCulling(1);
+
+        actors.push_back(actor);
+
+        renderer->AddActor(actors.back());
+    }
+
+    QObject::connect(this->ui->comboBoxCamPos,
+                     static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+                     [=](int ix) {
+                         camera->SetPosition(start_pos_offset[ix].x(),
+                                             start_pos_offset[ix].y(),
+                                             start_pos_offset[ix].z());
+                         this->ui->widget->update();
+                         this->ui->comboBoxCamCenter->setCurrentIndex(ix);
+                     }
+    );
+
+    QObject::connect(this->ui->comboBoxCamCenter,
+                     static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+                     [=](int ix) {
+                         camera->SetFocalPoint(start_pos[ix].x(),
+                                               start_pos[ix].y(),
+                                               start_pos[ix].z());
+                         this->ui->widget->update();
+                     }
+    );
+
+    this->ui->comboBoxCamPos->setCurrentIndex(3);
+
+    vtkSmartPointer<vtkRenderWindowInteractor> interactor = this->ui->widget->GetInteractor();
 
 }
 
