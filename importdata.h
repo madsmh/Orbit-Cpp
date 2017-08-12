@@ -36,7 +36,7 @@ class importdata : public QDialog
 
 public:
     explicit importdata(QWidget *parent = 0);
-    ~importdata();
+    virtual ~importdata();
 
     std::vector<Vector3> get_pos() const { return  body_positions;};
     std::vector<double> get_radii() const { return body_radii;};
