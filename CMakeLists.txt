@@ -3,7 +3,7 @@ project(orbit3d)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 include_directories(${VTK_INCLUDE_DIRS})
 
 add_custom_target(copy-runtime-files ALL

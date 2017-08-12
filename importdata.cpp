@@ -11,16 +11,16 @@ importdata::importdata(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    PhysicalProperties prop;
-    auto *horizons = new PlanetData(prop.get_names());
+    auto *prop = new PhysicalProperties;
+    auto *horizons = new PlanetData(prop->get_names());
 
     QObject::connect(horizons, &PlanetData::getText, this->ui->textEdit, &QTextEdit::append);
     QObject::connect(this->ui->importButton, &QPushButton::clicked,
                      [=]() {
                          horizons->read_data();
                          body_positions = horizons->get_starting_positions();
-                         body_radii = prop.get_radii();
-                         body_names = prop.get_names();
+                         body_radii = prop->get_radii();
+                         body_names = prop->get_names();
                      }
     );
 }

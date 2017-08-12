@@ -19,9 +19,9 @@ public:
     explicit importdata(QWidget *parent = 0);
     ~importdata();
 
-    const std::vector<Vector3> get_pos() const { return  body_positions;};
-    const std::vector<double> get_radii() const { return body_radii;};
-    const std::vector<std::string> get_names() const { return body_names;};
+    std::vector<Vector3> get_pos() const { return  body_positions;};
+    std::vector<double> get_radii() const { return body_radii;};
+    std::vector<std::string> get_names() const { return body_names;};
 
 private:
     Ui::importdata *ui;

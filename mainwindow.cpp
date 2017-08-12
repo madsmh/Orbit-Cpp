@@ -40,8 +40,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(this->ui->importDataButton, &QPushButton::clicked,
                      importDataDialog, &QDialog::open);
 
-    QObject::connect(importDataDialog, &QDialog::acceptDrops,
-                    [&](){
+    QObject::connect(importDataDialog, &QDialog::accepted,
+                    [=](){
                         start_pos = importDataDialog->get_pos();
                         radii = importDataDialog->get_radii();
                         names = importDataDialog->get_names();
