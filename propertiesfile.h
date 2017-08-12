@@ -20,8 +20,12 @@
 #ifndef ORBIT3D_PROPERTIESFILE_H
 #define ORBIT3D_PROPERTIESFILE_H
 
+#include <QObject>
+#include <QString>
+
 #include <vector>
 #include "vector3.h"
+
 
 struct PropertiesFile {
     std::string name{};
@@ -31,13 +35,18 @@ struct PropertiesFile {
 
 
 
-class PhysicalProperties {
+class PhysicalProperties : public QObject
+{
+    Q_OBJECT
+
+private:
     std::vector<std::string> self_names;
     std::vector<double> self_radii;
     std::vector<double> self_GMs;
 
 public:
-    PhysicalProperties(long n = 0);
+    void get_data(long n = 0);
+
     std::vector<std::string> get_names(){
         return self_names;
     };
@@ -49,6 +58,10 @@ public:
     std::vector<double> get_GMs(){
         return self_GMs;
     };
+
+signals:
+    void getText(QString text);
+
 };
 
 

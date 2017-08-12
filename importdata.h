@@ -38,16 +38,16 @@ public:
     explicit importdata(QWidget *parent = 0);
     virtual ~importdata();
 
-    std::vector<Vector3> get_pos() const { return  body_positions;};
-    std::vector<double> get_radii() const { return body_radii;};
-    std::vector<std::string> get_names() const { return body_names;};
+    std::vector<Vector3> get_pos() const { return  m_body_positions;};
+    std::vector<double> get_radii() const { return m_body_radii;};
+    std::vector<std::string> get_names() const { return m_body_names;};
 
 private:
     Ui::importdata *ui;
 
-    std::vector<Vector3> body_positions;
-    std::vector<double > body_radii;
-    std::vector<std::string> body_names;
+    std::vector<Vector3> m_body_positions;
+    std::vector<double > m_body_radii;
+    std::vector<std::string> m_body_names;
 };
 
 #endif // IMPORTDATA_H

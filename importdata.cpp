@@ -31,15 +31,20 @@ importdata::importdata(QWidget *parent) :
     ui->setupUi(this);
 
     auto *prop = new PhysicalProperties;
+
+    QObject::connect(prop, &PhysicalProperties::getText, this->ui->textEdit, &QTextEdit::append);
+
+    prop->get_data();
+
     auto *horizons = new PlanetData(prop->get_names());
 
     QObject::connect(horizons, &PlanetData::getText, this->ui->textEdit, &QTextEdit::append);
     QObject::connect(this->ui->importButton, &QPushButton::clicked,
                      [=]() {
                          horizons->read_data();
-                         body_positions = horizons->get_starting_positions();
-                         body_radii = prop->get_radii();
-                         body_names = prop->get_names();
+                         m_body_positions = horizons->get_starting_positions();
+                         m_body_radii = prop->get_radii();
+                         m_body_names = prop->get_names();
                      }
     );
 }

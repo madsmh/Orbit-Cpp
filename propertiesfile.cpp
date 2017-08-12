@@ -23,7 +23,7 @@
 
 #include "propertiesfile.h"
 
-PhysicalProperties::PhysicalProperties(long n){
+void PhysicalProperties::get_data(long n)  {
     std::string path = "physical_properties/properties.csv";
     std::ifstream filereader;
 
@@ -31,22 +31,23 @@ PhysicalProperties::PhysicalProperties(long n){
 
     std::vector<PropertiesFile> data;
     std::string buffer;
-
+    QString out;
 
     filereader.open(path);
+
     if(filereader.is_open()){
         getline(filereader, buffer, '\n');
         while (!filereader.eof()){
             getline(filereader, buffer, ',');
             if (buffer.empty()) break;
             p.name = buffer;
-            std::cout << "Reading physical constants for object " << buffer << std::endl;
+            emit (QString::fromUtf8(std::string("Reading physical constants for object " + buffer + "\n").c_str()));
             getline(filereader, buffer, ',');
             std::stringstream(buffer) >> p.r;
-            std::cout << "Radius = " << p.r << ", ";
+            emit (QString::fromUtf8(std::string("Radius = " + std::to_string(p.r) + "\n").c_str()));
             getline(filereader, buffer, ',');
             std::stringstream(buffer) >> p.GM;
-            std::cout << "GM = " << p.GM << std::endl;
+            QString::fromUtf8(std::string("GM = " + std::to_string(p.GM) + "\n").c_str());
             getline(filereader, buffer, ',');
             getline(filereader, buffer, '\n');
 

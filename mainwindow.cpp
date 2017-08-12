@@ -36,40 +36,34 @@ MainWindow::MainWindow(QWidget *parent) :
     std::vector<double> radii;
 
     auto *importDataDialog = new importdata(this);
+    Scale s (1.0);
 
     QObject::connect(this->ui->importDataButton, &QPushButton::clicked,
-                     importDataDialog, &QDialog::open);
+                     importDataDialog, &QDialog::exec);
 
     QObject::connect(importDataDialog, &QDialog::accepted,
-                    [=](){
-                        start_pos = importDataDialog->get_pos();
-                        radii = importDataDialog->get_radii();
-                        names = importDataDialog->get_names();
-                        this->populateCombos(names);
-                        this->ui->comboBoxCamPos->setEnabled(true);
-                        this->ui->comboBoxCamCenter->setEnabled(true);
-                    });
+    [=]() mutable {
+        names = importDataDialog->get_names();
+        start_pos = importDataDialog->get_pos();
+        radii = importDataDialog->get_radii();
 
+        this->populateCombos(names);
+        this->ui->comboBoxCamPos->setEnabled(true);
+        this->ui->comboBoxCamCenter->setEnabled(true); }
+    );
 
-    /*PhysicalProperties prop;
-    PlanetData horizons(prop.get_names());
-    Scale s (1.0/4000.0);
+    /*for (int i = 0; i < names.size(); ++i) {
+        std::cout << names[i];
 
-
-    for (int m = 0; m < prop.get_names().size(); ++m) {
-        start_pos.push_back(s.vector(horizons.get_starting_positions()[m]));
-        radii.push_back(s.scalar(prop.get_radii()[m]));
     }
 
     std::vector<Vector3> start_pos_offset {};
 
     // Genrating the offset positions
-    for (int k = 0; k < prop.get_names().size(); ++k) {
+    for (int k = 0; k < names.size(); ++k) {
         double radius = radii[k];
         start_pos_offset.emplace_back(start_pos[k] + Vector3 (-3.0 * radius, 0, -3.0 * radius));
     }
-
-    // Setting the Comboboxes
 
 
     //Set up renderer
@@ -121,9 +115,8 @@ MainWindow::MainWindow(QWidget *parent) :
                                                        start_pos[ix].z());
                      this->ui->widget->update();
                      }
-    );
+    );*/
 
-*/
     //  this->ui->comboBoxCamPos->setCurrentIndex(3);
 
     //vtkSmartPointer<vtkRenderWindowInteractor> interactor = this->ui->widget->GetInteractor();
