@@ -19,6 +19,8 @@
 
 
 #include <fstream>
+#include <sstream>
+
 #include "propertiesfile.h"
 
 PhysicalProperties::PhysicalProperties(long n){
@@ -30,6 +32,7 @@ PhysicalProperties::PhysicalProperties(long n){
     std::vector<PropertiesFile> data;
     std::string buffer;
 
+
     filereader.open(path);
     if(filereader.is_open()){
         getline(filereader, buffer, '\n');
@@ -39,10 +42,10 @@ PhysicalProperties::PhysicalProperties(long n){
             p.name = buffer;
             std::cout << "Reading physical constants for object " << buffer << std::endl;
             getline(filereader, buffer, ',');
-            p.r = stod(buffer);
+            std::stringstream(buffer) >> p.r;
             std::cout << "Radius = " << p.r << ", ";
             getline(filereader, buffer, ',');
-            p.GM = stod(buffer);
+            std::stringstream(buffer) >> p.GM;
             std::cout << "GM = " << p.GM << std::endl;
             getline(filereader, buffer, ',');
             getline(filereader, buffer, '\n');
