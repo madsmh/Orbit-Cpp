@@ -43,6 +43,9 @@
         </property>
         <item alignment="Qt::AlignTop">
          <widget class="QGroupBox" name="groupBox">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -97,7 +100,7 @@
         <item>
          <widget class="QPushButton" name="importDataButton">
           <property name="text">
-           <string>Import data</string>
+           <string>Get/simulate data</string>
           </property>
          </widget>
         </item>

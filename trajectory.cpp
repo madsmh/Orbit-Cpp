@@ -20,7 +20,7 @@
 
 #include "trajectory.h"
 
-Trajectory::Trajectory(long n_trajectories, long n_rows) {
+void Trajectory::setup(long n_trajectories) {
 
     self_n_trajectories = n_trajectories;
 
@@ -28,7 +28,6 @@ Trajectory::Trajectory(long n_trajectories, long n_rows) {
         self_positions.emplace_back(std::vector<Vector3> {});
         self_velocities.emplace_back(std::vector<Vector3> {});
     }
-    self_n_rows = n_rows;
 }
 
 void Trajectory::set_position(const std::vector<Vector3>& pos, const std::vector<Vector3>& vel){
@@ -76,7 +75,7 @@ void Trajectory::save_trajectory_positions(int tra, std::string name, double sta
     std::vector<Vector3> current_trajectory = self_positions[tra];
 
     std::cout << "Writing data for " << name << "." << std::endl;
-
+    self_n_rows = current_trajectory.size();
     if (myfile.good()) {
 
         for (int i = 0; i < self_n_rows; ++i) {

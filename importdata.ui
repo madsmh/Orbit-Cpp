@@ -6,114 +6,206 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>603</width>
-    <height>277</height>
+    <width>630</width>
+    <height>491</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Import data</string>
+   <string>Get/simulate data</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <widget class="QTextEdit" name="textEdit">
-       <property name="readOnly">
-        <bool>true</bool>
+  <widget class="QDialogButtonBox" name="buttonBox">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>450</y>
+     <width>166</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>240</y>
+     <width>611</width>
+     <height>201</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Simulation</string>
+   </property>
+   <widget class="QWidget" name="formLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>30</y>
+      <width>441</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="numberOfDaysLabel">
+       <property name="text">
+        <string>Number of days to simulate</string>
        </property>
       </widget>
      </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QPushButton" name="importButton">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Import data</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="okButton">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="text">
-          <string>OK</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="cancelButton">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Cancel</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+     <item row="1" column="0">
+      <widget class="QLabel" name="integrationStepsLabel">
+       <property name="text">
+        <string>Integration steps per day</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QSpinBox" name="daysSpinBox">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>10000</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QSpinBox" name="stepSpinBox">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>10000</number>
+       </property>
+      </widget>
      </item>
     </layout>
-   </item>
-  </layout>
+   </widget>
+   <widget class="QPushButton" name="simulateButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>120</y>
+      <width>84</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Simulate</string>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>120</y>
+      <width>251</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>0</number>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="abortButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>160</y>
+      <width>84</width>
+      <height>28</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Abort</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QTextEdit" name="textEdit">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>611</width>
+     <height>192</height>
+    </rect>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="importButton">
+   <property name="geometry">
+    <rect>
+     <x>11</x>
+     <y>209</y>
+     <width>85</width>
+     <height>28</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="text">
+    <string>Import data</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections>
   <connection>
-   <sender>cancelButton</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>importdata</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>470</x>
-     <y>249</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>484</x>
-     <y>-30</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>okButton</sender>
-   <signal>clicked(bool)</signal>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
    <receiver>importdata</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>286</x>
-     <y>249</y>
+     <x>466</x>
+     <y>468</y>
     </hint>
     <hint type="destinationlabel">
-     <x>352</x>
-     <y>-21</y>
+     <x>415</x>
+     <y>491</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>importButton</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>okButton</receiver>
-   <slot>setDisabled(bool)</slot>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>importdata</receiver>
+   <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>119</x>
-     <y>253</y>
+     <x>496</x>
+     <y>471</y>
     </hint>
     <hint type="destinationlabel">
-     <x>232</x>
-     <y>253</y>
+     <x>485</x>
+     <y>575</y>
     </hint>
    </hints>
   </connection>

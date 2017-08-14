@@ -1,0 +1,38 @@
+//
+// Created by mads on 14-08-17.
+//
+
+#ifndef ORBIT3D_VERLET_H
+#define ORBIT3D_VERLET_H
+
+#include <QObject>
+#include "vector3.h"
+#include "system.h"
+#include "trajectory.h"
+#include "planetdata.h"
+#include "propertiesfile.h"
+
+
+class Verlet : public QObject
+{
+    Q_OBJECT
+public:
+    void setup(int days, int detail);
+    void run(System &sys, Trajectory &tra);
+
+    void compare_with_horizons();
+
+private:
+    int m_rows;
+    int m_bodies;
+    double m_delta;
+
+signals:
+    void progress(int p);
+    void success(bool s);
+
+
+};
+
+
+#endif //ORBIT3D_VERLET_H

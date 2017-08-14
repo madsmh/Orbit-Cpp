@@ -25,6 +25,7 @@
 #include <vtkCamera.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkInteractorStyleFlight.h>
+#include <vtkInteractorStyle.h>
 #include <vtkVectorText.h>
 #include <vtkActor.h>
 #include <vtkFollower.h>
@@ -35,8 +36,8 @@
 
 #include "planetdata.h"
 #include "propertiesfile.h"
-
-
+#include "scale.h"
+#include "importdata.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -45,16 +46,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     auto *importDataDialog = new importdata(this);
-    Scale s (1.0);
 
     QObject::connect(this->ui->importDataButton, &QPushButton::clicked,
                      importDataDialog, &QDialog::exec);
 
+
     QObject::connect(importDataDialog, &QDialog::accepted,
     [=]() {
         this->populateCombos(importDataDialog->get_names());
-        this->ui->comboBoxCamPos->setEnabled(true);
+        this->ui->groupBox->setEnabled(true);
         this->ui->comboBoxCamCenter->setEnabled(true);
+        this->ui->comboBoxCamPos->setEnabled(true);
         this->render(importDataDialog->get_names(),
                      importDataDialog->get_pos(),
                      importDataDialog->get_radii());}
@@ -90,7 +92,7 @@ void MainWindow::render(std::vector<std::string> names,
     //Set up renderer
     vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
 
-    Scale s (1.0/5000.0);
+    Scale s (1.0);
 
     this->ui->widget->GetRenderWindow()->AddRenderer(renderer);
 
@@ -101,11 +103,12 @@ void MainWindow::render(std::vector<std::string> names,
     std::vector<vtkSmartPointer<vtkActor> > text_actors {};
 
     // Adding bodies to vector and to the renderer
-    for (int i = 0; i < radii.size(); ++i) {
+    for (int i = 0; i < names.size(); ++i) {
 
+        //Based on http://www.vtk.org/Wiki/VTK/Examples/Cxx/Visualization/Follower
         // Create some text
         vtkSmartPointer<vtkVectorText> textSource = vtkSmartPointer<vtkVectorText>::New();
-        textSource->SetText( names[i].c_str() );
+        textSource->SetText(names[i].c_str());
 
         // Create a mapper
         vtkSmartPointer<vtkPolyDataMapper> mapper = vtkSmartPointer<vtkPolyDataMapper>::New();
@@ -117,7 +120,7 @@ void MainWindow::render(std::vector<std::string> names,
         follower->GetProperty()->SetColor(1, 1, 1);
         follower->SetPosition(start_pos_offset[i].x(),
                               start_pos_offset[i].y(),
-                              start_pos_offset[i].y());
+                              start_pos_offset[i].z());
         follower->SetCamera(camera);
 
         text_actors.emplace_back(follower);
@@ -131,15 +134,15 @@ void MainWindow::render(std::vector<std::string> names,
         vtkSmartPointer<vtkPolyDataMapper> sphereMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
         sphereMapper->SetInputConnection(sphereSource->GetOutputPort());
 
-        vtkSmartPointer<vtkActor> actor = vtkSmartPointer<vtkActor>::New();
-        actor->SetPosition(start_pos[i].x(),
-                           start_pos[i].y(),
-                           start_pos[i].z());
-        actor->SetMapper(sphereMapper);
-        actor->GetProperty()->SetInterpolationToFlat();
-        actor->GetProperty()->SetFrontfaceCulling(1);
+        vtkSmartPointer<vtkActor> sphereActor = vtkSmartPointer<vtkActor>::New();
+        sphereActor->SetPosition(start_pos[i].x(),
+                                 start_pos[i].y(),
+                                 start_pos[i].z());
+        sphereActor->SetMapper(sphereMapper);
+        sphereActor->GetProperty()->SetInterpolationToFlat();
+        sphereActor->GetProperty()->SetFrontfaceCulling(1);
 
-        actors.push_back(actor);
+        actors.push_back(sphereActor);
 
         renderer->AddActor(text_actors.back());
         renderer->AddActor(actors.back());
@@ -168,7 +171,16 @@ void MainWindow::render(std::vector<std::string> names,
 
     this->ui->comboBoxCamPos->setCurrentIndex(3);
 
-   // vtkSmartPointer<vtkRenderWindowInteractor> interactor = this->ui->widget->GetInteractor();
+    vtkSmartPointer<vtkRenderWindowInteractor> interactor =
+           this->ui->widget->GetInteractor();
+    vtkInteractorStyle::SafeDownCast(interactor->GetInteractorStyle())
+            ->AutoAdjustCameraClippingRangeOn();
+
+    //this->ui->widget->GetRenderWindow()->Render();
+    //renderer->ResetCamera();
+    //this->ui->widget->GetRenderWindow()->Render();
+    //interactor->Start();
+
 
 }
 

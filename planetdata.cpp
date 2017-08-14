@@ -188,6 +188,8 @@ void PlanetData::read_data() {
 
     structs_to_arrays();
 
+    emit success(true);
+
 }
 
 

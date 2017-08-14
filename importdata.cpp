@@ -22,6 +22,11 @@
 
 #include "planetdata.h"
 #include "propertiesfile.h"
+#include "verlet.h"
+#include "system.h"
+#include "trajectory.h"
+
+#include <QGroupBox>
 
 
 importdata::importdata(QWidget *parent) :
@@ -47,9 +52,38 @@ importdata::importdata(QWidget *parent) :
                          m_body_names = prop->get_names();
                      }
     );
+
+    QObject::connect(horizons, &PlanetData::success,
+                     [=](){
+                         this->ui->daysSpinBox->setEnabled(true);
+                         this->ui->daysSpinBox->setValue((int) horizons->get_body_positions(0).size());
+                         this->ui->stepSpinBox->setEnabled(true);
+                         this->ui->simulateButton->setEnabled(true);
+                     });
+
+    QObject::connect(this->m_verlet, &Verlet::progress,
+                     this->ui->progressBar, &QProgressBar::setValue);
+
+    QObject::connect(this->ui->simulateButton, &QPushButton::clicked,
+                     [=](){
+                         this->ui->progressBar->setEnabled(true);
+                         this->ui->progressBar->setMaximum(this->ui->stepSpinBox->value()*
+                                                                   this->ui->daysSpinBox->value()-1);
+                         m_sol.set_param(prop->get_names(),
+                                         horizons->get_starting_positions(),
+                                         horizons->get_starting_velocities(),
+                                         prop->get_GMs(),
+                                         get_radii());
+                         m_trajecotry.setup(m_sol.get_number_of_bodies());
+                         m_verlet->setup(this->ui->daysSpinBox->value(),
+                                         this->ui->stepSpinBox->value());
+                         m_verlet->run(m_sol, m_trajecotry);
+                     }
+    );
 }
 
 importdata::~importdata()
 {
     delete ui;
-}
+};
+

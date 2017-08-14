@@ -20,12 +20,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "planetdata.h"
-#include "propertiesfile.h"
-#include "scale.h"
-#include "importdata.h"
-
 #include <QMainWindow>
+
+#include "vector3.h"
 
 namespace Ui {
 class MainWindow;

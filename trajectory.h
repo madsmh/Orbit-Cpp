@@ -38,7 +38,7 @@ class Trajectory{
     std::vector<std::vector<Vector3>> self_velocities;
 
 public:
-    Trajectory(long n_trajectories, long n_rows);
+    void setup(long n_trajectories);
 
     void set_position(const std::vector<Vector3>& pos, const std::vector<Vector3>& vel);
 

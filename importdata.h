@@ -25,6 +25,9 @@
 #include <vector>
 #include <string>
 #include "vector3.h"
+#include "system.h"
+#include "trajectory.h"
+#include "verlet.h"
 
 namespace Ui {
 class importdata;
@@ -44,6 +47,10 @@ public:
 
 private:
     Ui::importdata *ui;
+
+    System m_sol;
+    Trajectory m_trajecotry;
+    Verlet *m_verlet = new Verlet;
 
     std::vector<Vector3> m_body_positions;
     std::vector<double > m_body_radii;

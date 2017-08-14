@@ -54,69 +54,6 @@ void compare_with_horizon(Trajectory tra, PlanetData data,
 
 }
 
-void verlet(System &system, Trajectory &trajectory, double delta){
-    boost::timer t;
-    long n = trajectory.get_number_of_rows();
-    long n_bodies = system.get_number_of_bodies();
-
-    std::vector<double> mechanical_energy;
-    std::vector<Vector3> momentum;
-    std::vector<Vector3> angular_momentum;
-
-    double delta2 = std::pow(delta, 2);
-
-    std::cout << "Starting integrator." << std::endl;
-
-    for (int i = 0; i < n; ++i) {
-        if(i == 0){
-            std::vector<Vector3 > x0 = system.get_positions();
-            std::vector<Vector3> v0 = system.get_velocities();
-
-            trajectory.set_position(x0, v0);
-            system.set_positions(x0);
-            system.set_velocities(v0);
-
-            mechanical_energy.emplace_back(system.get_total_mechanical_energy());
-        }
-        else {
-
-            std::vector<Vector3> x0 = trajectory.get_positions_at_index(i-1);
-            std::vector<Vector3> v0 = trajectory.get_velocities_at_index(i-1);
-
-            std::vector<Vector3> a0 = system.get_accelerations();
-
-            std::vector<Vector3> x1;
-
-            for (long j = 0; j < n_bodies; ++j) {
-                x1.emplace_back(x0[j] + v0[j] * delta + delta2 * 0.5 * a0[j]);
-            }
-
-            system.set_positions(x1);
-
-            std::vector<Vector3 > a1 = system.get_accelerations();
-
-            std::vector<Vector3 > v1;
-
-            for (long k = 0; k < n_bodies; ++k) {
-                v1.emplace_back(v0[k]+ 0.5 * delta *( a0[k]+a1[k]) );
-            }
-
-            system.set_velocities(v1);
-
-            mechanical_energy.emplace_back(system.get_total_mechanical_energy());
-
-            trajectory.set_position(x1, v1);
-        }
-    }
-    std::cout << "Integration finished in " << t.elapsed() << " seconds."<< std::endl;
-    double max_mech_energy = *std::max_element(mechanical_energy.begin(), mechanical_energy.end());
-    double min_mech_energy = *std::min_element(mechanical_energy.begin(), mechanical_energy.end());
-    double diff_mech_energy =  std::abs(max_mech_energy-min_mech_energy);
-    double rel_mech_energy = diff_mech_energy/std::abs(max_mech_energy);
-
-    std::cout << "Mechanical energy, relative difference "<< rel_mech_energy << std::endl;
-
-}
 
 void help(char *name) {
     std::cout << "Usage: " << name << " <options>" << std::endl;

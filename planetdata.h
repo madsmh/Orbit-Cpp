@@ -66,7 +66,7 @@ public:
 signals:
 
     void getText(QString text);
-
+    void success (bool s);
 };
 
 #endif //ORBIT3D_PLANETDATA_H

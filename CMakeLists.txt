@@ -37,7 +37,8 @@ set(SOURCE_FILES
         importdata.cpp
         importdata.h
         importdata.ui
-        )
+        verlet.cpp
+        verlet.h)
 add_executable(orbit3d ${SOURCE_FILES} )
 add_dependencies(orbit3d copy-runtime-files)
 target_link_libraries(orbit3d

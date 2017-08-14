@@ -42,7 +42,7 @@ class System {
     double get_total_kinetic_energy() const;
 
 public:
-    System(std::vector<std::string> names, std::vector<Vector3> pos0,
+    void set_param(std::vector<std::string> names, std::vector<Vector3> pos0,
            std::vector<Vector3> vel0, std::vector<double> gms, std::vector<double> radii);
 
     std::vector<Vector3> get_positions() const;
