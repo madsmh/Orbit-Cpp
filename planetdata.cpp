@@ -165,9 +165,6 @@ std::vector<Vector3 > PlanetData::get_starting_positions(){
         starting_positions.emplace_back(get_body_positions(i)[0]);
     }
 
-    qout = QString::fromUtf8("Inserted starting values into vector");
-    emit getText(qout);
-
     return starting_positions;
 }
 
