@@ -20,15 +20,6 @@
 #include "importdata.h"
 #include "ui_importdata.h"
 
-#include "planetdata.h"
-#include "propertiesfile.h"
-#include "verlet.h"
-#include "system.h"
-#include "trajectory.h"
-
-#include <QGroupBox>
-
-
 importdata::importdata(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::importdata)
