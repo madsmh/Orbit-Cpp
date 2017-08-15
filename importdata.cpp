@@ -55,11 +55,20 @@ importdata::importdata(QWidget *parent) :
     QObject::connect(this->m_verlet, &Verlet::progress,
                      this->ui->progressBar, &QProgressBar::setValue);
 
+    QObject::connect(this->ui->abortButton, &QPushButton::clicked,
+                     [=](){
+                         m_verlet->set_abort(true);
+                         this->ui->progressBar->setValue(0);
+                         this->ui->abortButton->setEnabled(false);
+                     });
+
     QObject::connect(this->ui->simulateButton, &QPushButton::clicked,
                      [=](){
                          this->ui->progressBar->setEnabled(true);
                          this->ui->progressBar->setMaximum(this->ui->stepSpinBox->value()*
                                                                    this->ui->daysSpinBox->value()-1);
+                         this->ui->abortButton->setEnabled(true);
+                         m_verlet->set_abort(false);
                          m_sol.set_param(prop->get_names(),
                                          horizons->get_starting_positions(),
                                          horizons->get_starting_velocities(),
@@ -71,6 +80,7 @@ importdata::importdata(QWidget *parent) :
                          m_verlet->run(m_sol, m_trajecotry);
                      }
     );
+
 }
 
 importdata::~importdata()

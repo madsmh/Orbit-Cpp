@@ -67,6 +67,12 @@ void Verlet::run(System &sys, Trajectory &tra) {
         }
         else {
 
+            if (m_abort){
+                emit failure(true);
+                break;
+            }
+
+
             std::vector<Vector3> x0 = tra.get_positions_at_index(i-1);
             std::vector<Vector3> v0 = tra.get_velocities_at_index(i-1);
 
@@ -101,4 +107,9 @@ void Verlet::run(System &sys, Trajectory &tra) {
     }
 
     emit success(true);
+}
+
+void Verlet::set_abort(bool abort) {
+    m_abort = abort;
+
 }
