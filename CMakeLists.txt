@@ -14,6 +14,7 @@ add_custom_target(copy-runtime-files ALL
 
 find_package(VTK 8.0.0 EXACT REQUIRED COMPONENTS vtkViewsCore vtkGUISupportQt vtkCommonCore NO_MODULE)
 find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets X11Extras)
+find_package(Boost)
 
 
 include(${VTK_USE_FILE})
@@ -47,4 +48,4 @@ target_link_libraries(orbit3d
         Qt5::Widgets
         Qt5::X11Extras
         ${VTK_LIBRARIES}
-        )
+        ${Boost_LIBRARIES})
