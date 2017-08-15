@@ -25,8 +25,6 @@
 #include "scene.h"
 #include "mainwindow.h"
 
-#include <boost/timer.hpp>
-
 
 
 #include <QApplication>
