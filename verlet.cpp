@@ -16,7 +16,7 @@
     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  *
  * */
-#include <boost/timer.hpp>
+
 #include <QCoreApplication>
 #include "trajectory.h"
 #include "verlet.h"
