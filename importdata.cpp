@@ -25,6 +25,7 @@ importdata::importdata(QWidget *parent) :
     ui(new Ui::importdata)
 {
     ui->setupUi(this);
+    this->ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
     auto *prop = new PhysicalProperties;
 
@@ -50,6 +51,7 @@ importdata::importdata(QWidget *parent) :
                          this->ui->daysSpinBox->setValue((int) horizons->get_body_positions(0).size());
                          this->ui->stepSpinBox->setEnabled(true);
                          this->ui->simulateButton->setEnabled(true);
+                         this->ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
                      });
 
     QObject::connect(this->m_verlet, &Verlet::progress,
