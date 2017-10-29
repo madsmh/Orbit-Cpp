@@ -12,7 +12,7 @@ add_custom_target(copy-runtime-files ALL
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/trajectory)
 
 
-find_package(VTK 8.0.0 EXACT REQUIRED COMPONENTS vtkViewsCore vtkGUISupportQt vtkCommonCore NO_MODULE)
+find_package(VTK 8.0.1 REQUIRED COMPONENTS vtkViewsCore vtkGUISupportQt vtkCommonCore NO_MODULE)
 find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets X11Extras)
 find_package(Boost)
 
