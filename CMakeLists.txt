@@ -39,7 +39,10 @@ set(SOURCE_FILES
         importdata.h
         importdata.ui
         verlet.cpp
-        verlet.h)
+        verlet.h
+        diagnosticdialog.cpp
+        diagnosticdialog.h
+        diagnosticdialog.ui)
 add_executable(orbit3d ${SOURCE_FILES} )
 add_dependencies(orbit3d copy-runtime-files)
 target_link_libraries(orbit3d
