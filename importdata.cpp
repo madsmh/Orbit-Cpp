@@ -20,6 +20,8 @@
 #include "importdata.h"
 #include "ui_importdata.h"
 
+#include "diagnosticdialog.h"
+
 importdata::importdata(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::importdata)
@@ -83,6 +85,13 @@ importdata::importdata(QWidget *parent) :
                      }
     );
 
+    auto *diagnostic = new DiagnosticDialog(this);
+
+    QObject::connect(m_verlet, &Verlet::success,
+                     this->ui->pushButton_diag, &QPushButton::setEnabled);
+
+    QObject::connect(this->ui->pushButton_diag, &QPushButton::clicked,
+                    diagnostic, &QDialog::exec);
 }
 
 importdata::~importdata()
