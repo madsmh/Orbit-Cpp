@@ -17,7 +17,7 @@ DiagnosticDialog::~DiagnosticDialog()
 
 
 void DiagnosticDialog::populate_error_table(std::vector<std::string> names,
-                                      std::vector<double> errors) {
+                                            std::vector<double> errors) {
     QStringList headers;
     headers << "Body name" << "Max. error (km)";
 
