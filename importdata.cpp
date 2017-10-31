@@ -118,7 +118,7 @@ std::vector<double> importdata::test_accuracy(Trajectory trajectory,
         std::vector<Vector3> sim_vector = trajectory.get_trajectory_positions(j);
         std::vector<Vector3> ref_vector = data->get_body_positions(j);
 
-        for (int i = 0; i < std::min(sim_vector.size(),ref_vector.size()); ++i) {
+        for (int i = 0; i < ref_vector.size(); ++i) {
             double error = (sim_vector[i*detail]-ref_vector[i]).norm();
             dists.emplace_back(error);
         }
