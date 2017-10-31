@@ -20,8 +20,6 @@ public:
     void setup(int days, int detail);
     void run(System &sys, Trajectory &tra);
 
-    void compare_with_horizons();
-
 private:
     int m_rows;
     int m_bodies;
