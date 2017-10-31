@@ -21,6 +21,7 @@ void DiagnosticDialog::populate_error_table(std::vector<std::string> names,
     QStringList headers;
     headers << "Body name" << "Max. error (km)";
 
+    this->ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
     this->ui->tableWidget->setHorizontalHeaderLabels(headers);
     this->ui->tableWidget->setColumnCount(2);
     this->ui->tableWidget->setRowCount(names.size());
