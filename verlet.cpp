@@ -103,7 +103,7 @@ void Verlet::run(System &sys, Trajectory &tra) {
             QCoreApplication::processEvents();
 
             emit progress(i);
-            }
+        }
     }
 
     emit success(true);
