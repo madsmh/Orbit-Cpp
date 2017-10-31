@@ -63,7 +63,7 @@ importdata::importdata(QWidget *parent) :
                      [=](){
                          m_verlet->set_abort(true);
                          this->ui->progressBar->setValue(0);
-                         m_trajecotry.reset();
+                         m_trajecotry.setup(m_sol.get_number_of_bodies());
                          this->ui->abortButton->setEnabled(false);
                      });
 
@@ -80,7 +80,6 @@ importdata::importdata(QWidget *parent) :
                                          prop->get_GMs(),
                                          get_radii());
                          m_trajecotry.setup(m_sol.get_number_of_bodies());
-                         m_trajecotry.reset();
                          m_verlet->setup(this->ui->daysSpinBox->value(),
                                          this->ui->stepSpinBox->value());
                          m_verlet->run(m_sol, m_trajecotry);

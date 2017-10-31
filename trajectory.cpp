@@ -24,6 +24,9 @@ void Trajectory::setup(long n_trajectories) {
 
     self_n_trajectories = n_trajectories;
 
+    self_positions.clear();
+    self_velocities.clear();
+
     for (unsigned int i = 0; i < self_n_trajectories; ++i) {
         self_positions.emplace_back(std::vector<Vector3> {});
         self_velocities.emplace_back(std::vector<Vector3> {});
@@ -75,10 +78,10 @@ void Trajectory::save_trajectory_positions(int tra, std::string name, double sta
     std::vector<Vector3> current_trajectory = self_positions[tra];
 
     std::cout << "Writing data for " << name << "." << std::endl;
-    self_n_rows = current_trajectory.size();
+
     if (myfile.good()) {
 
-        for (int i = 0; i < self_n_rows; ++i) {
+        for (int i = 0; i < current_trajectory.size(); ++i) {
             std::string t = boost::lexical_cast<std::string>(start_time + (double) i * dt);
             std::string x_coord = boost::lexical_cast<std::string>(current_trajectory[i].x());
             std::string y_coord = boost::lexical_cast<std::string>(current_trajectory[i].y());
