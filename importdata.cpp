@@ -107,8 +107,8 @@ importdata::~importdata()
 }
 
 std::vector<double> importdata::test_accuracy(Trajectory trajectory,
-                          PlanetData *data,
-                          double detail) {
+                                              PlanetData *data,
+                                              int detail) {
 
     std::vector<double> errors;
 
