@@ -91,11 +91,42 @@ importdata::importdata(QWidget *parent) :
                      this->ui->pushButton_diag, &QPushButton::setEnabled);
 
     QObject::connect(this->ui->pushButton_diag, &QPushButton::clicked,
-                    diagnostic, &QDialog::exec);
+                    [=](){
+                        std::vector<double> accu_table = test_accuracy(m_trajecotry,
+                                                                       horizons,
+                                                                       this->ui->stepSpinBox->value());
+                        diagnostic->populate_error_table(prop->get_names(), accu_table);
+                        diagnostic->exec();
+                    });
 }
 
 importdata::~importdata()
 {
     delete ui;
-};
+}
+
+std::vector<double> importdata::test_accuracy(Trajectory trajectory,
+                          PlanetData *data,
+                          double detail) {
+
+    std::vector<double> errors;
+    int ref_rows = (int) trajectory.get_trajectory_positions(0).size();
+
+    for (int j = 0; j < trajectory.get_number_of_trajectories(); ++j) {
+        std::vector<Vector3> sim_vector = trajectory.get_trajectory_positions(j);
+        std::vector<Vector3> ref_vector = data->get_body_positions(j);
+
+        std::vector<double> dists;
+
+        for (int i = 0; i < ref_rows; ++i) {
+            double error = (sim_vector[i*detail]-ref_vector[i]).norm();
+            dists.emplace_back(error);
+        }
+
+        errors.emplace_back(*std::max_element(dists.begin(), dists.end())/1000);
+    }
+
+    return errors;
+}
+
 

@@ -24,6 +24,7 @@
 
 #include <vector>
 #include <string>
+#include <QtWidgets/QTableWidget>
 #include "vector3.h"
 #include "system.h"
 #include "trajectory.h"
@@ -45,7 +46,9 @@ public:
     std::vector<Vector3> get_pos_of_body(int body) const { return m_trajecotry.get_trajectory_positions(body);};
     std::vector<double> get_radii() const { return m_body_radii;};
     std::vector<std::string> get_names() const { return m_body_names;};
-
+    std::vector<double> test_accuracy(Trajectory trajectory,
+                                      PlanetData *data,
+                                      double detail);
 private:
     Ui::importdata *ui;
 
