@@ -16,6 +16,7 @@
 class Verlet : public QObject
 {
     Q_OBJECT
+
 public:
     void setup(int days, int detail);
     void run(System &sys, Trajectory &tra);
