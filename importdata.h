@@ -48,7 +48,7 @@ public:
     std::vector<std::string> get_names() const { return m_body_names;};
     std::vector<double> test_accuracy(Trajectory trajectory,
                                       PlanetData *data,
-                                      double detail);
+                                      int detail);
 private:
     Ui::importdata *ui;
 
