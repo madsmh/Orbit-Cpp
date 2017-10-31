@@ -62,14 +62,17 @@ importdata::importdata(QWidget *parent) :
     QObject::connect(this->ui->abortButton, &QPushButton::clicked,
                      [=](){
                          m_verlet->set_abort(true);
-                         this->ui->progressBar->setValue(0);
+                         this->ui->pushButton_diag->setDisabled(true);
+                         this->ui->progressBar->reset();
                          m_trajecotry.setup(m_sol.get_number_of_bodies());
                          this->ui->abortButton->setEnabled(false);
                      });
 
     QObject::connect(this->ui->simulateButton, &QPushButton::clicked,
                      [=](){
+                         this->ui->pushButton_diag->setDisabled(true);
                          this->ui->progressBar->setEnabled(true);
+                         this->ui->progressBar->reset();
                          this->ui->progressBar->setMaximum(this->ui->stepSpinBox->value()*
                                                                    this->ui->daysSpinBox->value()-1);
                          this->ui->abortButton->setEnabled(true);
