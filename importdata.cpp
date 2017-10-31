@@ -63,6 +63,7 @@ importdata::importdata(QWidget *parent) :
                      [=](){
                          m_verlet->set_abort(true);
                          this->ui->progressBar->setValue(0);
+                         m_trajecotry.reset();
                          this->ui->abortButton->setEnabled(false);
                      });
 
@@ -79,6 +80,7 @@ importdata::importdata(QWidget *parent) :
                                          prop->get_GMs(),
                                          get_radii());
                          m_trajecotry.setup(m_sol.get_number_of_bodies());
+                         m_trajecotry.reset();
                          m_verlet->setup(this->ui->daysSpinBox->value(),
                                          this->ui->stepSpinBox->value());
                          m_verlet->run(m_sol, m_trajecotry);
@@ -110,20 +112,20 @@ std::vector<double> importdata::test_accuracy(Trajectory trajectory,
                           double detail) {
 
     std::vector<double> errors;
-    int ref_rows = (int) trajectory.get_trajectory_positions(0).size();
+
+    std::vector<double> dists;
 
     for (int j = 0; j < trajectory.get_number_of_trajectories(); ++j) {
         std::vector<Vector3> sim_vector = trajectory.get_trajectory_positions(j);
         std::vector<Vector3> ref_vector = data->get_body_positions(j);
 
-        std::vector<double> dists;
-
-        for (int i = 0; i < ref_rows; ++i) {
+        for (int i = 0; i < std::min(sim_vector.size(),ref_vector.size()); ++i) {
             double error = (sim_vector[i*detail]-ref_vector[i]).norm();
             dists.emplace_back(error);
         }
 
         errors.emplace_back(*std::max_element(dists.begin(), dists.end())/1000);
+        dists.clear();
     }
 
     return errors;
