@@ -27,9 +27,16 @@ void System::set_param(std::vector<std::string> names, std::vector<Vector3> pos0
 
     self_n = names.size();
 
+    pos0 = convert_pos_to_AU(pos0);
+    vel0 = convert_vel_to_AU_per_day(vel0);
+
     // Initialize self_n obejects of Body type
     for (int i = 0; i < self_n; ++i){
-        self_bodies.emplace_back(Body(names[i], pos0[i], vel0[i], gms[i], radii[i]));
+        self_bodies.emplace_back(Body(names[i],
+                                      pos0[i],
+                                      vel0[i],
+                                      convert_GM(gms[i]),
+                                      radii[i]));
     }
 
     for (int j = 0; j < self_n; ++j) {
@@ -164,7 +171,7 @@ double System::get_total_mechanical_energy() const {
     return get_total_kinetic_energy() + get_total_potential_energy();
 }
 
-std::vector<Vector3> System::convert_pos_to_AU(std::vector<Vector3> pos) {
+std::vector<Vector3> System::convert_pos_to_AU(std::vector<Vector3> pos) const {
     std::vector<Vector3> converted_pos;
 
     for (const auto &po : pos) {
@@ -174,7 +181,7 @@ std::vector<Vector3> System::convert_pos_to_AU(std::vector<Vector3> pos) {
     return converted_pos;
 }
 
-std::vector <Vector3> System::convert_vel_to_AU_per_day(std::vector <Vector3> vel) {
+std::vector <Vector3> System::convert_vel_to_AU_per_day(std::vector <Vector3> vel) const {
 
     std::vector<Vector3> converted_vel;
 
@@ -183,6 +190,52 @@ std::vector <Vector3> System::convert_vel_to_AU_per_day(std::vector <Vector3> ve
     }
 
     return converted_vel;
+}
+
+double System::convert_GM(double GM) {
+    return GM*pow(self_day, 2)/pow(self_AU, 3);
+}
+
+std::vector<Vector3> System::convert_pos_to_SI(std::vector<Vector3> pos) const {
+
+    std::vector<Vector3> converted_pos;
+
+    for (const auto &po : pos) {
+        converted_pos.emplace_back(po *self_AU);
+    }
+
+    return converted_pos;
+}
+
+std::vector<Vector3> System::convert_vel_to_SI(std::vector<Vector3> vel) const {
+    std::vector<Vector3> converted_vel;
+
+    for (const auto &i : vel) {
+        converted_vel.emplace_back(i *self_AU/self_day);
+    }
+
+    return converted_vel;
+}
+
+std::vector<Vector3> System::get_SI_velocities() const {
+    std::vector<Vector3> velocities;
+
+    for (int i = 0; i < self_n; ++i) {
+        velocities.push_back(self_bodies[i].get_velocity());
+    }
+
+    return convert_vel_to_SI(velocities);
+}
+
+std::vector<Vector3> System::get_SI_positions() const {
+
+    std::vector<Vector3> positions;
+
+    for (int i = 0; i < self_n; ++i) {
+        positions.push_back(self_bodies[i].get_position());
+    }
+
+    return convert_pos_to_SI(positions);
 }
 
 

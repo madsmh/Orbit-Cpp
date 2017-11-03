@@ -50,7 +50,11 @@ public:
 
     std::vector<Vector3> get_positions() const;
 
+    std::vector<Vector3> get_SI_positions() const;
+
     std::vector<Vector3> get_velocities() const;
+
+    std::vector<Vector3> get_SI_velocities() const;
 
     std::vector<Vector3> get_accelerations() const;
 
@@ -66,8 +70,12 @@ public:
 
     double get_total_mechanical_energy () const;
 
-    std::vector<Vector3> convert_pos_to_AU(std::vector<Vector3> pos);
-    std::vector<Vector3> convert_vel_to_AU_per_day(std::vector<Vector3> vel);
+    std::vector<Vector3> convert_pos_to_AU(std::vector<Vector3> pos) const ;
+    std::vector<Vector3> convert_vel_to_AU_per_day(std::vector<Vector3> vel) const ;
+    double convert_GM(double GM);
+
+    std::vector<Vector3> convert_pos_to_SI(std::vector<Vector3> pos) const;
+    std::vector<Vector3> convert_vel_to_SI(std::vector<Vector3> vel) const;
 };
 
 
