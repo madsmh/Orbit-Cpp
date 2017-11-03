@@ -164,4 +164,25 @@ double System::get_total_mechanical_energy() const {
     return get_total_kinetic_energy() + get_total_potential_energy();
 }
 
+std::vector<Vector3> System::convert_pos_to_AU(std::vector<Vector3> pos) {
+    std::vector<Vector3> converted_pos;
+
+    for (const auto &po : pos) {
+        converted_pos.emplace_back(po * 1/self_AU);
+    }
+
+    return converted_pos;
+}
+
+std::vector <Vector3> System::convert_vel_to_AU_per_day(std::vector <Vector3> vel) {
+
+    std::vector<Vector3> converted_vel;
+
+    for (const auto &i : vel) {
+        converted_vel.emplace_back(i * self_day/self_AU);
+    }
+
+    return converted_vel;
+}
+
 
