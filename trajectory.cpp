@@ -96,4 +96,32 @@ void Trajectory::save_trajectory_positions(int tra, std::string name, double sta
     std::cout << "Finshed writing data for " << name << "." << std::endl;
 }
 
+std::vector<Vector3> Trajectory::get_trajectory_SI_positions(int body) const {
+    return convert_pos_to_SI(self_positions[body]);
+}
+
+std::vector<Vector3> Trajectory::convert_vel_to_SI(std::vector<Vector3> vel) const {
+    std::vector<Vector3> converted_vel;
+
+    for (const auto &j : vel) {
+        converted_vel.emplace_back(j *self_AU/self_day);
+    }
+
+    return converted_vel;
+}
+
+std::vector<Vector3> Trajectory::convert_pos_to_SI(std::vector<Vector3> pos) const {
+    std::vector<Vector3> converted_pos;
+
+    for (const auto &j : pos) {
+        converted_pos.emplace_back(j *self_AU);
+    }
+
+    return converted_pos;
+}
+
+std::vector<Vector3> Trajectory::get_trajectory_SI_velocities(int body) const {
+    return convert_vel_to_SI(self_velocities[body]);
+}
+
 

@@ -32,6 +32,9 @@
 
 class Trajectory{
 
+    const double self_AU = 149597870700.0;
+    const double self_day = 86400.0;
+
     long self_n_trajectories;
     std::vector<std::vector<Vector3>> self_positions;
     std::vector<std::vector<Vector3>> self_velocities;
@@ -43,7 +46,11 @@ public:
 
     std::vector<Vector3> get_trajectory_positions(int body) const;
 
+    std::vector<Vector3> get_trajectory_SI_positions(int body) const;
+
     std::vector<Vector3> get_trajectory_velocities(int body) const;
+
+    std::vector<Vector3> get_trajectory_SI_velocities(int body) const;
 
     std::vector<Vector3> get_positions_at_index(int index) const;
 
@@ -54,6 +61,11 @@ public:
     void save_trajectory_positions(int tra, std::string name, double start_time, double dt);
 
     long get_number_of_trajectories(){ return self_n_trajectories; }
+
+    std::vector<Vector3> convert_pos_to_SI(std::vector<Vector3> pos) const;
+
+    std::vector<Vector3> convert_vel_to_SI(std::vector<Vector3> vel) const;
+
 };
 
 

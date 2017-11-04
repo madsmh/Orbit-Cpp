@@ -118,7 +118,7 @@ std::vector<double> importdata::test_accuracy(Trajectory trajectory,
     std::vector<double> dists;
 
     for (int j = 0; j < trajectory.get_number_of_trajectories(); ++j) {
-        std::vector<Vector3> sim_vector = trajectory.get_trajectory_positions(j);
+        std::vector<Vector3> sim_vector = trajectory.get_trajectory_SI_positions(j);
         std::vector<Vector3> ref_vector = data->get_body_positions(j);
 
         for (int i = 0; i < ref_vector.size(); ++i) {

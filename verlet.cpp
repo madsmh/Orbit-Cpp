@@ -25,7 +25,7 @@
 void Verlet::setup(int days, int detail) {
 
     m_rows = days * detail;
-    m_delta = ((double) 86400)/((double) detail);
+    m_delta = ((double) 1.0)/((double) detail);
 
     /*std::cout << "Starting integrator." << std::endl;
 
