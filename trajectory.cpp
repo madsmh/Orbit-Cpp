@@ -20,15 +20,17 @@
 
 #include "trajectory.h"
 
-Trajectory::Trajectory(long n_trajectories, long n_rows) {
+void Trajectory::setup(long n_trajectories) {
 
     self_n_trajectories = n_trajectories;
+
+    self_positions.clear();
+    self_velocities.clear();
 
     for (unsigned int i = 0; i < self_n_trajectories; ++i) {
         self_positions.emplace_back(std::vector<Vector3> {});
         self_velocities.emplace_back(std::vector<Vector3> {});
     }
-    self_n_rows = n_rows;
 }
 
 void Trajectory::set_position(const std::vector<Vector3>& pos, const std::vector<Vector3>& vel){
@@ -79,7 +81,7 @@ void Trajectory::save_trajectory_positions(int tra, std::string name, double sta
 
     if (myfile.good()) {
 
-        for (int i = 0; i < self_n_rows; ++i) {
+        for (int i = 0; i < current_trajectory.size(); ++i) {
             std::string t = boost::lexical_cast<std::string>(start_time + (double) i * dt);
             std::string x_coord = boost::lexical_cast<std::string>(current_trajectory[i].x());
             std::string y_coord = boost::lexical_cast<std::string>(current_trajectory[i].y());

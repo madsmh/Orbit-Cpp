@@ -17,30 +17,32 @@
  *
  * */
 
-#ifndef ORBIT3D_SCALE_H
-#define ORBIT3D_SCALE_H
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
+#include <QMainWindow>
 
 #include "vector3.h"
 
-class Scale {
-    double factor;
+namespace Ui {
+class MainWindow;
+}
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
 
 public:
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
 
-    explicit Scale (double s){
-        factor = s;
-    }
+    void render(std::vector<std::string> names,
+                std::vector<Vector3> start_pos,
+                std::vector<double> radii);
 
-    float scalar(double x){
-        return x*factor;
-    }
-
-    Vector3 vector(Vector3 v){
-
-        return v * factor;
-    }
-
+private:
+    Ui::MainWindow *ui;
+    void populateCombos(std::vector<std::string> names);
 };
 
-
-#endif //ORBIT3D_SCALE_H
+#endif // MAINWINDOW_H

@@ -17,30 +17,29 @@
  *
  * */
 
-#ifndef ORBIT3D_SCALE_H
-#define ORBIT3D_SCALE_H
+#ifndef DIAGNOSTICDIALOG_H
+#define DIAGNOSTICDIALOG_H
 
-#include "vector3.h"
+#include <QDialog>
 
-class Scale {
-    double factor;
+namespace Ui {
+class DiagnosticDialog;
+}
+
+class DiagnosticDialog : public QDialog
+{
+    Q_OBJECT
 
 public:
+    explicit DiagnosticDialog(QWidget *parent = 0);
+    ~DiagnosticDialog();
 
-    explicit Scale (double s){
-        factor = s;
-    }
+public slots:
+    void populate_error_table(std::vector<std::string> names,
+                              std::vector<double> errors);
 
-    float scalar(double x){
-        return x*factor;
-    }
-
-    Vector3 vector(Vector3 v){
-
-        return v * factor;
-    }
-
+private:
+    Ui::DiagnosticDialog *ui;
 };
 
-
-#endif //ORBIT3D_SCALE_H
+#endif // DIAGNOSTICDIALOG_H

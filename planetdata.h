@@ -20,8 +20,11 @@
 #ifndef ORBIT3D_PLANETDATA_H
 #define ORBIT3D_PLANETDATA_H
 
+#include <QObject>
+
 #include <vector>
 #include "vector3.h"
+#include <sstream>
 
 struct HorizonsFile {
     double x;
@@ -32,7 +35,12 @@ struct HorizonsFile {
     double vz;
 };
 
-class PlanetData {
+class PlanetData : public QObject
+{
+
+    Q_OBJECT
+
+private:
     std::vector<std::string> self_planet_names;
     std::vector<std::vector<Vector3> > self_positions;
     std::vector<std::vector<Vector3> > self_velocities;
@@ -40,7 +48,9 @@ class PlanetData {
     void structs_to_arrays();
 
     std::vector<HorizonsFile> horizons_to_structs(std::string planet);
+
 public:
+
     explicit PlanetData(const std::vector<std::string> &names);
 
     std::vector<Vector3> get_body_positions(int body);
@@ -51,6 +61,12 @@ public:
 
     std::vector<Vector3> get_starting_velocities();
 
+    void read_data();
+
+signals:
+
+    void getText(QString text);
+    void success (bool s);
 };
 
 #endif //ORBIT3D_PLANETDATA_H
