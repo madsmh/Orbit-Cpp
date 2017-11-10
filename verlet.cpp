@@ -61,7 +61,7 @@ void Verlet::run(System &sys, Trajectory &tra) {
             sys.set_positions(x0);
             sys.set_velocities(v0);
 
-            mechanical_energy.emplace_back(sys.get_total_mechanical_energy());
+            // mechanical_energy.emplace_back(sys.get_total_mechanical_energy());
 
             emit progress(i);
         }
@@ -97,7 +97,7 @@ void Verlet::run(System &sys, Trajectory &tra) {
 
             sys.set_velocities(v1);
 
-            mechanical_energy.emplace_back(sys.get_total_mechanical_energy());
+            // mechanical_energy.emplace_back(sys.get_total_mechanical_energy());
 
             tra.set_position(x1, v1);
 
