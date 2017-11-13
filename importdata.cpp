@@ -124,6 +124,8 @@ std::vector<double> importdata::test_accuracy(Trajectory trajectory,
         for (int i = 0; i < ref_vector.size(); ++i) {
             double error = (sim_vector[i*detail]-ref_vector[i]).norm();
             dists.emplace_back(error);
+
+            QCoreApplication::processEvents();
         }
 
         errors.emplace_back(*std::max_element(dists.begin(), dists.end())/1000);
