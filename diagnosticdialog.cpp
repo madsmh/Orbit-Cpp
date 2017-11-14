@@ -17,6 +17,8 @@
  *
  * */
 
+#include <QtCharts/QChartView>
+#include <QtCharts/QtCharts>
 #include "diagnosticdialog.h"
 #include "ui_diagnosticdialog.h"
 #include "importdata.h"
@@ -26,7 +28,6 @@ DiagnosticDialog::DiagnosticDialog(QWidget *parent) :
     ui(new Ui::DiagnosticDialog)
 {
     ui->setupUi(this);
-
 }
 
 DiagnosticDialog::~DiagnosticDialog()
@@ -57,7 +58,28 @@ void DiagnosticDialog::populate_error_table(std::vector<std::string> names,
 void DiagnosticDialog::populate_plot(std::vector<std::string> names, std::vector<std::vector<float> > points) {
 
     for (int j = 0; j < names.size(); ++j) {
+
         this->ui->comboBox->addItem(QString::fromStdString(names[j]));
+
+        m_points.emplace_back(new QtCharts::QLineSeries());
+
+        for (int k = 0; k < points[j].size(); ++k) {
+            m_points.back()->append(k, points[j][k]);
+        }
     }
+
+    auto *chart = new QChart();
+
+    chart->createDefaultAxes();
+    chart->legend()->hide();
+
+    this->ui->widget->setChart(chart);
+    this->ui->widget->setRenderHint(QPainter::Antialiasing);
+
+    QObject::connect(this->ui->comboBox,
+                     static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+                     [=](int ix){
+                         chart->addSeries(m_points[ix]);
+                     });
 
 }

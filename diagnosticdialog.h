@@ -21,6 +21,7 @@
 #define DIAGNOSTICDIALOG_H
 
 #include <QDialog>
+#include <QtCharts/QLineSeries>
 
 namespace Ui {
 class DiagnosticDialog;
@@ -33,6 +34,8 @@ class DiagnosticDialog : public QDialog
 public:
     explicit DiagnosticDialog(QWidget *parent = 0);
     ~DiagnosticDialog();
+
+    std::vector<QtCharts::QLineSeries*> m_points;
 
 public slots:
     void populate_error_table(std::vector<std::string> names, std::vector<float > errors);
