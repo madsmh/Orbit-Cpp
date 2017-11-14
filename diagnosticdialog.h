@@ -35,9 +35,7 @@ public:
     ~DiagnosticDialog();
 
 public slots:
-    void populate_error_table(std::vector<std::string> names,
-                              std::vector<double> errors);
-
+    void populate_error_table(std::vector<std::string> names, std::vector<double> errors)
 private:
     Ui::DiagnosticDialog *ui;
 };

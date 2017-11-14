@@ -109,9 +109,8 @@ importdata::~importdata()
     delete ui;
 }
 
-std::vector<double> importdata::test_accuracy(Trajectory trajectory,
-                                              PlanetData *data,
-                                              int detail) {
+std::vector<double> importdata::test_accuracy(Trajectory trajectory, PlanetData *data, int detail)
+    {
 
     std::vector<double> errors;
 
@@ -133,6 +132,33 @@ std::vector<double> importdata::test_accuracy(Trajectory trajectory,
     }
 
     return errors;
+}
+
+Trajectory importdata::error_plots(PlanetData *data, int detail) {
+
+    long n_tra = m_trajecotry.get_number_of_trajectories();
+
+    std::vector<Vector3> error_data;
+
+    Trajectory error_plots;
+    error_plots.setup(m_trajecotry.get_number_of_trajectories());
+
+    for (int j = 0; j < n_tra; ++j) {
+
+        std::vector<Vector3> current_body_sim = m_trajecotry.get_trajectory_positions(j);
+        std::vector<Vector3> current_body_ref = data->get_body_positions(j);
+
+        for (int k = 0; k < current_body_ref.size(); ++k) {
+            error_data.emplace_back((current_body_ref[k]-current_body_sim[k*detail]).norm()/1000);
+        }
+
+        error_plots.set_position(error_data, error_data);
+        error_data.clear();
+    }
+
+
+
+    return error_plots;
 }
 
 
