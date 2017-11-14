@@ -64,7 +64,7 @@ importdata::importdata(QWidget *parent) :
                          m_verlet->set_abort(true);
                          this->ui->pushButton_diag->setDisabled(true);
                          this->ui->progressBar->reset();
-                         m_trajecotry.setup(m_sol.get_number_of_bodies());
+                         m_trajectory.setup(m_sol.get_number_of_bodies());
                          this->ui->abortButton->setEnabled(false);
                      });
 
@@ -82,10 +82,10 @@ importdata::importdata(QWidget *parent) :
                                          horizons->get_starting_velocities(),
                                          prop->get_GMs(),
                                          get_radii());
-                         m_trajecotry.setup(m_sol.get_number_of_bodies());
+                         m_trajectory.setup(m_sol.get_number_of_bodies());
                          m_verlet->setup(this->ui->daysSpinBox->value(),
                                          this->ui->stepSpinBox->value());
-                         m_verlet->run(m_sol, m_trajecotry);
+                         m_verlet->run(m_sol, m_trajectory);
                      }
     );
 
@@ -96,10 +96,9 @@ importdata::importdata(QWidget *parent) :
 
     QObject::connect(this->ui->pushButton_diag, &QPushButton::clicked,
                     [=](){
-                        std::vector<double> accu_table = test_accuracy(m_trajecotry,
-                                                                       horizons,
-                                                                       this->ui->stepSpinBox->value());
-                        diagnostic->populate_error_table(prop->get_names(), accu_table);
+                        test_accuracy(m_trajectory, horizons, this->ui->stepSpinBox->value());
+                        diagnostic->populate_plot(m_body_names, m_plot_points);
+                        diagnostic->populate_error_table(m_body_names, m_max_errors);
                         diagnostic->exec();
                     });
 }
@@ -109,56 +108,25 @@ importdata::~importdata()
     delete ui;
 }
 
-std::vector<double> importdata::test_accuracy(Trajectory trajectory, PlanetData *data, int detail)
+void importdata::test_accuracy(Trajectory trajectory, PlanetData *data, int detail)
     {
+        m_plot_points.clear();
+        m_max_errors.clear();
 
-    std::vector<double> errors;
+        for (int j = 0; j < trajectory.get_number_of_trajectories(); ++j) {
 
-    std::vector<double> dists;
+            std::vector<Vector3> sim_vector = trajectory.get_trajectory_positions(j);
+            std::vector<Vector3> ref_vector = data->get_body_positions(j);
 
-    for (int j = 0; j < trajectory.get_number_of_trajectories(); ++j) {
-        std::vector<Vector3> sim_vector = trajectory.get_trajectory_positions(j);
-        std::vector<Vector3> ref_vector = data->get_body_positions(j);
+            m_plot_points.emplace_back(std::vector<float > {});
 
-        for (int i = 0; i < ref_vector.size(); ++i) {
-            double error = (sim_vector[i*detail]-ref_vector[i]).norm();
-            dists.emplace_back(error);
+            for (int i = 0; i < ref_vector.size(); ++i) {
+                m_plot_points.back().emplace_back((sim_vector[i*detail]-ref_vector[i]).norm()/1000);
+                QCoreApplication::processEvents();
+            }
 
-            QCoreApplication::processEvents();
-        }
-
-        errors.emplace_back(*std::max_element(dists.begin(), dists.end())/1000);
-        dists.clear();
+        m_max_errors.emplace_back(*std::max_element(m_plot_points.back().begin(), m_plot_points.back().end()));
     }
-
-    return errors;
-}
-
-Trajectory importdata::error_plots(PlanetData *data, int detail) {
-
-    long n_tra = m_trajecotry.get_number_of_trajectories();
-
-    std::vector<Vector3> error_data;
-
-    Trajectory error_plots;
-    error_plots.setup(m_trajecotry.get_number_of_trajectories());
-
-    for (int j = 0; j < n_tra; ++j) {
-
-        std::vector<Vector3> current_body_sim = m_trajecotry.get_trajectory_positions(j);
-        std::vector<Vector3> current_body_ref = data->get_body_positions(j);
-
-        for (int k = 0; k < current_body_ref.size(); ++k) {
-            error_data.emplace_back((current_body_ref[k]-current_body_sim[k*detail]).norm()/1000);
-        }
-
-        error_plots.set_position(error_data, error_data);
-        error_data.clear();
-    }
-
-
-
-    return error_plots;
 }
 
 

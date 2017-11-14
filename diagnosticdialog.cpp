@@ -35,7 +35,7 @@ DiagnosticDialog::~DiagnosticDialog()
 }
 
 void DiagnosticDialog::populate_error_table(std::vector<std::string> names,
-                                            std::vector<double> errors) {
+                                            std::vector<float > errors) {
 
     QStringList headers;
     headers << "Body name" << "Max. error (km)";
@@ -52,4 +52,12 @@ void DiagnosticDialog::populate_error_table(std::vector<std::string> names,
         this->ui->tableWidget->setItem(j, 0, name);
         this->ui->tableWidget->setItem(j, 1, error);
     }
+}
+
+void DiagnosticDialog::populate_plot(std::vector<std::string> names, std::vector<std::vector<float> > points) {
+
+    for (int j = 0; j < names.size(); ++j) {
+        this->ui->comboBox->addItem(QString::fromStdString(names[j]));
+    }
+
 }

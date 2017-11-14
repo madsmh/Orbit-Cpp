@@ -66,7 +66,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QChartView" name="widget" native="true">
+  <widget class="QtCharts::QChartView" name="widget" native="true">
    <property name="geometry">
     <rect>
      <x>350</x>
@@ -79,9 +79,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QChartView</class>
+   <class>QtCharts::QChartView</class>
    <extends>QWidget</extends>
-   <header location="global">QChartView.h</header>
+   <header location="global">QtCharts/QChartView</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

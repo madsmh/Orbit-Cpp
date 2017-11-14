@@ -21,7 +21,6 @@
 #define IMPORTDATA_H
 
 #include <QDialog>
-
 #include <vector>
 #include <string>
 #include <QtWidgets/QTableWidget>
@@ -29,6 +28,7 @@
 #include "system.h"
 #include "trajectory.h"
 #include "verlet.h"
+
 
 namespace Ui {
 class importdata;
@@ -44,20 +44,21 @@ public:
 
     std::vector<Vector3> get_pos() const { return  m_body_positions;};
     std::vector<Vector3> get_pos_of_body(int body) const {
-        return m_trajecotry.get_trajectory_positions(body);
+        return m_trajectory.get_trajectory_positions(body);
     };
     std::vector<double> get_radii() const { return m_body_radii;};
     std::vector<std::string> get_names() const { return m_body_names;};
-    std::vector<double> test_accuracy(Trajectory trajectory, PlanetData *data, int detail);
-    Trajectory error_plots(PlanetData *data, int detail);
+    void test_accuracy(Trajectory trajectory, PlanetData *data, int detail);
 
 private:
     Ui::importdata *ui;
 
     System m_sol;
-    Trajectory m_trajecotry;
+    Trajectory m_trajectory;
     Verlet *m_verlet = new Verlet;
 
+    std::vector<std::vector<float > > m_plot_points;
+    std::vector<float > m_max_errors;
     std::vector<Vector3> m_body_positions;
     std::vector<double > m_body_radii;
     std::vector<std::string> m_body_names;
