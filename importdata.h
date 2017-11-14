@@ -43,12 +43,14 @@ public:
     virtual ~importdata();
 
     std::vector<Vector3> get_pos() const { return  m_body_positions;};
-    std::vector<Vector3> get_pos_of_body(int body) const { return m_trajecotry.get_trajectory_positions(body);};
+    std::vector<Vector3> get_pos_of_body(int body) const {
+        return m_trajecotry.get_trajectory_positions(body);
+    };
     std::vector<double> get_radii() const { return m_body_radii;};
     std::vector<std::string> get_names() const { return m_body_names;};
-    std::vector<double> test_accuracy(Trajectory trajectory,
-                                      PlanetData *data,
-                                      int detail);
+    std::vector<double> test_accuracy(Trajectory trajectory, PlanetData *data, int detail);
+    Trajectory error_plots(PlanetData *data, int detail);
+
 private:
     Ui::importdata *ui;
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>697</width>
-    <height>385</height>
+    <width>878</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>590</x>
-     <y>20</y>
+     <x>780</x>
+     <y>440</y>
      <width>81</width>
-     <height>241</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="orientation">
@@ -34,8 +34,8 @@
     <rect>
      <x>10</x>
      <y>20</y>
-     <width>561</width>
-     <height>341</height>
+     <width>321</width>
+     <height>411</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -56,7 +56,35 @@
    <column/>
    <column/>
   </widget>
+  <widget class="QComboBox" name="comboBox">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>20</y>
+     <width>101</width>
+     <height>28</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QChartView" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>50</y>
+     <width>511</width>
+     <height>381</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QChartView</class>
+   <extends>QWidget</extends>
+   <header location="global">QChartView.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
