@@ -70,16 +70,16 @@ void DiagnosticDialog::populate_plot(std::vector<std::string> names, std::vector
 
     auto *chart = new QChart();
 
-    chart->createDefaultAxes();
-    chart->legend()->hide();
-
     this->ui->widget->setChart(chart);
     this->ui->widget->setRenderHint(QPainter::Antialiasing);
 
     QObject::connect(this->ui->comboBox,
                      static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
                      [=](int ix){
+                         chart->removeAllSeries();
                          chart->addSeries(m_points[ix]);
+                         chart->createDefaultAxes();
+                         chart->setTitle("Absolute error vs. days for " + QString::fromStdString(names[ix]));
                      });
 
 }
