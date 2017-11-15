@@ -79,7 +79,10 @@ void DiagnosticDialog::populate_plot(std::vector<std::string> names, std::vector
                          chart->removeAllSeries();
                          chart->addSeries(m_points[ix]);
                          chart->createDefaultAxes();
-                         chart->setTitle("Absolute error vs. days for " + QString::fromStdString(names[ix]));
+                         chart->setTitle("Days vs. absolute error (km) for " + QString::fromStdString(names[ix]));
                      });
 
 }
+
+
+
