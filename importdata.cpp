@@ -120,7 +120,7 @@ void importdata::test_accuracy(Trajectory trajectory, PlanetData *data, int deta
 
             m_plot_points.emplace_back(std::vector<float > {});
 
-            for (int i = 0; i < ref_vector.size(); ++i) {
+            for (int i = 0; i < this->ui->daysSpinBox->value(); ++i) {
                 m_plot_points.back().emplace_back((sim_vector[i*detail]-ref_vector[i]).norm()/1000);
                 QCoreApplication::processEvents();
             }

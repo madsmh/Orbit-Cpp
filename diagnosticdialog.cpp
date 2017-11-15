@@ -86,3 +86,5 @@ void DiagnosticDialog::populate_plot(std::vector<std::string> names, std::vector
 
 
 
+
+
