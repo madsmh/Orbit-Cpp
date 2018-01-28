@@ -73,11 +73,11 @@ void compare_with_horizon(Trajectory tra, PlanetData data,
     // Make table with error of Europas position with respect to Jupiter as a function
     // of time in days
 
-    auto europa_ref_positions = data.get_body_positions(25);
-    auto jupiter_ref_positions = data.get_body_positions(6);
+    auto europa_ref_positions = data.get_body_positions(24);
+    auto jupiter_ref_positions = data.get_body_positions(5);
 
-    auto europa_sim_positions = tra.get_trajectory_positions(25);
-    auto jupiter_sim_positions = tra.get_trajectory_positions(6);
+    auto europa_sim_positions = tra.get_trajectory_positions(24);
+    auto jupiter_sim_positions = tra.get_trajectory_positions(5);
 
     std::vector<double> europa_error_table {};
 
@@ -90,7 +90,7 @@ void compare_with_horizon(Trajectory tra, PlanetData data,
 
     double max_europa_jupiter_error = *std::max_element(europa_error_table.begin(), europa_error_table.end());
 
-    std::cout << "Maximum error in Europas position with respect to jupiter (km): " <<
+    std::cout << "Maximum error in Europas position with respect to Jupiter (km): " <<
               max_europa_jupiter_error << std::endl;
 
     std::cout << "Writing table." << std::endl;
@@ -127,7 +127,11 @@ int main(int argc, char **argv) {
 
     trajectory.setup(physicalProperties.get_names().size());
 
-    int detail = 100;
+    int detail;
+
+    std::cout << "Enter number of integration steps per day: ";
+    std::cin >> detail;
+
     auto days_to_sim = (int) planetData.get_body_positions(0).size();
 
     Verlet integrator;
