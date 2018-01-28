@@ -22,17 +22,16 @@
 #include "trajectory.h"
 #include "planetdata.h"
 #include "propertiesfile.h"
-#include "scene.h"
-#include "mainwindow.h"
-
-
-
-#include <QApplication>
-
-
+#include "verlet.h"
 
 void compare_with_horizon(Trajectory tra, PlanetData data,
-                          std::vector<std::string> names,double detail, long ref_rows){
+                          std::vector<std::string> const &names,
+                          int detail,
+                          int days)
+{
+    int ref_rows = (int) data.get_body_positions(0).size();
+
+    std::cout << "Absolute error for the bodies are" << std::endl;
 
     for (int j = 0; j < tra.get_number_of_trajectories(); ++j) {
         std::vector<Vector3> sim_vector = tra.get_trajectory_positions(j);
@@ -40,13 +39,14 @@ void compare_with_horizon(Trajectory tra, PlanetData data,
 
         std::vector<double> dists;
 
+
         for (int i = 0; i < ref_rows; ++i) {
             double error = (sim_vector[i*detail]-ref_vector[i]).norm();
             dists.emplace_back(error);
         }
 
         double max_dist = *std::max_element(dists.begin(), dists.end())/1000;
-        std::cout << "Error for " << names[j] << " is : " << max_dist << " km" << std::endl;
+        std::cout << j << " " << names[j] << ": " << max_dist << " km" << std::endl;
 
     }
 
@@ -61,11 +61,39 @@ void help(char *name) {
 int main(int argc, char **argv) {
     // Adapted from https://doc.qt.io/qt-5/qt3d-basicshapes-cpp-main-cpp.html
 
-    QApplication app (argc, argv);
-    MainWindow mainWindow;
-    mainWindow.show();
+    Trajectory trajectory;
+    PhysicalProperties physicalProperties;
 
-    return app.exec();
+    physicalProperties.get_data();
 
+    PlanetData planetData(physicalProperties.get_names());
+
+    planetData.read_data();
+
+    System sol;
+
+    sol.set_param(physicalProperties.get_names(),
+                  planetData.get_starting_positions(),
+                  planetData.get_starting_velocities(),
+                  physicalProperties.get_GMs(),
+                  physicalProperties.get_radii());
+
+
+    trajectory.setup(physicalProperties.get_names().size());
+
+    int detail = 400;
+    auto days_to_sim = (int) planetData.get_body_positions(0).size();
+
+    Verlet integrator;
+
+    integrator.setup(days_to_sim, detail);
+
+    integrator.run(sol,trajectory);
+
+    compare_with_horizon(trajectory,
+                         planetData,
+                         physicalProperties.get_names(),
+                         detail,
+                         days_to_sim);
 }
 

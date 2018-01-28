@@ -58,11 +58,13 @@ void PhysicalProperties::get_data(long n)  {
 
     if (n==0)
         n = data.size();
+
     for (int i = 0; i < n; ++i) {
 
         PropertiesFile d = data[i];
         self_names.emplace_back(d.name);
         self_radii.emplace_back(d.r);
         self_GMs.emplace_back(d.GM);
+
     }
 };

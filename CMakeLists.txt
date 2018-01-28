@@ -31,18 +31,9 @@ set(SOURCE_FILES
         planetdata.h
         propertiesfile.cpp
         propertiesfile.h
-        scale.h
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
-        importdata.cpp
-        importdata.h
-        importdata.ui
         verlet.cpp
         verlet.h
-        diagnosticdialog.cpp
-        diagnosticdialog.h
-        diagnosticdialog.ui)
+       )
 add_executable(orbit3d ${SOURCE_FILES} )
 add_dependencies(orbit3d copy-runtime-files)
 target_link_libraries(orbit3d

@@ -20,8 +20,6 @@
 #ifndef ORBIT3D_PLANETDATA_H
 #define ORBIT3D_PLANETDATA_H
 
-#include <QObject>
-
 #include <vector>
 #include "vector3.h"
 #include <sstream>
@@ -35,38 +33,22 @@ struct HorizonsFile {
     double vz;
 };
 
-class PlanetData : public QObject
-{
+class PlanetData {
 
-    Q_OBJECT
+    private:
+        std::vector<std::string> self_planet_names;
+        std::vector<std::vector<Vector3> > self_positions;
+        std::vector<std::vector<Vector3> > self_velocities;
+        void structs_to_arrays();
+        std::vector<HorizonsFile> horizons_to_structs(std::string planet);
 
-private:
-    std::vector<std::string> self_planet_names;
-    std::vector<std::vector<Vector3> > self_positions;
-    std::vector<std::vector<Vector3> > self_velocities;
-
-    void structs_to_arrays();
-
-    std::vector<HorizonsFile> horizons_to_structs(std::string planet);
-
-public:
-
-    explicit PlanetData(const std::vector<std::string> &names);
-
-    std::vector<Vector3> get_body_positions(int body);
-
-    std::vector<Vector3> get_body_velocities(int body);
-
-    std::vector<Vector3> get_starting_positions();
-
-    std::vector<Vector3> get_starting_velocities();
-
-    void read_data();
-
-signals:
-
-    void getText(QString text);
-    void success (bool s);
+    public:
+        explicit PlanetData(const std::vector<std::string> &names);
+        std::vector<Vector3> get_body_positions(int body);
+        std::vector<Vector3> get_body_velocities(int body);
+        std::vector<Vector3> get_starting_positions();
+        std::vector<Vector3> get_starting_velocities();
+        void read_data();
 };
 
 #endif //ORBIT3D_PLANETDATA_H

@@ -21,13 +21,14 @@
 #include "trajectory.h"
 #include "verlet.h"
 #include "system.h"
+#include <boost/progress.hpp>
 
 void Verlet::setup(int days, int detail) {
 
     m_rows = days * detail;
     m_delta = ((double) 86400)/((double) detail);
 
-    /*std::cout << "Starting integrator." << std::endl;
+    /*
 
 
     std::cout << "Integration finished in " << t.elapsed() << " seconds."<< std::endl;
@@ -42,10 +43,14 @@ void Verlet::setup(int days, int detail) {
 
 
 void Verlet::run(System &sys, Trajectory &tra) {
+    std::cout << "Starting integrator." << std::endl;
 
     std::vector<double> mechanical_energy;
     std::vector<Vector3> momentum;
     std::vector<Vector3> angular_momentum;
+
+    boost::progress_display progress(static_cast<unsigned long>(m_rows));
+
 
     double delta = m_delta;
     int n_bodies = (int) sys.get_number_of_bodies();
@@ -63,7 +68,7 @@ void Verlet::run(System &sys, Trajectory &tra) {
 
             // mechanical_energy.emplace_back(sys.get_total_mechanical_energy());
 
-            emit progress(i);
+            ++progress;
         }
 
         else {
@@ -101,13 +106,11 @@ void Verlet::run(System &sys, Trajectory &tra) {
 
             tra.set_position(x1, v1);
 
-            QCoreApplication::processEvents();
-
-            emit progress(i);
+            ++progress;
         }
     }
 
-    emit success(true);
+    std::cout << "Integration finished." << std::endl;
 }
 
 void Verlet::set_abort(bool abort) {

@@ -57,12 +57,9 @@ std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string plan
 
     std::string buffer;
 
-    QString qout;
     std::string out;
 
     out = "Reading position and velocity data for " + planet + "\n";
-    qout = QString::fromUtf8(out.c_str());
-    emit getText(qout);
 
     filereader.open(path);
 
@@ -102,17 +99,8 @@ std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string plan
         }
 
         out = "Closing file.\n";
-        qout = QString::fromUtf8(out.c_str());
-        emit getText(qout);
 
-        filereader.close();
     }
-
-
-    out = std::string("Returned vector is of size: ") +
-            std::to_string(data.size()) + "\n";
-    qout = QString::fromUtf8(out.c_str());
-    emit getText(qout);
 
     return data;
 }
@@ -123,14 +111,11 @@ void PlanetData::structs_to_arrays() {
     long n = self_planet_names.size();
 
     std::string out;
-    QString qout;
 
     for (int j = 0; j < n; ++j) {
         std::vector<HorizonsFile> h_structs = horizons_to_structs(self_planet_names[j]);
         out = "Initialized vector of structs with " +  std::to_string(h_structs.size()) +
          " elements, self-positons have size " + std::to_string(self_positions.size()) + "\n";
-        qout = QString::fromUtf8(out.c_str());
-        emit getText(qout);
 
         long n_of_structs = h_structs.size();
 
@@ -140,8 +125,6 @@ void PlanetData::structs_to_arrays() {
             self_velocities[j].emplace_back(Vector3 (h.vx, h.vy, h.vz));
         }
         out = "Saved structs to vector\n";
-        qout = QString::fromUtf8(out.c_str());
-        emit getText(qout);
 
     }
 
@@ -158,8 +141,6 @@ std::vector<Vector3> PlanetData::get_body_velocities(int body) {
 std::vector<Vector3 > PlanetData::get_starting_positions(){
     long n = self_planet_names.size();
     std::vector<Vector3> starting_positions;
-
-    QString qout;
 
     for (int i = 0; i < n; ++i) {
         starting_positions.emplace_back(get_body_positions(i)[0]);
@@ -185,10 +166,4 @@ void PlanetData::read_data() {
 
     structs_to_arrays();
 
-    emit success(true);
-
 }
-
-
-
-
