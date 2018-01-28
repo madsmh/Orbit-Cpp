@@ -24,6 +24,27 @@
 #include "propertiesfile.h"
 #include "verlet.h"
 
+#include <iostream>
+#include <fstream>
+
+Vector3 change_origin(Vector3 new_orgin, Vector3 old_coords){
+
+    return old_coords-new_orgin;
+
+};
+
+void write_table(const std::vector<double > &data, const std::string &file_name){
+    std::ofstream file;
+
+    file.open(file_name);
+
+    for (int j = 0; j < data.size(); ++j) {
+        file << j << ", " << data[j] << "\n";
+    }
+
+    file.close();
+}
+
 void compare_with_horizon(Trajectory tra, PlanetData data,
                           std::vector<std::string> const &names,
                           int detail,
@@ -47,9 +68,34 @@ void compare_with_horizon(Trajectory tra, PlanetData data,
 
         double max_dist = *std::max_element(dists.begin(), dists.end())/1000;
         std::cout << j << " " << names[j] << ": " << max_dist << " km" << std::endl;
-
     }
 
+    // Make table with error of Europas position with respect to Jupiter as a function
+    // of time in days
+
+    auto europa_ref_positions = data.get_body_positions(25);
+    auto jupiter_ref_positions = data.get_body_positions(6);
+
+    auto europa_sim_positions = tra.get_trajectory_positions(25);
+    auto jupiter_sim_positions = tra.get_trajectory_positions(6);
+
+    std::vector<double> europa_error_table {};
+
+    std::cout << "Calculating Europas error in position with respect to Jupiter." << std::endl;
+    for (int k = 0; k < days; ++k) {
+        europa_error_table.emplace_back(
+                (change_origin(jupiter_sim_positions[k*detail], europa_sim_positions[k*detail])-
+                        change_origin(jupiter_ref_positions[k], europa_ref_positions[k])).norm()/1000);
+    }
+
+    double max_europa_jupiter_error = *std::max_element(europa_error_table.begin(), europa_error_table.end());
+
+    std::cout << "Maximum error in Europas position with respect to jupiter (km): " <<
+              max_europa_jupiter_error << std::endl;
+
+    std::cout << "Writing table." << std::endl;
+
+    write_table(europa_error_table,"europa_error.txt");
 }
 
 
@@ -81,7 +127,7 @@ int main(int argc, char **argv) {
 
     trajectory.setup(physicalProperties.get_names().size());
 
-    int detail = 400;
+    int detail = 100;
     auto days_to_sim = (int) planetData.get_body_positions(0).size();
 
     Verlet integrator;
