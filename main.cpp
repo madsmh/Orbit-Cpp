@@ -48,7 +48,9 @@ void write_table(const std::vector<double > &data, const std::string &file_name)
 void compare_with_horizon(Trajectory tra, PlanetData data,
                           std::vector<std::string> const &names,
                           int detail,
-                          int days)
+                          int days,
+                          int origin,
+                          int target)
 {
     int ref_rows = (int) data.get_body_positions(0).size();
 
@@ -73,29 +75,30 @@ void compare_with_horizon(Trajectory tra, PlanetData data,
     // Make table with error of Europas position with respect to Jupiter as a function
     // of time in days
 
-    auto europa_ref_positions = data.get_body_positions(24);
-    auto jupiter_ref_positions = data.get_body_positions(5);
+    auto target_ref_positions = data.get_body_positions(target);
+    auto origin_ref_positions = data.get_body_positions(origin);
 
-    auto europa_sim_positions = tra.get_trajectory_positions(24);
-    auto jupiter_sim_positions = tra.get_trajectory_positions(5);
+    auto target_sim_positions = tra.get_trajectory_positions(target);
+    auto origin_sim_positions = tra.get_trajectory_positions(origin);
 
-    std::vector<double> europa_error_table {};
+    std::vector<double> error_table {};
 
-    std::cout << "Calculating Europas error in position with respect to Jupiter." << std::endl;
+    std::cout << "Calculating " << names[target] << "s " << "error in position with respect to " <<
+              names[origin] << "." << std::endl;
     for (int k = 0; k < days; ++k) {
-        europa_error_table.emplace_back(
-                (change_origin(jupiter_sim_positions[k*detail], europa_sim_positions[k*detail])-
-                        change_origin(jupiter_ref_positions[k], europa_ref_positions[k])).norm()/1000);
+        error_table.emplace_back(
+                (change_origin(origin_sim_positions[k*detail], target_sim_positions[k*detail])-
+                        change_origin(origin_ref_positions[k], target_ref_positions[k])).norm()/1000);
     }
 
-    double max_europa_jupiter_error = *std::max_element(europa_error_table.begin(), europa_error_table.end());
+    double max_europa_jupiter_error = *std::max_element(error_table.begin(), error_table.end());
 
-    std::cout << "Maximum error in Europas position with respect to Jupiter (km): " <<
-              max_europa_jupiter_error << std::endl;
+    std::cout << "Maximum error in " << names[target] << "s " << "position with respect to " << names[origin] <<
+              ": " << max_europa_jupiter_error << "." << std::endl;
 
     std::cout << "Writing table." << std::endl;
 
-    write_table(europa_error_table,"europa_error.txt");
+    write_table(error_table,"error.txt");
 }
 
 
@@ -128,9 +131,19 @@ int main(int argc, char **argv) {
     trajectory.setup(physicalProperties.get_names().size());
 
     int detail;
+    int origin;
+    int target;
 
     std::cout << "Enter number of integration steps per day: ";
     std::cin >> detail;
+
+    std::cout << "Enter body (int) to set as origin: ";
+    std::cin >> origin;
+    std::cout << "Chosen origin: " << physicalProperties.get_names()[origin] << std::endl;
+
+    std::cout << "Enter body (int) to plot the error for: ";
+    std::cin >> target;
+    std::cout << "Chosen target: " << physicalProperties.get_names()[target] << std::endl;
 
     auto days_to_sim = (int) planetData.get_body_positions(0).size();
 
@@ -144,6 +157,8 @@ int main(int argc, char **argv) {
                          planetData,
                          physicalProperties.get_names(),
                          detail,
-                         days_to_sim);
+                         days_to_sim,
+                         origin,
+                         target);
 }
 
