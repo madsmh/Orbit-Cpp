@@ -33,6 +33,12 @@ Vector3 change_origin(Vector3 new_orgin, Vector3 old_coords){
 
 };
 
+double angle(Vector3 vector1, Vector3 vector2){
+    double a = (vector1.x()*vector2.x()+vector1.y()*vector2.y()+vector1.z()*vector2.z())/(vector1.norm()*vector2.norm());
+    double radians = std::acos(a);
+    return radians*180.0/3.141592653589793238463;
+}
+
 void write_table(const std::vector<double > &data, const std::string &file_name){
     std::ofstream file;
 
@@ -83,26 +89,30 @@ void compare_with_horizon(Trajectory tra, PlanetData data,
 
     std::vector<double> error_pos_table {};
     std::vector<double> dist_table {};
+    std::vector<double> angle_table {};
 
     std::cout << "Calculating " << names[target] << "s " << "error in position with respect to " <<
               names[origin] << "." << std::endl;
     for (int k = 0; k < days; ++k) {
-        error_pos_table.emplace_back(
-                (change_origin(origin_sim_positions[k*detail], target_sim_positions[k*detail])-
-                        change_origin(origin_ref_positions[k], target_ref_positions[k])).norm()/1000);
-        dist_table.emplace_back(
-                (change_origin(origin_sim_positions[k*detail], target_sim_positions[k*detail])).norm()/1000);
+
+        Vector3 new_sim =change_origin(origin_sim_positions[k*detail], target_sim_positions[k*detail]);
+        Vector3 new_ref = change_origin(origin_ref_positions[k], target_ref_positions[k]);
+
+        error_pos_table.emplace_back( (new_sim-new_ref).norm()/1000);
+        dist_table.emplace_back(new_sim.norm()/1000);
+        angle_table.emplace_back(angle(new_ref, new_sim));
     }
 
-    double max_europa_jupiter_error = *std::max_element(error_pos_table.begin(), error_pos_table.end());
+    double max_error = *std::max_element(error_pos_table.begin(), error_pos_table.end());
 
     std::cout << "Maximum error in " << names[target] << "s " << "position with respect to " << names[origin] <<
-              ": " << max_europa_jupiter_error << "." << std::endl;
+              ": " << max_error << "." << std::endl;
 
     std::cout << "Writing table." << std::endl;
 
     write_table(error_pos_table,"error_pos.csv");
     write_table(dist_table,"dist.csv");
+    write_table(angle_table, "angles.csv");
 }
 
 
@@ -112,7 +122,6 @@ void help(char *name) {
 }
 
 int main(int argc, char **argv) {
-    // Adapted from https://doc.qt.io/qt-5/qt3d-basicshapes-cpp-main-cpp.html
 
     Trajectory trajectory;
     PhysicalProperties physicalProperties;

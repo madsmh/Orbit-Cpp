@@ -20,6 +20,8 @@ plt.axhline(y=ref_mean_orbit, color='r')
 plt.axhline(y=sim_mean_orbit, color='y')
 # plt.axhline(y=max_error/2, color='y')
 
+plt.grid(b=True, which='both')
+
 plt.xlabel("Days")
 plt.ylabel("Distance to Jupiter")
 
