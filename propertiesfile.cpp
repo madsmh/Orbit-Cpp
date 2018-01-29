@@ -21,9 +21,9 @@
 #include <fstream>
 #include <sstream>
 #include <boost/tokenizer.hpp>
-#include <boost/lexical_cast.hpp>
 
 #include "propertiesfile.h"
+
 void PhysicalProperties::get_data(long n)  {
     std::string path = "physical_properties/properties.csv";
     std::ifstream filereader;
@@ -34,11 +34,11 @@ void PhysicalProperties::get_data(long n)  {
     std::string buffer;
 
     filereader.open(path);
-    //boost::char_delimiters_separator<char> sep(", ");
+
     typedef boost::tokenizer<boost::escaped_list_separator<char> > tokenizer;
 
     if(filereader.is_open()){
-        getline(filereader, buffer); // Ignore first line
+        getline(filereader, buffer); // Ignore first line of file.
         while (!filereader.eof()){
             getline(filereader, buffer);
 
@@ -67,10 +67,11 @@ void PhysicalProperties::get_data(long n)  {
 
     for (int i = 0; i < n; ++i) {
 
-        PropertiesFile d = data[i];
-        self_names.emplace_back(d.name);
-        self_radii.emplace_back(d.r);
-        self_GMs.emplace_back(d.GM);
+        self_names.emplace_back(data[i].name);
+        self_radii.emplace_back(data[i].r);
+        self_GMs.emplace_back(data[i].GM);
 
     }
+
+    std::cout << "Loaded physical constants for " << self_names.size() << " bodies." << std::endl;
 };
