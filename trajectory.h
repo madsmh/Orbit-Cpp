@@ -54,6 +54,8 @@ public:
 
     void save_trajectory_positions(int body, std::string name, double start_time, double dt);
 
+    void save_all_trajectory_positions(std::vector<std::string> names);
+
     long get_number_of_trajectories(){ return self_n_trajectories; }
 };
 
