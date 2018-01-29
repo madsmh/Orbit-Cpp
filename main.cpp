@@ -81,24 +81,28 @@ void compare_with_horizon(Trajectory tra, PlanetData data,
     auto target_sim_positions = tra.get_trajectory_positions(target);
     auto origin_sim_positions = tra.get_trajectory_positions(origin);
 
-    std::vector<double> error_table {};
+    std::vector<double> error_pos_table {};
+    std::vector<double> dist_table {};
 
     std::cout << "Calculating " << names[target] << "s " << "error in position with respect to " <<
               names[origin] << "." << std::endl;
     for (int k = 0; k < days; ++k) {
-        error_table.emplace_back(
+        error_pos_table.emplace_back(
                 (change_origin(origin_sim_positions[k*detail], target_sim_positions[k*detail])-
                         change_origin(origin_ref_positions[k], target_ref_positions[k])).norm()/1000);
+        dist_table.emplace_back(
+                (change_origin(origin_sim_positions[k*detail], target_sim_positions[k*detail])).norm()/1000);
     }
 
-    double max_europa_jupiter_error = *std::max_element(error_table.begin(), error_table.end());
+    double max_europa_jupiter_error = *std::max_element(error_pos_table.begin(), error_pos_table.end());
 
     std::cout << "Maximum error in " << names[target] << "s " << "position with respect to " << names[origin] <<
               ": " << max_europa_jupiter_error << "." << std::endl;
 
     std::cout << "Writing table." << std::endl;
 
-    write_table(error_table,"error.txt");
+    write_table(error_pos_table,"error_pos.csv");
+    write_table(dist_table,"dist.csv");
 }
 
 
