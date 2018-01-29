@@ -20,9 +20,10 @@
 
 #include <fstream>
 #include <sstream>
+#include <boost/tokenizer.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include "propertiesfile.h"
-
 void PhysicalProperties::get_data(long n)  {
     std::string path = "physical_properties/properties.csv";
     std::ifstream filereader;
@@ -31,26 +32,31 @@ void PhysicalProperties::get_data(long n)  {
 
     std::vector<PropertiesFile> data;
     std::string buffer;
-    QString out;
 
     filereader.open(path);
+    //boost::char_delimiters_separator<char> sep(", ");
+    typedef boost::tokenizer<boost::escaped_list_separator<char> > tokenizer;
 
     if(filereader.is_open()){
-        getline(filereader, buffer, '\n');
+        getline(filereader, buffer); // Ignore first line
         while (!filereader.eof()){
-            getline(filereader, buffer, ',');
-            if (buffer.empty()) break;
-            p.name = buffer;
-            emit (QString::fromUtf8(std::string("Reading physical constants for object " + buffer + "\n").c_str()));
-            getline(filereader, buffer, ',');
-            std::stringstream(buffer) >> p.r;
-            emit (QString::fromUtf8(std::string("Radius = " + std::to_string(p.r) + "\n").c_str()));
-            getline(filereader, buffer, ',');
-            std::stringstream(buffer) >> p.GM;
-            QString::fromUtf8(std::string("GM = " + std::to_string(p.GM) + "\n").c_str());
-            getline(filereader, buffer, ',');
-            getline(filereader, buffer, '\n');
+            getline(filereader, buffer);
 
+            tokenizer tok(buffer);
+
+            auto tok_it = tok.begin();
+
+            p.name = *tok_it;
+
+            ++tok_it;
+
+            p.r = std::stod(*tok_it);
+
+            ++tok_it;
+
+            p.GM = std::stod(*tok_it);
+
+            // std::cout << p.name << ", " << p.r << ", " << p.GM << std::endl;
             data.emplace_back(p);
         }
         filereader.close();
