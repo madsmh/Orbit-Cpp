@@ -45,7 +45,19 @@ void write_table(const std::vector<double > &data, const std::string &file_name)
     file.open(file_name);
 
     for (int j = 0; j < data.size(); ++j) {
-        file << j << ", " << data[j] << "\n";
+        file << data[j] << std::endl;
+    }
+
+    file.close();
+}
+
+void write_table(const std::vector<Vector3 > &data, const std::string &file_name){
+    std::ofstream file;
+
+    file.open(file_name);
+
+    for (int j = 0; j < data.size(); ++j) {
+        file << data[j].x() << ", " << data[j].y() << ", " << data[j].z() << std::endl;
     }
 
     file.close();
@@ -90,6 +102,7 @@ void compare_with_horizon(Trajectory tra, PlanetData data,
     std::vector<double> error_pos_table {};
     std::vector<double> dist_table {};
     std::vector<double> angle_table {};
+    std::vector<Vector3> delta_table {};
 
     std::cout << "Calculating " << names[target] << "s " << "error in position with respect to " <<
               names[origin] << "." << std::endl;
@@ -97,10 +110,12 @@ void compare_with_horizon(Trajectory tra, PlanetData data,
 
         Vector3 new_sim =change_origin(origin_sim_positions[k*detail], target_sim_positions[k*detail]);
         Vector3 new_ref = change_origin(origin_ref_positions[k], target_ref_positions[k]);
+        Vector3 delta = new_sim-new_ref;
 
-        error_pos_table.emplace_back( (new_sim-new_ref).norm()/1000);
+        error_pos_table.emplace_back(delta.norm()/1000);
         dist_table.emplace_back(new_sim.norm()/1000);
         angle_table.emplace_back(angle(new_ref, new_sim));
+        delta_table.emplace_back(delta);
     }
 
     double max_error = *std::max_element(error_pos_table.begin(), error_pos_table.end());
@@ -113,6 +128,7 @@ void compare_with_horizon(Trajectory tra, PlanetData data,
     write_table(error_pos_table,"error_pos.csv");
     write_table(dist_table,"dist.csv");
     write_table(angle_table, "angles.csv");
+    write_table(delta_table, "delta.csv");
 }
 
 
