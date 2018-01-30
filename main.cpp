@@ -103,6 +103,8 @@ void compare_with_horizon(Trajectory tra, PlanetData data,
     std::vector<double> dist_table {};
     std::vector<double> angle_table {};
     std::vector<Vector3> delta_table {};
+    std::vector<Vector3> pos_sim_table {};
+    std::vector<Vector3> pos_ref_table {};
 
     std::cout << "Calculating " << names[target] << "s " << "error in position with respect to " <<
               names[origin] << "." << std::endl;
@@ -116,6 +118,8 @@ void compare_with_horizon(Trajectory tra, PlanetData data,
         dist_table.emplace_back(new_sim.norm()/1000);
         angle_table.emplace_back(angle(new_ref, new_sim));
         delta_table.emplace_back(delta);
+        pos_ref_table.emplace_back(new_ref);
+        pos_sim_table.emplace_back(new_sim);
     }
 
     double max_error = *std::max_element(error_pos_table.begin(), error_pos_table.end());
@@ -129,6 +133,8 @@ void compare_with_horizon(Trajectory tra, PlanetData data,
     write_table(dist_table,"dist.csv");
     write_table(angle_table, "angles.csv");
     write_table(delta_table, "delta.csv");
+    write_table(pos_ref_table, "pos_ref.csv");
+    write_table(pos_sim_table, "pos_sim.csv");
 }
 
 
