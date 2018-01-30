@@ -63,12 +63,12 @@ void write_table(const std::vector<Vector3 > &data, const std::string &file_name
     file.close();
 }
 
-void compare_with_horizon(Trajectory tra, PlanetData data,
-                          std::vector<std::string> const &names,
-                          int detail,
-                          int days,
-                          int origin,
-                          int target)
+void diagnostics(Trajectory tra, PlanetData data,
+                 std::vector<std::string> const &names,
+                 int detail,
+                 int days,
+                 int origin,
+                 int target)
 {
     int ref_rows = (int) data.get_body_positions(0).size();
 
@@ -87,6 +87,21 @@ void compare_with_horizon(Trajectory tra, PlanetData data,
         }
 
         double max_dist = *std::max_element(dists.begin(), dists.end())/1000;
+
+        if (j == 23){
+            std::cout << "Jovian moons: " << std::endl;
+        } else if (j == 73){
+            std::cout << "Saturninan moons: " << std::endl;
+        } else if (j == 84){
+            std::cout << "Plutonian moons: " << std::endl;
+        } else if (j == 88){
+            std::cout << "Martian moons: " << std::endl;
+        } else if (j == 90){
+            std::cout << "Neptunian moons: " << std::endl;
+        } else if (j == 104){
+            std::cout << "Uanian moons: " << std::endl;
+        }
+
         std::cout << j << " " << names[j] << ": " << max_dist << " km" << std::endl;
     }
 
@@ -182,12 +197,12 @@ int main(int argc, char **argv) {
 
     integrator.run(sol,trajectory);
 
-    compare_with_horizon(trajectory,
-                         planetData,
-                         physicalProperties.get_names(),
-                         detail,
-                         days_to_sim,
-                         origin,
-                         target);
+    diagnostics(trajectory,
+                planetData,
+                physicalProperties.get_names(),
+                detail,
+                days_to_sim,
+                origin,
+                target);
 }
 
