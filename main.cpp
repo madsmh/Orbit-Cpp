@@ -28,9 +28,7 @@
 #include <fstream>
 
 Vector3 change_origin(Vector3 new_orgin, Vector3 old_coords){
-
     return old_coords-new_orgin;
-
 };
 
 double angle(Vector3 vector1, Vector3 vector2){
@@ -63,13 +61,13 @@ void write_table(const std::vector<Vector3 > &data, const std::string &file_name
     file.close();
 }
 
-void diagnostics(Trajectory tra, PlanetData data,
+void diagnostics(Trajectory tra,
+                 PlanetData data,
                  std::vector<std::string> const &names,
                  int detail,
                  int days,
                  int origin,
-                 int target)
-{
+                 int target) {
     int ref_rows = (int) data.get_body_positions(0).size();
 
     std::cout << "Absolute error for the bodies are" << std::endl;
@@ -144,8 +142,8 @@ void diagnostics(Trajectory tra, PlanetData data,
 
     std::cout << "Writing table." << std::endl;
 
-    write_table(error_pos_table,"error_pos.csv");
-    write_table(dist_table,"dist.csv");
+    write_table(error_pos_table, "error_pos.csv");
+    write_table(dist_table, "dist.csv");
     write_table(angle_table, "angles.csv");
     write_table(delta_table, "delta.csv");
     write_table(pos_ref_table, "pos_ref.csv");
