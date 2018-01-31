@@ -42,8 +42,8 @@ void write_table(const std::vector<double > &data, const std::string &file_name)
 
     file.open(file_name);
 
-    for (int j = 0; j < data.size(); ++j) {
-        file << data[j] << std::endl;
+    for (double j : data) {
+        file << j << std::endl;
     }
 
     file.close();
@@ -54,8 +54,8 @@ void write_table(const std::vector<Vector3 > &data, const std::string &file_name
 
     file.open(file_name);
 
-    for (int j = 0; j < data.size(); ++j) {
-        file << data[j].x() << ", " << data[j].y() << ", " << data[j].z() << std::endl;
+    for (const auto &j : data) {
+        file << j.x() << ", " << j.y() << ", " << j.z() << std::endl;
     }
 
     file.close();
@@ -139,6 +139,9 @@ void diagnostics(Trajectory tra,
 
     std::cout << "Maximum error in " << names[target] << "s " << "position with respect to " << names[origin] <<
               ": " << max_error << "." << std::endl;
+    std::cout << "Initial conditions for " << names[target] << " is" << std::endl <<
+              "   Position: " << tra.get_trajectory_positions(target)[0]*1e-3 << std::endl <<
+              "   Velocity: " << tra.get_trajectory_velocities(target)[0]*1e-3 << std::endl;
 
     std::cout << "Writing table." << std::endl;
 
