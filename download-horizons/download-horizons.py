@@ -25,7 +25,7 @@ def save_table(table, path):
 
 def run(path_to_config_file, from_date, to_date, time_step):
 
-    path = "data/"
+    path = "../data/"
     coord_center = "500@0"
     with open(path_to_config_file) as csvfile:
         reader = csv.DictReader(csvfile, skipinitialspace=True)
