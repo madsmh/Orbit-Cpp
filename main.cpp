@@ -185,7 +185,7 @@ int main(int argc, char **argv) {
     int origin;
     int target;
 
-    std::cout << "Enter number of integration steps per day: ";
+    std::cout << "Enter number of integration steps per hour: ";
     std::cin >> detail;
 
     std::cout << "Enter body (int) to set as origin: ";
