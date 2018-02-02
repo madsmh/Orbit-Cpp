@@ -3,8 +3,8 @@ import callhorizons as ch
 import csv
 
 start_date = '2017-07-10'
-end_date = '2017-07-15'
-time_step = '1d'
+end_date = '2020-07-10'
+time_step = '1h'
 path = "../physical_properties/properties.csv"
 
 
