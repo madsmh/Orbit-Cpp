@@ -48,7 +48,7 @@ std::vector<std::string> split(std::string str, const std::string& delim) {
 }
 
 std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string planet) {
-    std::string path = "data/" + planet + ".txt";
+    std::string path = "data/" + planet + ".csv";
     std::transform(path.begin(), path.end(), path.begin(), ::tolower);
 
     std::ifstream filereader;
@@ -57,29 +57,17 @@ std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string plan
 
     std::string buffer;
 
-    typedef boost::tokenizer<boost::escaped_list_separator<char> > tokenizer;
+    typedef boost::tokenizer<boost::escaped_list_separator<char>> tokenizer;
 
     filereader.open(path);
 
     if (filereader.is_open()) {
-        // Use a state machine to control
-        // the file reading.
-        bool reading = false;
         while (!filereader.eof()) {
-
             std::getline(filereader, buffer);
-
-            if (buffer == "$$SOE") {
-                reading = true;
-            } else if (buffer == "$$EOE") {
-                reading = false;
-            } else if (reading) {
+            if (!buffer.empty()) {
                 tokenizer tok(buffer);
 
                 auto tok_it = tok.begin();
-
-                ++tok_it;
-                ++tok_it;
 
                 h.x = std::stod(*tok_it) * 1000.0;
                 ++tok_it;

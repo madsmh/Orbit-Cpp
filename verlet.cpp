@@ -26,7 +26,7 @@
 void Verlet::setup(int days, int detail) {
 
     m_rows = days * detail;
-    m_delta = ((double) 86400)/((double) detail);
+    m_delta = ((double) 3600)/((double) detail);
 
     /*
 

@@ -41,23 +41,24 @@ void PhysicalProperties::get_data(long n)  {
         getline(filereader, buffer); // Ignore first line of file.
         while (!filereader.eof()){
             getline(filereader, buffer);
+            if(!buffer.empty()) {
+                tokenizer tok(buffer);
 
-            tokenizer tok(buffer);
+                auto tok_it = tok.begin();
 
-            auto tok_it = tok.begin();
+                p.name = *tok_it;
 
-            p.name = *tok_it;
+                ++tok_it;
 
-            ++tok_it;
+                p.r = std::stod(*tok_it);
 
-            p.r = std::stod(*tok_it);
+                ++tok_it;
 
-            ++tok_it;
+                p.GM = std::stod(*tok_it);
 
-            p.GM = std::stod(*tok_it);
-
-            // std::cout << p.name << ", " << p.r << ", " << p.GM << std::endl;
-            data.emplace_back(p);
+                // std::cout << p.name << ", " << p.r << ", " << p.GM << std::endl;
+                data.emplace_back(p);
+            }
         }
         filereader.close();
     }
