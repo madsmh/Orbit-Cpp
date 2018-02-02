@@ -26,6 +26,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 
 Vector3 change_origin(Vector3 new_orgin, Vector3 old_coords){
     return old_coords-new_orgin;
@@ -140,8 +141,14 @@ void diagnostics(Trajectory tra,
     std::cout << "Maximum error in " << names[target] << "s " << "position with respect to " << names[origin] <<
               ": " << max_error << "." << std::endl;
     std::cout << "Initial conditions for " << names[target] << " is" << std::endl <<
-              "   Position: " << tra.get_trajectory_positions(target)[0]*1e-3 << std::endl <<
-              "   Velocity: " << tra.get_trajectory_velocities(target)[0]*1e-3 << std::endl;
+              "   Position: " << std::scientific << std::setprecision(15)
+              << tra.get_trajectory_positions(target)[0].x()*1e-3 << ", "
+              << tra.get_trajectory_positions(target)[0].y()*1e-3 << ", "
+              << tra.get_trajectory_positions(target)[0].z()*1e-3 << std::endl;
+    std::cout << "   Velocity: " << std::scientific << std::setprecision(15)
+                    << tra.get_trajectory_velocities(target)[0].x()*1e-3 << ", "
+                    << tra.get_trajectory_velocities(target)[0].y()*1e-3 << ", "
+                    << tra.get_trajectory_velocities(target)[0].z()*1e-3 << std::endl;
 
     std::cout << "Writing table." << std::endl;
 
