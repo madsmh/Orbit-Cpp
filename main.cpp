@@ -113,12 +113,21 @@ void diagnostics(Trajectory tra,
     auto target_sim_positions = tra.get_trajectory_positions(target);
     auto origin_sim_positions = tra.get_trajectory_positions(origin);
 
+    auto target_ref_velocities = data.get_body_velocities(target);
+    auto origin_ref_velocities = data.get_body_velocities(origin);
+
+    auto target_sim_velocities = tra.get_trajectory_velocities(target);
+    auto origin_sim_velocities = tra.get_trajectory_velocities(origin);
+
     std::vector<double> error_pos_table {};
     std::vector<double> dist_table {};
     std::vector<double> angle_table {};
     std::vector<Vector3> delta_table {};
     std::vector<Vector3> pos_sim_table {};
     std::vector<Vector3> pos_ref_table {};
+    std::vector<double> vel_sim_table {};
+    std::vector<double> vel_ref_table {};
+
 
     std::cout << "Calculating " << names[target] << "s " << "error in position with respect to " <<
               names[origin] << "." << std::endl;
@@ -128,12 +137,17 @@ void diagnostics(Trajectory tra,
         Vector3 new_ref = change_origin(origin_ref_positions[k], target_ref_positions[k]);
         Vector3 delta = new_sim-new_ref;
 
+        Vector3 new_sim_vel = change_origin(origin_sim_velocities[k*detail], target_sim_velocities[k*detail]);
+        Vector3 new_ref_vel = change_origin(origin_ref_velocities[k], target_ref_velocities[k]);
+
         error_pos_table.emplace_back(delta.norm()/1000);
         dist_table.emplace_back(new_sim.norm()/1000);
         angle_table.emplace_back(angle(new_ref, new_sim));
         delta_table.emplace_back(delta);
         pos_ref_table.emplace_back(new_ref);
         pos_sim_table.emplace_back(new_sim);
+        vel_ref_table.emplace_back(new_ref_vel.norm());
+        vel_sim_table.emplace_back(new_sim_vel.norm());
     }
 
     double max_error = *std::max_element(error_pos_table.begin(), error_pos_table.end());
@@ -158,6 +172,9 @@ void diagnostics(Trajectory tra,
     write_table(delta_table, "delta.csv");
     write_table(pos_ref_table, "pos_ref.csv");
     write_table(pos_sim_table, "pos_sim.csv");
+    write_table(vel_ref_table, "ref_velocity.csv");
+    write_table(vel_sim_table, "sim_velocity.csv");
+
 }
 
 
