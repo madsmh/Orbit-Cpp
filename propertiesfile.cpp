@@ -56,6 +56,11 @@ void PhysicalProperties::get_data(long n)  {
 
                 p.GM = std::stod(*tok_it);
 
+                ++tok_it;
+                ++tok_it;
+
+                p.j2 = std::stod(*tok_it);
+
                 // std::cout << p.name << ", " << p.r << ", " << p.GM << std::endl;
                 data.emplace_back(p);
             }
@@ -71,6 +76,7 @@ void PhysicalProperties::get_data(long n)  {
         self_names.emplace_back(data[i].name);
         self_radii.emplace_back(data[i].r);
         self_GMs.emplace_back(data[i].GM);
+        self_j2s.emplace_back(data[i].j2);
 
     }
 

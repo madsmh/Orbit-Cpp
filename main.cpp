@@ -200,7 +200,8 @@ int main(int argc, char **argv) {
                   planetData.get_starting_positions(),
                   planetData.get_starting_velocities(),
                   physicalProperties.get_GMs(),
-                  physicalProperties.get_radii());
+                  physicalProperties.get_radii(),
+                  physicalProperties.get_j2s());
 
 
     trajectory.setup(physicalProperties.get_names().size());

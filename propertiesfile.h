@@ -31,6 +31,7 @@ struct PropertiesFile {
     std::string name{};
     double r{};
     double GM{};
+    double j2{};
 };
 
 
@@ -43,6 +44,7 @@ private:
     std::vector<std::string> self_names;
     std::vector<double> self_radii;
     std::vector<double> self_GMs;
+    std::vector<double> self_j2s;
 
 public:
     void get_data(long n = 0);
@@ -58,6 +60,11 @@ public:
     std::vector<double> get_GMs(){
         return self_GMs;
     };
+
+    std::vector<double> get_j2s(){
+        return self_j2s;
+    }
+
 
 signals:
     void getText(QString text);
