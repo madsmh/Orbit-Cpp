@@ -35,6 +35,8 @@ class System {
 
     Vector3 acceleration(const Body& body1, const Body& body2) const;
 
+    Vector3 nodal_correction(const Body& body1, const Body& body2, double j2 ) const;
+
     double potential_energy(Body body1, Body body2) const;
 
     double get_total_potential_energy() const;
