@@ -24,6 +24,7 @@
 #include "propertiesfile.h"
 // #include "verlet.h"
 #include "rk4.h"
+#include "verlet.h"
 
 #include <iostream>
 #include <fstream>
@@ -67,12 +68,13 @@ void diagnostics(Trajectory tra,
                  PlanetData data,
                  std::vector<std::string> const &names,
                  int detail,
-                 int days,
+                 long hours,
                  int origin,
                  int target) {
     int ref_rows = (int) data.get_body_positions(0).size();
 
     std::cout << "Absolute error for the bodies are" << std::endl;
+    std::cout << "Number of rows: " << tra.get_trajectory_positions(0).size() << std::endl;
 
     for (int j = 0; j < tra.get_number_of_trajectories(); ++j) {
         std::vector<Vector3> sim_vector = tra.get_trajectory_positions(j);
@@ -106,7 +108,7 @@ void diagnostics(Trajectory tra,
     }
 
     // Make table with error of Europas position with respect to Jupiter as a function
-    // of time in days
+    // of time in hours
 
     auto target_ref_positions = data.get_body_positions(target);
     auto origin_ref_positions = data.get_body_positions(origin);
@@ -132,7 +134,7 @@ void diagnostics(Trajectory tra,
 
     std::cout << "Calculating " << names[target] << "s " << "error in position with respect to " <<
               names[origin] << "." << std::endl;
-    for (int k = 0; k < days; ++k) {
+    for (int k = 0; k < hours; ++k) {
 
         Vector3 new_sim =change_origin(origin_sim_positions[k*detail], target_sim_positions[k*detail]);
         Vector3 new_ref = change_origin(origin_ref_positions[k], target_ref_positions[k]);
@@ -222,9 +224,9 @@ int main(int argc, char **argv) {
     std::cin >> target;
     std::cout << "Chosen target: " << physicalProperties.get_names()[target] << std::endl;
 
-    auto hours_to_sim = (int) planetData.get_body_positions(0).size();
+    auto hours_to_sim = planetData.get_body_positions(0).size();
 
-    RK4 integrator;
+    Verlet integrator;
 
     integrator.setup(hours_to_sim, detail);
 
