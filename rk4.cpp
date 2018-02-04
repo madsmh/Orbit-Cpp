@@ -24,9 +24,10 @@ void RK4::run(System &system, Trajectory &trajectory) {
 
     long n = system.get_number_of_bodies();
 
-    boost::progress_display progress(static_cast<unsigned long>(m_rows));
-
     std::cout << "Starting integrator." << std::endl;
+    std::cout << "Timestep: " << m_timestep << std::endl;
+
+    boost::progress_display progress(static_cast<unsigned long>(m_rows));
 
     for (int j = 0; j < m_rows; ++j) {
         if (j==0){
@@ -55,23 +56,23 @@ void RK4::run(System &system, Trajectory &trajectory) {
 
             std::vector <Vector3> r2{};
             for (int k = 0; k < n; ++k) {
-                r2.emplace_back(r[k] + kr1[k] * m_timestep / 2);
+                r2.emplace_back(r[k] + kr1[k] * m_timestep*0.5);
             }
             system.set_positions(r2);
             kv2 = system.get_accelerations();
 
             for (int l = 0; l < n; ++l) {
-                kr2.emplace_back(v[l] * kv1[l] * m_timestep / 2);
+                kr2.emplace_back(v[l] + kv1[l] * m_timestep*0.5);
             }
             std::vector <Vector3> r3{};
             for (int m = 0; m < n; ++m) {
-                r3.emplace_back(r[m] + kr2[m] * m_timestep / 2);
+                r3.emplace_back(r[m] + kr2[m] * m_timestep *0.5);
             }
             system.set_positions(r3);
             kv3 = system.get_accelerations();
 
             for (int i1 = 0; i1 < n; ++i1) {
-                kr3.emplace_back(v[i1] * kv2[i1] * m_timestep / 2);
+                kr3.emplace_back(v[i1] + kv2[i1] * m_timestep*0.5);
             }
 
             std::vector <Vector3> r4{};
@@ -82,25 +83,24 @@ void RK4::run(System &system, Trajectory &trajectory) {
             kv4 = system.get_accelerations();
 
             for (int l1 = 0; l1 < n; ++l1) {
-                kr4.emplace_back(v[l1]*kv3[l1]*m_timestep);
+                kr4.emplace_back(v[l1]+kv3[l1]*m_timestep);
             }
 
             std::vector<Vector3> v_new {};
             std::vector<Vector3> r_new {};
 
             for (int m1 = 0; m1 < n; ++m1) {
-                v_new.emplace_back(v[m1]+m_timestep/6*(kv1[m1]+2*kv2[m1]+2*kv3[m1]+kv4[m1]));
-                r_new.emplace_back(r[m1]+m_timestep/6*(kr1[m1]+2*kr2[m1]+2*kr3[m1]+kr4[m1]));
+                v_new.emplace_back(v[m1]+(m_timestep/6.0)*kv1[m1]+2.0*kv2[m1]+2.0*kv3[m1]+kv4[m1]);
+                r_new.emplace_back(r[m1]+(m_timestep/6.0)*kr1[m1]+2.0*kr2[m1]+2.0*kr3[m1]+kr4[m1]);
             }
 
-            trajectory.set_position(v_new, r_new);
+            trajectory.set_position(r_new, v_new);
             system.set_positions(r_new);
             system.set_velocities(v_new);
 
             ++progress;
         }
-
-
     }
 
+    std::cout << "Integration finished." << std::endl;
 }

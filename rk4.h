@@ -25,12 +25,12 @@
 
 class RK4 {
 
-    double m_timestep;
+    double m_timestep {};
     long m_rows = 0;
 public:
-    void setup(long rows, int detail){
+    void setup(long hours, int detail){
         m_timestep = ((double) 3600.0)/((double) detail);
-        m_rows = rows;
+        m_rows = hours * detail;
     }
 
     void run(System &system, Trajectory &trajectory);
