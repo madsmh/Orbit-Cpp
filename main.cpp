@@ -22,7 +22,8 @@
 #include "trajectory.h"
 #include "planetdata.h"
 #include "propertiesfile.h"
-#include "verlet.h"
+// #include "verlet.h"
+#include "rk4.h"
 
 #include <iostream>
 #include <fstream>
@@ -221,11 +222,11 @@ int main(int argc, char **argv) {
     std::cin >> target;
     std::cout << "Chosen target: " << physicalProperties.get_names()[target] << std::endl;
 
-    auto days_to_sim = (int) planetData.get_body_positions(0).size();
+    auto hours_to_sim = (int) planetData.get_body_positions(0).size();
 
-    Verlet integrator;
+    RK4 integrator;
 
-    integrator.setup(days_to_sim, detail);
+    integrator.setup(hours_to_sim, detail);
 
     integrator.run(sol,trajectory);
 
@@ -233,7 +234,7 @@ int main(int argc, char **argv) {
                 planetData,
                 physicalProperties.get_names(),
                 detail,
-                days_to_sim,
+                hours_to_sim,
                 origin,
                 target);
 }

@@ -18,11 +18,16 @@
  * */
 
 #include "rk4.h"
+#include <boost/progress.hpp>
 
-void rk4::run(Trajectory &trajectory, System &system) {
+void RK4::run(System &system, Trajectory &trajectory) {
 
     long n = system.get_number_of_bodies();
-    
+
+    boost::progress_display progress(static_cast<unsigned long>(m_rows));
+
+    std::cout << "Starting integrator." << std::endl;
+
     for (int j = 0; j < m_rows; ++j) {
         if (j==0){
             // Initial setup.
@@ -31,43 +36,71 @@ void rk4::run(Trajectory &trajectory, System &system) {
             std::vector<Vector3> v = system.get_velocities();
 
             trajectory.set_position(r, v);
+
+            ++progress;
+
         } else {
-            std::vector<Vector3> r = trajectory.get_positions_at_index(i-1);
-            std::vector<Vector3> v = trajectory.get_velocities_at_index(i-1);
+            std::vector <Vector3> r = trajectory.get_positions_at_index(j - 1);
+            std::vector <Vector3> v = trajectory.get_velocities_at_index(j - 1);
 
-            std::vector<Vector3> kv1 = system.get_accelerations();
-            std::vector<Vector3> kv2 {};
-            std::vector<Vector3> kv3 {};
-            std::vector<Vector3> kv4 {};
+            std::vector <Vector3> kv1 = system.get_accelerations();
+            std::vector <Vector3> kv2{};
+            std::vector <Vector3> kv3{};
+            std::vector <Vector3> kv4{};
 
-            std::vector<Vector3> kr1 = v;
-            std::vector<Vector3> kr2 {};
-            std::vector<Vector3> kr3 {};
-            std::vector<Vector3> kr4 {};
+            std::vector <Vector3> kr1 = v;
+            std::vector <Vector3> kr2{};
+            std::vector <Vector3> kr3{};
+            std::vector <Vector3> kr4{};
 
-            std::vector<Vector3>  r2 {};
+            std::vector <Vector3> r2{};
             for (int k = 0; k < n; ++k) {
-                r2.emplace_back(r[k]+kr1[k]*m_timestep/2);
+                r2.emplace_back(r[k] + kr1[k] * m_timestep / 2);
             }
             system.set_positions(r2);
-            kv2 =  system.get_accelerations();
+            kv2 = system.get_accelerations();
 
             for (int l = 0; l < n; ++l) {
-                kr2.emplace_back(v[l]*kv1[l]*m_timestep/2);
+                kr2.emplace_back(v[l] * kv1[l] * m_timestep / 2);
             }
-            std::vector<Vector3> r3 {};
+            std::vector <Vector3> r3{};
             for (int m = 0; m < n; ++m) {
-                r3.emplace_back(r[m]+kr2[m]*m_timestep/2);
+                r3.emplace_back(r[m] + kr2[m] * m_timestep / 2);
             }
             system.set_positions(r3);
             kv3 = system.get_accelerations();
 
             for (int i1 = 0; i1 < n; ++i1) {
-                kr3.emplace_back(v[i1]*kv2[i1]*m_timestep/2);
+                kr3.emplace_back(v[i1] * kv2[i1] * m_timestep / 2);
             }
 
+            std::vector <Vector3> r4{};
+            for (int k1 = 0; k1 < n; ++k1) {
+                r4.emplace_back(r[k1] + kr3[k1] * m_timestep);
+            }
+            system.set_positions(r4);
+            kv4 = system.get_accelerations();
 
+            for (int l1 = 0; l1 < n; ++l1) {
+                kr4.emplace_back(v[l1]*kv3[l1]*m_timestep);
+            }
+
+            std::vector<Vector3> v_new {};
+            std::vector<Vector3> r_new {};
+
+            for (int m1 = 0; m1 < n; ++m1) {
+                v_new.emplace_back(v[m1]+m_timestep/6*(kv1[m1]+2*kv2[m1]+2*kv3[m1]+kv4[m1]));
+                r_new.emplace_back(r[m1]+m_timestep/6*(kr1[m1]+2*kr2[m1]+2*kr3[m1]+kr4[m1]));
+            }
+
+            trajectory.set_position(v_new, r_new);
+            system.set_positions(r_new);
+            system.set_velocities(v_new);
+
+            ++progress;
         }
+
+
     }
 
 }

@@ -23,18 +23,17 @@
 #include "trajectory.h"
 #include "system.h"
 
-class rk4 {
+class RK4 {
 
     double m_timestep;
     long m_rows = 0;
-    int m_detail;
 public:
-    void setup(int detail, long rows){
+    void setup(long rows, int detail){
         m_timestep = ((double) 3600.0)/((double) detail);
         m_rows = rows;
     }
 
-    void run(Trajectory &trajectory, System &system);
+    void run(System &system, Trajectory &trajectory);
 
 };
 
