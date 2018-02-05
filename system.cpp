@@ -23,13 +23,13 @@
 
 void System::set_param(std::vector<std::string> names, std::vector<Vector3> pos0,
                std::vector<Vector3> vel0, std::vector<double> gms,
-               std::vector<double> radii){
+               std::vector<double> radii, std::vector<double> j2s){
 
     self_n = names.size();
 
     // Initialize self_n obejects of Body type
     for (int i = 0; i < self_n; ++i){
-        self_bodies.emplace_back(Body(names[i], pos0[i], vel0[i], gms[i], radii[i]));
+        self_bodies.emplace_back(Body(names[i], pos0[i], vel0[i], gms[i], radii[i], j2s[i]));
     }
 
     for (int j = 0; j < self_n; ++j) {
@@ -75,6 +75,34 @@ Vector3 System::acceleration(const Body& body1, const Body& body2) const {
     return (-1*body1.get_GM()/(std::pow(r12.norm(), 3))) * r12 ;
 }
 
+Vector3 System::nodal_correction(const Body &body1, const Body &body2) const {
+    // Function to calulate the vector force on body2 from
+    // body 1
+
+    Vector3 pos1 = body1.get_position();
+    Vector3 pos2 = body2.get_position();
+
+    // If the positions are equal return the zero-vector
+    if (pos1 == pos2) {
+        return Vector3 (0, 0, 0);
+    }
+
+    Vector3 r12 = pos2 - pos1;
+
+    double R2 = std::pow(body1.get_radius(), 2);
+    double z2 = std::pow(r12.z(), 2);
+    double r3 = std::pow(r12.norm(), 3);
+    double r2 = r12.norm2();
+    double r5 = std::pow(r12.norm(), 5);
+
+    double a1 = -body1.get_GM()*r12.x()/r3 - ( 3 * body1.get_j2() * body1.get_GM()* R2)/(2*r5) * r12.x() * (1-5*z2/r2);
+    double a2 = -body1.get_GM()*r12.y()/r3 - ( 3 * body1.get_j2() * body1.get_GM()* R2)/(2*r5) * r12.y() * (1-5*z2/r2);
+    double a3 = -body1.get_GM()*r12.z()/r3 - ( 3 * body1.get_j2() * body1.get_GM()* R2)/(2*r5) * r12.z() * (3-5*z2/r2);
+
+    return Vector3 (a1, a2, a3);
+}
+
+
 std::vector<Vector3> System::get_accelerations() const {
 
     std::vector<Vector3> accelerations {};
@@ -83,7 +111,10 @@ std::vector<Vector3> System::get_accelerations() const {
         Vector3 temp_accel (0, 0, 0);
 
         for (auto body2 : self_bodies) {
-            temp_accel += acceleration(body2, body1);
+
+            if (body2.get_j2() != 0) {
+                temp_accel += nodal_correction(body2, body1);
+            } else { temp_accel += acceleration(body2, body1); }
         }
 
         accelerations.emplace_back(temp_accel);
@@ -101,7 +132,6 @@ double System::get_total_kinetic_energy() const {
 
     return total_kinetic;
 }
-
 
 void System::set_positions(const std::vector<Vector3>& positions){
     for (int i = 0; i < self_n; ++i) {

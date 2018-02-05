@@ -26,7 +26,7 @@
 void Verlet::setup(int days, int detail) {
 
     m_rows = days * detail;
-    m_delta = ((double) 86400)/((double) detail);
+    m_delta = ((double) 3600)/((double) detail);
 
     /*
 
@@ -45,16 +45,15 @@ void Verlet::setup(int days, int detail) {
 void Verlet::run(System &sys, Trajectory &tra) {
     std::cout << "Starting integrator." << std::endl;
 
-    std::vector<double> mechanical_energy;
-    std::vector<Vector3> momentum;
-    std::vector<Vector3> angular_momentum;
+    // std::vector<double> mechanical_energy;
+    // std::vector<Vector3> momentum;
+    // std::vector<Vector3> angular_momentum;
 
     boost::progress_display progress(static_cast<unsigned long>(m_rows));
 
 
-    double delta = m_delta;
-    int n_bodies = (int) sys.get_number_of_bodies();
-    double delta2 = std::pow(delta, 2);
+    auto n_bodies = (int) sys.get_number_of_bodies();
+    double delta2 = std::pow(m_delta, 2);
 
 
     for (int i = 0; i < m_rows; ++i) {
@@ -63,8 +62,8 @@ void Verlet::run(System &sys, Trajectory &tra) {
             std::vector<Vector3> v0 = sys.get_velocities();
 
             tra.set_position(x0, v0);
-            sys.set_positions(x0);
-            sys.set_velocities(v0);
+            //sys.set_positions(x0);
+            //sys.set_velocities(v0);
 
             // mechanical_energy.emplace_back(sys.get_total_mechanical_energy());
 
@@ -87,7 +86,7 @@ void Verlet::run(System &sys, Trajectory &tra) {
             std::vector<Vector3> x1;
 
             for (long j = 0; j < n_bodies; ++j) {
-                x1.emplace_back(x0[j] + v0[j] * delta + delta2 * 0.5 * a0[j]);
+                x1.emplace_back(x0[j] + v0[j] * m_delta + delta2 * 0.5 * a0[j]);
             }
 
             sys.set_positions(x1);
@@ -97,7 +96,7 @@ void Verlet::run(System &sys, Trajectory &tra) {
             std::vector<Vector3 > v1;
 
             for (long k = 0; k < n_bodies; ++k) {
-                v1.emplace_back(v0[k]+ 0.5 * delta *( a0[k]+a1[k]) );
+                v1.emplace_back(v0[k]+ 0.5 * m_delta *( a0[k]+a1[k]) );
             }
 
             sys.set_velocities(v1);

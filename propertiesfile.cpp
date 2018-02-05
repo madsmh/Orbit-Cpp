@@ -20,6 +20,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <boost/tokenizer.hpp>
 
 #include "propertiesfile.h"
 
@@ -31,27 +32,38 @@ void PhysicalProperties::get_data(long n)  {
 
     std::vector<PropertiesFile> data;
     std::string buffer;
-    QString out;
 
     filereader.open(path);
 
-    if(filereader.is_open()){
-        getline(filereader, buffer, '\n');
-        while (!filereader.eof()){
-            getline(filereader, buffer, ',');
-            if (buffer.empty()) break;
-            p.name = buffer;
-            emit (QString::fromUtf8(std::string("Reading physical constants for object " + buffer + "\n").c_str()));
-            getline(filereader, buffer, ',');
-            std::stringstream(buffer) >> p.r;
-            emit (QString::fromUtf8(std::string("Radius = " + std::to_string(p.r) + "\n").c_str()));
-            getline(filereader, buffer, ',');
-            std::stringstream(buffer) >> p.GM;
-            QString::fromUtf8(std::string("GM = " + std::to_string(p.GM) + "\n").c_str());
-            getline(filereader, buffer, ',');
-            getline(filereader, buffer, '\n');
+    typedef boost::tokenizer<boost::escaped_list_separator<char> > tokenizer;
 
-            data.emplace_back(p);
+    if(filereader.is_open()){
+        getline(filereader, buffer); // Ignore first line of file.
+        while (!filereader.eof()){
+            getline(filereader, buffer);
+            if(!buffer.empty()) {
+                tokenizer tok(buffer);
+
+                auto tok_it = tok.begin();
+
+                p.name = *tok_it;
+
+                ++tok_it;
+
+                p.r = std::stod(*tok_it);
+
+                ++tok_it;
+
+                p.GM = std::stod(*tok_it);
+
+                ++tok_it;
+                ++tok_it;
+
+                p.j2 = std::stod(*tok_it);
+
+                // std::cout << p.name << ", " << p.r << ", " << p.GM << std::endl;
+                data.emplace_back(p);
+            }
         }
         filereader.close();
     }
@@ -61,10 +73,12 @@ void PhysicalProperties::get_data(long n)  {
 
     for (int i = 0; i < n; ++i) {
 
-        PropertiesFile d = data[i];
-        self_names.emplace_back(d.name);
-        self_radii.emplace_back(d.r);
-        self_GMs.emplace_back(d.GM);
+        self_names.emplace_back(data[i].name);
+        self_radii.emplace_back(data[i].r);
+        self_GMs.emplace_back(data[i].GM);
+        self_j2s.emplace_back(data[i].j2);
 
     }
+
+    std::cout << "Loaded physical constants for " << self_names.size() << " bodies." << std::endl;
 };

@@ -22,37 +22,59 @@
 #include "trajectory.h"
 #include "planetdata.h"
 #include "propertiesfile.h"
+// #include "verlet.h"
+#include "rk4.h"
 #include "verlet.h"
 
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 
 Vector3 change_origin(Vector3 new_orgin, Vector3 old_coords){
-
     return old_coords-new_orgin;
-
 };
+
+double angle(Vector3 vector1, Vector3 vector2){
+    double a = (vector1.x()*vector2.x()+vector1.y()*vector2.y()+vector1.z()*vector2.z())/(vector1.norm()*vector2.norm());
+    double radians = std::acos(a);
+    return radians*180.0/3.141592653589793238463;
+}
 
 void write_table(const std::vector<double > &data, const std::string &file_name){
     std::ofstream file;
 
     file.open(file_name);
 
-    for (int j = 0; j < data.size(); ++j) {
-        file << j << ", " << data[j] << "\n";
+    for (double j : data) {
+        file << j << std::endl;
     }
 
     file.close();
 }
 
-void compare_with_horizon(Trajectory tra, PlanetData data,
-                          std::vector<std::string> const &names,
-                          int detail,
-                          int days)
-{
+void write_table(const std::vector<Vector3 > &data, const std::string &file_name){
+    std::ofstream file;
+
+    file.open(file_name);
+
+    for (const auto &j : data) {
+        file << j.x() << ", " << j.y() << ", " << j.z() << std::endl;
+    }
+
+    file.close();
+}
+
+void diagnostics(Trajectory tra,
+                 PlanetData data,
+                 std::vector<std::string> const &names,
+                 int detail,
+                 long hours,
+                 int origin,
+                 int target) {
     int ref_rows = (int) data.get_body_positions(0).size();
 
     std::cout << "Absolute error for the bodies are" << std::endl;
+    std::cout << "Number of rows: " << tra.get_trajectory_positions(0).size() << std::endl;
 
     for (int j = 0; j < tra.get_number_of_trajectories(); ++j) {
         std::vector<Vector3> sim_vector = tra.get_trajectory_positions(j);
@@ -67,35 +89,95 @@ void compare_with_horizon(Trajectory tra, PlanetData data,
         }
 
         double max_dist = *std::max_element(dists.begin(), dists.end())/1000;
+
+        if (j == 23){
+            std::cout << std::endl << "Jovian moons: " << std::endl;
+        } else if (j == 73){
+            std::cout << std::endl << "Saturninan moons: " << std::endl;
+        } else if (j == 84){
+            std::cout << std::endl << "Plutonian moons: " << std::endl;
+        } else if (j == 88){
+            std::cout << std::endl << "Martian moons: " << std::endl;
+        } else if (j == 90){
+            std::cout << std::endl << "Neptunian moons: " << std::endl;
+        } else if (j == 104){
+            std::cout << std::endl << "Uanian moons: " << std::endl;
+        }
+
         std::cout << j << " " << names[j] << ": " << max_dist << " km" << std::endl;
     }
 
     // Make table with error of Europas position with respect to Jupiter as a function
-    // of time in days
+    // of time in hours
 
-    auto europa_ref_positions = data.get_body_positions(24);
-    auto jupiter_ref_positions = data.get_body_positions(5);
+    auto target_ref_positions = data.get_body_positions(target);
+    auto origin_ref_positions = data.get_body_positions(origin);
 
-    auto europa_sim_positions = tra.get_trajectory_positions(24);
-    auto jupiter_sim_positions = tra.get_trajectory_positions(5);
+    auto target_sim_positions = tra.get_trajectory_positions(target);
+    auto origin_sim_positions = tra.get_trajectory_positions(origin);
 
-    std::vector<double> europa_error_table {};
+    auto target_ref_velocities = data.get_body_velocities(target);
+    auto origin_ref_velocities = data.get_body_velocities(origin);
 
-    std::cout << "Calculating Europas error in position with respect to Jupiter." << std::endl;
-    for (int k = 0; k < days; ++k) {
-        europa_error_table.emplace_back(
-                (change_origin(jupiter_sim_positions[k*detail], europa_sim_positions[k*detail])-
-                        change_origin(jupiter_ref_positions[k], europa_ref_positions[k])).norm()/1000);
+    auto target_sim_velocities = tra.get_trajectory_velocities(target);
+    auto origin_sim_velocities = tra.get_trajectory_velocities(origin);
+
+    std::vector<double> error_pos_table {};
+    std::vector<double> dist_table {};
+    std::vector<double> angle_table {};
+    std::vector<Vector3> delta_table {};
+    std::vector<Vector3> pos_sim_table {};
+    std::vector<Vector3> pos_ref_table {};
+    std::vector<double> vel_sim_table {};
+    std::vector<double> vel_ref_table {};
+
+
+    std::cout << "Calculating " << names[target] << "s " << "error in position with respect to " <<
+              names[origin] << "." << std::endl;
+    for (int k = 0; k < hours; ++k) {
+
+        Vector3 new_sim =change_origin(origin_sim_positions[k*detail], target_sim_positions[k*detail]);
+        Vector3 new_ref = change_origin(origin_ref_positions[k], target_ref_positions[k]);
+        Vector3 delta = new_sim-new_ref;
+
+        Vector3 new_sim_vel = change_origin(origin_sim_velocities[k*detail], target_sim_velocities[k*detail]);
+        Vector3 new_ref_vel = change_origin(origin_ref_velocities[k], target_ref_velocities[k]);
+
+        error_pos_table.emplace_back(delta.norm()/1000);
+        dist_table.emplace_back(new_sim.norm()/1000);
+        angle_table.emplace_back(angle(new_ref, new_sim));
+        delta_table.emplace_back(delta);
+        pos_ref_table.emplace_back(new_ref);
+        pos_sim_table.emplace_back(new_sim);
+        vel_ref_table.emplace_back(new_ref_vel.norm());
+        vel_sim_table.emplace_back(new_sim_vel.norm());
     }
 
-    double max_europa_jupiter_error = *std::max_element(europa_error_table.begin(), europa_error_table.end());
+    double max_error = *std::max_element(error_pos_table.begin(), error_pos_table.end());
 
-    std::cout << "Maximum error in Europas position with respect to Jupiter (km): " <<
-              max_europa_jupiter_error << std::endl;
+    std::cout << "Maximum error in " << names[target] << "s " << "position with respect to " << names[origin] <<
+              ": " << max_error << "." << std::endl;
+    std::cout << "Initial conditions for " << names[target] << " is" << std::endl <<
+              "   Position: " << std::scientific << std::setprecision(15)
+              << tra.get_trajectory_positions(target)[0].x()*1e-3 << ", "
+              << tra.get_trajectory_positions(target)[0].y()*1e-3 << ", "
+              << tra.get_trajectory_positions(target)[0].z()*1e-3 << std::endl;
+    std::cout << "   Velocity: " << std::scientific << std::setprecision(15)
+                    << tra.get_trajectory_velocities(target)[0].x()*1e-3 << ", "
+                    << tra.get_trajectory_velocities(target)[0].y()*1e-3 << ", "
+                    << tra.get_trajectory_velocities(target)[0].z()*1e-3 << std::endl;
 
     std::cout << "Writing table." << std::endl;
 
-    write_table(europa_error_table,"europa_error.txt");
+    write_table(error_pos_table, "error_pos.csv");
+    write_table(dist_table, "dist.csv");
+    write_table(angle_table, "angles.csv");
+    write_table(delta_table, "delta.csv");
+    write_table(pos_ref_table, "pos_ref.csv");
+    write_table(pos_sim_table, "pos_sim.csv");
+    write_table(vel_ref_table, "ref_velocity.csv");
+    write_table(vel_sim_table, "sim_velocity.csv");
+
 }
 
 
@@ -105,7 +187,6 @@ void help(char *name) {
 }
 
 int main(int argc, char **argv) {
-    // Adapted from https://doc.qt.io/qt-5/qt3d-basicshapes-cpp-main-cpp.html
 
     Trajectory trajectory;
     PhysicalProperties physicalProperties;
@@ -122,28 +203,41 @@ int main(int argc, char **argv) {
                   planetData.get_starting_positions(),
                   planetData.get_starting_velocities(),
                   physicalProperties.get_GMs(),
-                  physicalProperties.get_radii());
+                  physicalProperties.get_radii(),
+                  physicalProperties.get_j2s());
 
 
     trajectory.setup(physicalProperties.get_names().size());
 
     int detail;
+    int origin;
+    int target;
 
-    std::cout << "Enter number of integration steps per day: ";
+    std::cout << "Enter number of integration steps per hour: ";
     std::cin >> detail;
 
-    auto days_to_sim = (int) planetData.get_body_positions(0).size();
+    std::cout << "Enter body (int) to set as origin: ";
+    std::cin >> origin;
+    std::cout << "Chosen origin: " << physicalProperties.get_names()[origin] << std::endl;
+
+    std::cout << "Enter body (int) to plot the error for: ";
+    std::cin >> target;
+    std::cout << "Chosen target: " << physicalProperties.get_names()[target] << std::endl;
+
+    auto hours_to_sim = planetData.get_body_positions(0).size();
 
     Verlet integrator;
 
-    integrator.setup(days_to_sim, detail);
+    integrator.setup(hours_to_sim, detail);
 
     integrator.run(sol,trajectory);
 
-    compare_with_horizon(trajectory,
-                         planetData,
-                         physicalProperties.get_names(),
-                         detail,
-                         days_to_sim);
+    diagnostics(trajectory,
+                planetData,
+                physicalProperties.get_names(),
+                detail,
+                hours_to_sim,
+                origin,
+                target);
 }
 

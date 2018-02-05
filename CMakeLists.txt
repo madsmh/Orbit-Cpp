@@ -33,7 +33,7 @@ set(SOURCE_FILES
         propertiesfile.h
         verlet.cpp
         verlet.h
-       )
+        rk4.cpp rk4.h)
 add_executable(orbit3d ${SOURCE_FILES} )
 add_dependencies(orbit3d copy-runtime-files)
 target_link_libraries(orbit3d

@@ -21,13 +21,13 @@
 
 class Body {
     Vector3 m_r, m_v, m_r0, m_v0;
-    double m_radius, m_gm, m_mass;
+    double m_radius, m_gm, m_mass, m_j2;
 
     std::string m_name;
 
 public:
     Body(std::string name, Vector3 pos0, Vector3 vel0,
-         double gm, double radius) {
+         double gm, double radius, double j2=0) {
         m_r0 = pos0;
         m_r = m_r0;
 
@@ -41,6 +41,8 @@ public:
         m_radius = radius;
 
         m_name = name;
+
+        m_j2 = j2;
     }
 
     Vector3 get_position() const{
@@ -86,6 +88,10 @@ public:
 
     double get_mass() const {
         return m_mass;
+    }
+
+    double  get_j2() const {
+        return m_j2;
     }
 
 };

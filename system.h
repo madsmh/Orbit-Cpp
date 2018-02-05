@@ -35,6 +35,8 @@ class System {
 
     Vector3 acceleration(const Body& body1, const Body& body2) const;
 
+    Vector3 nodal_correction(const Body& body1, const Body& body2) const;
+
     double potential_energy(Body body1, Body body2) const;
 
     double get_total_potential_energy() const;
@@ -43,7 +45,7 @@ class System {
 
 public:
     void set_param(std::vector<std::string> names, std::vector<Vector3> pos0,
-           std::vector<Vector3> vel0, std::vector<double> gms, std::vector<double> radii);
+           std::vector<Vector3> vel0, std::vector<double> gms, std::vector<double> radii, std::vector<double> j2s);
 
     std::vector<Vector3> get_positions() const;
 
