@@ -36,7 +36,7 @@ public:
 
         m_gm = gm;
 
-        m_mass = m_gm/6.67259e-11;
+        m_mass = m_gm/6.67408e-11; // Form NIST
 
         m_radius = radius;
 
