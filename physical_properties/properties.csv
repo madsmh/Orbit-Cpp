@@ -1,140 +1,140 @@
 NAME,RADIUS,GM,ID,J2,COMMENT
-Sun,695700000,1.32712440041939E+020,10,0,Source: NASA/JPL Horizons
-Mercury,2439700,22032090000000,199,0,Source: NASA/JPL Horizons
-Venus,6051800,324858630000000,299,2.7E-05,"Source: NASA/JPL Horizons, J2: http://onlinelibrary.wiley.com/doi/10.1002/9783527617784.app2/pdf"
-Earth,6378136.3,398600435600000,399,0.001082626335439,"Source: JPL, Lunar Constants and Models Document"
-Mars,3389500,42828300000000,499,0.001964,"Source: NASA/JPL Horizons, J2: http://onlinelibrary.wiley.com/doi/10.1002/9783527617784.app2/pdf"
-Jupiter,71492000,1.266865361E+017,599,0.01469562,Source: https://ssd.jpl.nasa.gov/?gravity_fields_op
-Saturn,60330000,3.79312077E+016,699,0.01629071,Source: https://ssd.jpl.nasa.gov/?gravity_fields_op
-Uranus,25559000,5793951300000000,799,0.00351068,Source: https://ssd.jpl.nasa.gov/?gravity_fields_op
-Neptune,25225000,6835100000000000,899,0.00340843,Source: https://ssd.jpl.nasa.gov/?gravity_fields_op
-Pluto,1151000,872400000000,999,0,Source: NASA/JPL Horizons
-Luna,1737500,4902801076000,301,0.000203354248211,"Source: JPL, Lunar Constants and Models Document"
-Ceres,469700,62628400000, NA,0,Astroid. Source: NASA/JPL Horizons
-Pallas,272500,14300000000, NA,0,Astroid. Source: NASA/JPL Horizons
-Vesta,262700,17800000000, NA,0,Astroid. Source: NASA/JPL Horizons
-Hygiea,203560,7000000000, NA,0,Asteroid. Source: NASA/JPL Horizons
-Eros,8420,446300, NA,0,Asteroid. Source: NASA/JPL Horizons
-Psyche,113000,1530000000, NA,0,Astroid. Source: Small Body Database
-Kalliope,83768,491000000, NA,0,Astroid. Source: Small Body Database
-Ida,16000,2750000, NA,0,Astroid. Source: Small Body Database
-Mathilde,26400,6890000, NA,0,Astroid. Source: Small Body Database
-Interamnia,153156.5,5000000000, NA,0,Astroid. Source: Small Body Database
-Itokawa,165,2.1, NA,0,Astroid. Source: Small Body Database
-Bennu,0.246,5.2, NA,0,Astroid. Source: Small Body Database
-Io,1821600,5959916000000,501,0.01469562,"Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par, R and j2: http://lasp.colorado.edu/~espoclass/5830_2013_Spring_homework/Ch13-Shubert.pdf"
-Europa,1565000,3202739000000,502,0.01629071,"Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par, R and j2: http://lasp.colorado.edu/~espoclass/5830_2013_Spring_homework/Ch13-Shubert.pdf"
-Ganymede,2631200,9887834000000,503,0.00351068,"Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par, R and j2: http://lasp.colorado.edu/~espoclass/5830_2013_Spring_homework/Ch13-Shubert.pdf"
-Callisto,2410300,7179289000000,504,0.00340843,"Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par, R and j2: http://lasp.colorado.edu/~espoclass/5830_2013_Spring_homework/Ch13-Shubert.pdf"
-Amalthea,83.45,138000000,505,0.03757947,"Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par, R and j2: http://lasp.colorado.edu/~espoclass/5830_2013_Spring_homework/Ch13-Shubert.pdf"
-Himalia,85000,450000000,506,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Elara,43000,58000000,507,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Pasiphae,30000,20000000,508,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Sinope,19000,5000000,509,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Lysithea,18000,4200000,510,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Carme,23000,8800000,511,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Ananke,14000,2000000,512,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Leda,10000,730000,513,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Thebe,49300,100000000,514,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Adrastea,8200,500000,515,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Metis,21500,8000000,516,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Callirrhoe,4300,58000,517,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Themisto,4000,46000,518,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Megaclite,2700,14000,519,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Taygete,2500,11000,520,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Chaldene,1900,5000,521,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Harpalyke,2200,8000,522,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Kalyke,2600,13000,523,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Iocaste,2600,13000,524,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Erinome,1600,3000,525,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Isonoe,1900,5000,526,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Praxidike,3400,29000,527,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Autonoe,2000,6000,528,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Thyone,2000,6000,529,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Hermippe,2000,6000,530,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Aitne,1500,3000,531,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Eurydome,1500,3000,532,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Euanthe,1500,3000,533,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Euporie,1000,1000,534,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Orthosie,1000,1000,535,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Sponde,1000,1000,536,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Kale,1000,1000,537,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Pasithee,1000,1000,538,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Hegemone,1500,3000,539,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Mneme,1000,1000,540,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Aoede,2000,6000,541,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Thelxinoe,1000,1000,542,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Arche,1500,3000,543,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Kallichore,1000,1000,544,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Helike,2000,6000,545,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Carpo,1500,3000,546,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Eukelade,2000,6000,547,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Cyllene,1000,1000,548,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Kore,1000,1000,549,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Herse,1000,1000,550,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Mimas,198800,2502300000,601,0,"Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par, The Gravity Field of the Saturnian System from Satellite Observations and Spacecraft Tracking Data, R. A. Jacobson"
-Enceladus,252300,7209600000,602,0,"Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par, The Gravity Field of the Saturnian System from Satellite Observations and Spacecraft Tracking Data, R. A. Jacobson"
-Tethys,533000,41209700000,603,0,"Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par, The Gravity Field of the Saturnian System from Satellite Observations and Spacecraft Tracking Data, R. A. Jacobson"
-Dione,561700,73112700000,604,0,"Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par, The Gravity Field of the Saturnian System from Satellite Observations and Spacecraft Tracking Data, R. A. Jacobson"
-Rhea,764300,153941600000,605,0,"Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par, The Gravity Field of the Saturnian System from Satellite Observations and Spacecraft Tracking Data, R. A. Jacobson"
-Iapetus,735600,120511700000,606,0,"Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par, The Gravity Field of the Saturnian System from Satellite Observations and Spacecraft Tracking Data, R. A. Jacobson"
-Titan,2575500,8978135600000,607,0,"Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par, The Gravity Field of the Saturnian System from Satellite Observations and Spacecraft Tracking Data, R. A. Jacobson"
-Hyperion,135000,372700000,608,0,Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Phoebe,106500,553400000,609,0,"Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par, The Gravity Field of the Saturnian System from Satellite Observations and Spacecraft Tracking Data, R. A. Jacobson"
-Janus,89500,126300000,610,0,Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Epimetheus,58100,35100000,611,0,Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Helene,17600,760000,612,0,Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Telesto,17600,270000,613,0,Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Calypso,10700,170000,614,0,Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Atlas,15100,440000,615,0,Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Prometheus,43100,10740000,616,0,Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Pandora,40700,9240000,617,0,Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Pan,14100,330000,618,0,Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Methone,1600,600,619,0,Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Charon,603600,102271000000,901,0,Moon of Pluto. Source: NASA/JPL Horizons
-Nix,23000,1300000,902,0,Moon of Pluto. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Hydra,30500,6500000,903,0,Moon of Pluto. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Kerberos,14000,1100000,904,0,Moon of Pluto. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Phobos,11100,711200,401,0,Moon of Mars. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Deimos,6200,98500,402,0,Moon of Mars. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Triton,1353400,1427600000000,801,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Nereid,170000,2060000000,802,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Naiad,33000,13000000,803,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Thalassa,41000,25000000,804,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Despina,75000,140000000,805,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Galatea,88000,250000000,806,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Larissa,97000000000,330000000,807,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Proteus,210000,3360000000,808,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Halimede,31000,12000000,809,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Psamathe,20000,3300000,810,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Sao,22000,4500000,811,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Laomedeia,21000,3900000,812,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Neso,30000,11000000,813,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-2004N1,9000,300000,814,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Ariel,578900,86400000000,701,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Umbriel,584700,81500000000,702,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Titania,788900,228200000000,703,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Oberon,761400,192400000000,704,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Miranda,235800,4400000000,705,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Cordelia,20100,3000000,706,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Ophelia,21400,3600000,707,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Bianca,27000,6300000,708,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Cressida,41000,22900000,709,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Desdemona,35000,11900000,710,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Juliet,53000,37200000,711,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Portia,70000,112200000,712,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Rosalind,36000,17000000,713,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Belinda,45000,23800000,714,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Puck,81000,193100000,715,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Caliban,36000,20000000,716,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Sycorax,75000,180000000,717,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Prospero,25000,6600000,718,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Setebos,24000,5800000,719,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Stephano,16,1700000,720,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Trinculo,9000,310000,721,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Francisco,11000,5600000,722,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Margaret,10000,420000,723,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Ferdinand,10000,420000,724,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Perdita,13000,1200000,725,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Mab,12000,600000,726,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
-Cupid,9000,200000,727,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Sun,695700000,1.32712440041938e20,10,0,Source: NASA/JPL Horizons
+Mercury,2439700,2.203178e13,199,0,Source: NASA/JPL Horizons
+Venus,6051800,3.24858592e14,299,2.7E-05,"Source: NASA/JPL Horizons, J2: http://onlinelibrary.wiley.com/doi/10.1002/9783527617784.app2/pdf"
+Earth,6378136.3,3.98600435436096e14,399,0.001082626335439,"Source: NASA/JPL Horizons, JPL Lunar Constants and Models Document"
+Mars,3389500,4.28283736206991e14,499,0.001964,"Source: NASA/JPL Horizons, J2: http://onlinelibrary.wiley.com/doi/10.1002/9783527617784.app2/pdf"
+Jupiter,71492000,1.26686534911591e17,599,0.01469562,"Source: Source: NASA/JPL Horizons, https://ssd.jpl.nasa.gov/?gravity_fields_op"
+Saturn,60330000,3.79312072349389e16,699,0.01629071,"Source: Source: NASA/JPL Horizons, https://ssd.jpl.nasa.gov/?gravity_fields_op"
+Uranus,25559000,5.79395132227901e15,799,0.00351068,"Source: Source: NASA/JPL Horizons, https://ssd.jpl.nasa.gov/?gravity_fields_op"
+Neptune,25225000,6.83509950243967e15,899,0.00340843,"Source: Source: NASA/JPL Horizons, https://ssd.jpl.nasa.gov/?gravity_fields_op"
+Pluto,1151000,8.69339078038193e11,999,0,Source: NASA/JPL Horizons
+Luna,1737500,4.9028000661638e12,301,0.000203354248211,"Source: Source: NASA/JPL Horizons, JPL, Lunar Constants and Models Document"
+Ceres,469700,6.26284e10, NA,0,Astroid. Source: NASA/JPL Horizons
+Pallas,272500,1.43e10, NA,0,Astroid. Source: NASA/JPL Horizons
+Vesta,262700,1.78e10, NA,0,Astroid. Source: NASA/JPL Horizons
+Hygiea,203560,7e9, NA,0,Asteroid. Source: NASA/JPL Horizons
+Eros,8420,4.463e5, NA,0,Asteroid. Source: NASA/JPL Horizons
+Psyche,113000,1.53e9, NA,0,Astroid. Source: Small Body Database
+Kalliope,83768,4.91e8, NA,0,Astroid. Source: Small Body Database
+Ida,16000,2.75e6, NA,0,Astroid. Source: Small Body Database
+Mathilde,26400,6.89e6, NA,0,Astroid. Source: Small Body Database
+Interamnia,153156.5,5e9, NA,0,Astroid. Source: Small Body Database
+Itokawa,165,2.1e0, NA,0,Astroid. Source: Small Body Database
+Bennu,0.246,5.2e0, NA,0,Astroid. Source: Small Body Database
+Io,1821600,5.95992401027251e12,501,0.01469562,"Moon of Jupiter. Source: NASA/JPL Horizons, R and j2: http://lasp.colorado.edu/~espoclass/5830_2013_Spring_homework/Ch13-Shubert.pdf"
+Europa,1565000,3.20273981511473e12,502,0.01629071,"Moon of Jupiter. Source: NASA/JPL Horizons, R and j2: http://lasp.colorado.edu/~espoclass/5830_2013_Spring_homework/Ch13-Shubert.pdf"
+Ganymede,2631200,9.88781998008098e12,503,0.00351068,"Moon of Jupiter. Source: NASA/JPL Horizons, R and j2: http://lasp.colorado.edu/~espoclass/5830_2013_Spring_homework/Ch13-Shubert.pdf"
+Callisto,2410300,7.17930486761108e12,504,0.00340843,"Moon of Jupiter. Source: NASA/JPL Horizons, R and j2: http://lasp.colorado.edu/~espoclass/5830_2013_Spring_homework/Ch13-Shubert.pdf"
+Amalthea,83.45,1.48760467740427e8,505,0.03757947,"Moon of Jupiter. Source: NASA/JPL Horizons, R and j2: http://lasp.colorado.edu/~espoclass/5830_2013_Spring_homework/Ch13-Shubert.pdf"
+Himalia,85000,1.38008069607897e8,506,0,Moon of Jupiter. Source: NASA/JPL Horizons
+Elara,43000,5.8e7,507,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Pasiphae,30000,2e7,508,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Sinope,19000,5e6,509,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Lysithea,18000,4.2e6,510,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Carme,23000,8.8e6,511,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Ananke,14000,2e6,512,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Leda,10000,7.3e5,513,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Thebe,49300,1e8,514,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Adrastea,8200,5e5,515,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Metis,21500,8e6,516,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Callirrhoe,4300,5.8e4,517,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Themisto,4000,4.6e4,518,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Megaclite,2700,1.4e4,519,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Taygete,2500,1.1e4,520,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Chaldene,1900,5e3,521,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Harpalyke,2200,8e3,522,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Kalyke,2600,1.3e4,523,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Iocaste,2600,1.3e4,524,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Erinome,1600,3e3,525,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Isonoe,1900,5e3,526,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Praxidike,3400,2.9e4,527,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Autonoe,2000,6e3,528,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Thyone,2000,6e3,529,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Hermippe,2000,6e3,530,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Aitne,1500,3e3,531,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Eurydome,1500,3e3,532,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Euanthe,1500,3e3,533,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Euporie,1000,1e3,534,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Orthosie,1000,1e3,535,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Sponde,1000,1e3,536,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Kale,1000,1e3,537,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Pasithee,1000,1e3,538,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Hegemone,1500,3e3,539,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Mneme,1000,1e3,540,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Aoede,2000,6e3,541,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Thelxinoe,1000,1e3,542,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Arche,1500,3e3,543,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Kallichore,1000,1e3,544,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Helike,2000,6e3,545,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Carpo,1500,3e3,546,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Eukelade,2000,6e3,547,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Cyllene,1000,1e3,548,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Kore,1000,1e3,549,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Herse,1000,1e3,550,0,Moon of Jupiter. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Mimas,198800,2.50345819993143e9,601,0,Moon of Saturn. Source: NASA/JPL Horizons
+Enceladus,252300,7.21118506650989e9,602,0,Moon of Saturn. Source: NASA/JPL Horizons
+Tethys,533000,4.12085650865853e10,603,0,Moon of Saturn. Source: NASA/JPL Horizons
+Dione,561700,7.31157421894742e10,604,0,Moon of Saturn. Source: NASA/JPL Horizons
+Rhea,764300,1.53941903593312e11,605,0,Moon of Saturn. Source: NASA/JPL Horizons
+Iapetus,735600,8.97813703098354e12,606,0,Moon of Saturn. Source: NASA/JPL Horizons
+Titan,2575500,3.71208575447241e10,607,0,Moon of Saturn. Source: NASA/JPL Horizons
+Hyperion,135000,1.20509575238887e11,608,0,Moon of Saturn. Source: NASA/JPL Horizons
+Phoebe,106500,5.53237128537641e8,609,0,Moon of Saturn. Source: NASA/JPL Horizons
+Janus,89500,1.2657650990122e8,610,0,Moon of Saturn. Source: NASA/JPL Horizons
+Epimetheus,58100,3.51233328820807e7,611,0,Moon of Saturn. Source: NASA/JPL Horizons
+Helene,17600,3.42482944750298e5,612,0,Moon of Saturn. Source: NASA/JPL Horizons
+Telesto,17600,2.7e5,613,0,Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Calypso,10700,1.7e5,614,0,Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Atlas,15100,3.71887124751647e5,615,0,Moon of Saturn. Source: NASA/JPL Horizons
+Prometheus,43100,1.07520800100761e7,616,0,Moon of Saturn. Source: NASA/JPL Horizons
+Pandora,40700,9.2903251220288e6,617,0,Moon of Saturn. Source: NASA/JPL Horizons
+Pan,14100,3.3e5,618,0,Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Methone,1600,6e2,619,0,Moon of Saturn. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Charon,603600,1.06250926952203e11,901,0,Moon of Pluto. Source: NASA/JPL Horizons
+Nix,23000,2.15055226796933e6,902,0,Moon of Pluto. Source: NASA/JPL Horizons
+Hydra,30500,3.66391710748056e6,903,0,Moon of Pluto. Source: NASA/JPL Horizons
+Kerberos,14000,4.54073431273599e5,904,0,Moon of Pluto. Source: NASA/JPL Horizons
+Phobos,11100,7.08754606689445e5,401,0,Moon of Mars. Source: NASA/JPL Horizons
+Deimos,6200,9.61556964812031e4,402,0,Moon of Mars. Source: NASA/JPL Horizons
+Triton,1353400,1.42759814072503e12,801,0,Moon of Neptune. Source: NASA/JPL Horizons
+Nereid,170000,2.06e9,802,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Naiad,33000,1.3e7,803,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Thalassa,41000,2.5e7,804,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Despina,75000,1.4e8,805,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Galatea,88000,2.5e8,806,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Larissa,97000000000,3.3e8,807,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Proteus,210000,3.36e9,808,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Halimede,31000,1.2e7,809,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Psamathe,20000,3.3e6,810,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Sao,22000,4.5e6,811,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Laomedeia,21000,3.9e6,812,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Neso,30000,1.1e7,813,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+2004N1,9000,3e5,814,0,Moon of Neptune. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Ariel,578900,8.64e10,701,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Umbriel,584700,8.15e10,702,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Titania,788900,2.282e11,703,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Oberon,761400,1.924e11,704,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Miranda,235800,4.4e9,705,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Cordelia,20100,3e6,706,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Ophelia,21400,3.6e6,707,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Bianca,27000,6.3e6,708,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Cressida,41000,2.29e7,709,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Desdemona,35000,1.19e7,710,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Juliet,53000,3.72e7,711,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Portia,70000,1.122e8,712,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Rosalind,36000,1.7e7,713,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Belinda,45000,2.38e7,714,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Puck,81000,1.931e8,715,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Caliban,36000,2e7,716,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Sycorax,75000,1.8e8,717,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Prospero,25000,6.6e6,718,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Setebos,24000,5.8e6,719,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Stephano,16,1.7e6,720,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Trinculo,9000,3.1e5,721,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Francisco,11000,5.6e6,722,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Margaret,10000,4.2e5,723,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Ferdinand,10000,4.2e5,724,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Perdita,13000,1.2e6,725,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Mab,12000,6e5,726,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Cupid,9000,2e5,727,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
