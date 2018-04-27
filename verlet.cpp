@@ -55,7 +55,6 @@ void Verlet::run(System &sys, Trajectory &tra) {
     auto n_bodies = (int) sys.get_number_of_bodies();
     double delta2 = std::pow(m_delta, 2);
 
-
     for (int i = 0; i < m_rows; ++i) {
         if(i == 0){
             std::vector<Vector3 > x0 = sys.get_positions();
@@ -72,14 +71,19 @@ void Verlet::run(System &sys, Trajectory &tra) {
 
         else {
 
-            if (m_abort){
-                emit failure(true);
-                break;
+            std::vector<Vector3> x0;
+            std::vector<Vector3> v0;
+
+            if ((i+1) % 2 == 0) {
+
+                x0 = tra.get_positions_at_index(0);
+                v0 = tra.get_velocities_at_index(0);
+
+            } else {
+
+                x0 = tra.get_positions_at_index(1);
+                v0 = tra.get_velocities_at_index(1);
             }
-
-
-            std::vector<Vector3> x0 = tra.get_positions_at_index(i-1);
-            std::vector<Vector3> v0 = tra.get_velocities_at_index(i-1);
 
             std::vector<Vector3> a0 = sys.get_accelerations();
 
@@ -101,6 +105,13 @@ void Verlet::run(System &sys, Trajectory &tra) {
 
             sys.set_velocities(v1);
 
+            if ((i+1) % 2 == 0){
+
+                tra.save_to_csv();
+                tra.clear_coordinates();
+
+            }
+
             // mechanical_energy.emplace_back(sys.get_total_mechanical_energy());
 
             tra.set_position(x1, v1);
@@ -110,9 +121,4 @@ void Verlet::run(System &sys, Trajectory &tra) {
     }
 
     std::cout << "Integration finished." << std::endl;
-}
-
-void Verlet::set_abort(bool abort) {
-    m_abort = abort;
-
 }

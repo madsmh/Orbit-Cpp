@@ -58,7 +58,7 @@ public:
 
     long get_number_of_rows() const { return self_positions[0].size(); }
 
-    void save_trajectory_positions();
+    void save_to_csv();
 
     long get_number_of_trajectories(){ return self_n_trajectories; }
 

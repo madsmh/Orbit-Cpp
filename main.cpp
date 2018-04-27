@@ -207,7 +207,7 @@ int main(int argc, char **argv) {
                   physicalProperties.get_j2s());
 
 
-    trajectory.setup(physicalProperties.get_names().size());
+    trajectory.setup(physicalProperties.get_names().size(), physicalProperties.get_names());
 
     int detail;
     int origin;
