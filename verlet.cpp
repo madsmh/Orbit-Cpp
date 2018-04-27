@@ -49,7 +49,7 @@ void Verlet::run(System &sys, Trajectory &tra) {
     // std::vector<Vector3> momentum;
     // std::vector<Vector3> angular_momentum;
 
-    boost::progress_display progress(static_cast<unsigned long>(m_rows));
+        boost::progress_display progress(static_cast<unsigned long>(m_rows));
 
 
     auto n_bodies = (int) sys.get_number_of_bodies();
@@ -61,29 +61,22 @@ void Verlet::run(System &sys, Trajectory &tra) {
             std::vector<Vector3> v0 = sys.get_velocities();
 
             tra.set_position(x0, v0);
-            //sys.set_positions(x0);
-            //sys.set_velocities(v0);
+
+            sys.set_positions(x0);
+            sys.set_velocities(v0);
 
             // mechanical_energy.emplace_back(sys.get_total_mechanical_energy());
+
+            tra.save_to_csv();
+            tra.clear_coordinates();
 
             ++progress;
         }
 
         else {
 
-            std::vector<Vector3> x0;
-            std::vector<Vector3> v0;
-
-            if ((i+1) % 2 == 0) {
-
-                x0 = tra.get_positions_at_index(0);
-                v0 = tra.get_velocities_at_index(0);
-
-            } else {
-
-                x0 = tra.get_positions_at_index(1);
-                v0 = tra.get_velocities_at_index(1);
-            }
+            std::vector<Vector3> x0 = sys.get_positions();
+            std::vector<Vector3> v0 = sys.get_velocities();
 
             std::vector<Vector3> a0 = sys.get_accelerations();
 
@@ -104,13 +97,7 @@ void Verlet::run(System &sys, Trajectory &tra) {
             }
 
             sys.set_velocities(v1);
-
-            if ((i+1) % 2 == 0){
-
-                tra.save_to_csv();
-                tra.clear_coordinates();
-
-            }
+            sys.set_positions(x1);
 
             // mechanical_energy.emplace_back(sys.get_total_mechanical_energy());
 
@@ -120,5 +107,6 @@ void Verlet::run(System &sys, Trajectory &tra) {
         }
     }
 
+    tra.close_streams();
     std::cout << "Integration finished." << std::endl;
 }
