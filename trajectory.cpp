@@ -20,7 +20,7 @@
 
 #include "trajectory.h"
 
-void Trajectory::setup(long n_trajectories) {
+void Trajectory::setup(long n_trajectories, std::vector<std::string> names) {
 
     self_n_trajectories = n_trajectories;
 
@@ -28,8 +28,16 @@ void Trajectory::setup(long n_trajectories) {
     self_velocities.clear();
 
     for (unsigned int i = 0; i < self_n_trajectories; ++i) {
-        self_positions.emplace_back(std::vector<Vector3> {});
-        self_velocities.emplace_back(std::vector<Vector3> {});
+        // Create vectors for coordinates, position and velocity
+        self_positions.emplace_back(std::vector<Vector3>{});
+        self_velocities.emplace_back(std::vector<Vector3>{});
+
+        // Create and open ofstreams, position and velocity
+        self_pos_streams.emplace_back(new std::ofstream);
+        self_pos_streams[i].open(self_trajectory_dir + "pos/" + names[i] + ".csv");
+
+        self_vel_streams.emplace_back(new std::ofstream);
+        self_vel_streams[i].open(self_trajectory_dir + "vel/" + names[i] + ".csv");
     }
 }
 
@@ -70,30 +78,40 @@ std::vector<Vector3> Trajectory::get_velocities_at_index(int index)  const {
     return velocities;
 }
 
-void Trajectory::save_trajectory_positions(int tra, std::string name, double start_time, double dt) {
-    std::transform(name.begin(), name.end(), name.begin(), ::tolower);
-    std::string path = "trajectory/" + name + ".csv";
-    std::ofstream myfile (path);
-
-    std::vector<Vector3> current_trajectory = self_positions[tra];
-
-    std::cout << "Writing data for " << name << "." << std::endl;
-
-    if (myfile.good()) {
-
-        for (int i = 0; i < current_trajectory.size(); ++i) {
-            std::string t = boost::lexical_cast<std::string>(start_time + (double) i * dt);
-            std::string x_coord = boost::lexical_cast<std::string>(current_trajectory[i].x());
-            std::string y_coord = boost::lexical_cast<std::string>(current_trajectory[i].y());
-            std::string z_coord = boost::lexical_cast<std::string>(current_trajectory[i].z());
-            myfile << t << "," << x_coord << "," << y_coord << "," << z_coord << std::endl;
+void Trajectory::save_trajectory_positions() {
+    for (int j = 0; j < self_n_trajectories; ++j) {
+        for (int k = 0; k < self_positions[j].size(); ++k) {
+            self_pos_streams[j] << self_positions[j][k].x()
+                                << ", "
+                                << self_positions[j][k].y()
+                                << ", "
+                                << self_positions[j][k].z()
+                                << std::endl;
+            self_vel_streams[j] << self_velocities[j][k].x()
+                                << ", "
+                                << self_velocities[j][k].y()
+                                << ", "
+                                << self_velocities[j][k].z()
+                                << std::endl;
         }
-    } else {
-        std::cout << "Error opening file." << std::endl;
+        
+    }
+}
+
+void Trajectory::close_streams() {
+    for (int j = 0; j < self_n_trajectories; ++j) {
+        self_pos_streams[j].close();
+        self_vel_streams[j].close();
     }
 
-    myfile.close();
-    std::cout << "Finshed writing data for " << name << "." << std::endl;
+}
+
+void Trajectory::clear_coordinates() {
+    for (int j = 0; j < self_n_trajectories; ++j) {
+        self_positions[j].clear();
+        self_positions[j].clear();
+    }
+
 }
 
 

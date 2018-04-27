@@ -36,11 +36,17 @@ class Trajectory{
     std::string self_trajectory_dir = "trajectory/";
     std::vector<std::vector<Vector3>> self_positions;
     std::vector<std::vector<Vector3>> self_velocities;
+    std::vector<std::ofstream> self_pos_streams;
+    std::vector<std::ofstream> self_vel_streams;
 
 public:
-    void setup(long n_trajectories);
+    void setup(long n_trajectories, std::vector<std::string> names );
+
+    void close_streams();
 
     void set_position(const std::vector<Vector3>& pos, const std::vector<Vector3> &vel);
+
+    void clear_coordinates();
 
     std::vector<Vector3> get_trajectory_positions(int body) const;
 
@@ -52,11 +58,11 @@ public:
 
     long get_number_of_rows() const { return self_positions[0].size(); }
 
-    void save_trajectory_positions(int body, std::string name, double start_time, double dt);
-
-    void save_all_trajectory_positions(std::vector<std::string> names);
+    void save_trajectory_positions();
 
     long get_number_of_trajectories(){ return self_n_trajectories; }
+
+
 };
 
 
