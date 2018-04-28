@@ -51,6 +51,8 @@ void Verlet::run(System &sys, Trajectory &tra) {
     auto n_bodies = (int) sys.get_number_of_bodies();
     double delta2 = std::pow(m_delta, 2);
 
+    tra.open_streams();
+
     for (int i = 0; i < m_rows; ++i) {
         if(i == 0){
 
