@@ -17,8 +17,6 @@
  *
  * */
 
-
-#include <boost/token_functions.hpp>
 #include <boost/tokenizer.hpp>
 #include "trajectory.h"
 #include "vector3.h"
