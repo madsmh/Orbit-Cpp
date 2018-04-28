@@ -33,20 +33,34 @@
 class Trajectory{
 
     long self_n_trajectories;
-    std::string self_trajectory_dir = "trajectory/";
+
+    const std::string self_trajectory_dir = "trajectory/";
+    const std::string self_vel_dir = self_trajectory_dir + "vel/";
+    const std::string self_pos_dir = self_trajectory_dir + "pos/";
+    const std::string self_file_extension = ".csv";
+
     std::vector<std::vector<Vector3>> self_positions;
     std::vector<std::vector<Vector3>> self_velocities;
+
     std::vector<std::ofstream> self_pos_streams;
     std::vector<std::ofstream> self_vel_streams;
 
+    std::vector<std::string> self_names;
+
 public:
     void setup(long n_trajectories, std::vector<std::string> names );
+
+    void open_streams();
 
     void close_streams();
 
     void set_position(const std::vector<Vector3>& pos, const std::vector<Vector3> &vel);
 
     void clear_coordinates();
+
+    void save_to_csv();
+
+    void read_from_csv(int skip);
 
     std::vector<Vector3> get_trajectory_positions(int body) const;
 
@@ -57,8 +71,6 @@ public:
     std::vector<Vector3> get_velocities_at_index(int index) const;
 
     long get_number_of_rows() const { return self_positions[0].size(); }
-
-    void save_to_csv();
 
     long get_number_of_trajectories(){ return self_n_trajectories; }
 
