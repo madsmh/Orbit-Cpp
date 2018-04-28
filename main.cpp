@@ -232,12 +232,14 @@ int main(int argc, char **argv) {
 
     integrator.run(sol,trajectory);
 
-    diagnostics(trajectory,
+    /* TODO Update diagnostics to use less RAM.
+     *
+     * diagnostics(trajectory,
                 planetData,
                 physicalProperties.get_names(),
                 detail,
                 hours_to_sim,
                 origin,
-                target);
+                target);*/
 }
 
