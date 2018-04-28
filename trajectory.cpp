@@ -33,10 +33,15 @@ void Trajectory::setup(long n_trajectories, std::vector<std::string> names) {
         self_velocities.emplace_back(std::vector<Vector3>{});
 
         // Create and open ofstreams, position and velocity
-        self_pos_streams.emplace_back(new std::ofstream);
+
+        std::ofstream out1;
+
+        self_pos_streams.push_back(std::move(out1));
         self_pos_streams[i].open(self_trajectory_dir + "pos/" + names[i] + ".csv");
 
-        self_vel_streams.emplace_back(new std::ofstream);
+        std::ofstream out2;
+
+        self_vel_streams.push_back(std::move(out2));
         self_vel_streams[i].open(self_trajectory_dir + "vel/" + names[i] + ".csv");
     }
 }
@@ -87,6 +92,7 @@ void Trajectory::save_to_csv() {
                                 << ", "
                                 << self_positions[j][k].z()
                                 << std::endl;
+
             self_vel_streams[j] << self_velocities[j][k].x()
                                 << ", "
                                 << self_velocities[j][k].y()
@@ -94,7 +100,6 @@ void Trajectory::save_to_csv() {
                                 << self_velocities[j][k].z()
                                 << std::endl;
         }
-        
     }
 }
 
