@@ -129,10 +129,15 @@ void Trajectory::read_from_csv(int skip) {
         filereader_pos.open(self_pos_dir + self_names[j] + self_file_extension);
         filereader_vel.open(self_vel_dir + self_names[j] + self_file_extension);
 
-        // TODO Implement line-spik feature.
+        int counter = 0;
 
         if (filereader_pos.is_open() and filereader_vel.is_open()) {
             while (!filereader_pos.eof() or !filereader_vel.eof()) {
+
+                if (((counter + 1) % skip != 0) and (counter !=0)){
+                    ++counter;
+                    break;
+                }
 
                 if(!filereader_pos.eof()){
                     std::getline(filereader_pos, buffer_pos);
@@ -143,6 +148,7 @@ void Trajectory::read_from_csv(int skip) {
                 }
 
                 if (!buffer_pos.empty() and !filereader_pos.eof()) {
+
                     tokenizer tok(buffer_pos);
 
                     auto tok_it = tok.begin();
@@ -178,6 +184,8 @@ void Trajectory::read_from_csv(int skip) {
                     self_velocities[j].push_back(Vector3(vx_buffer, vy_buffer, vz_buffer));
                 }
 
+                ++counter;
+
             }
 
             filereader_pos.close();
@@ -204,5 +212,3 @@ void Trajectory::open_streams() {
         self_vel_streams[i].open(self_vel_dir + self_names[i] + self_file_extension);
     }
 }
-
-
