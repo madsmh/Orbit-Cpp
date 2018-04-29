@@ -58,7 +58,7 @@ public:
 
     void clear_coordinates();
 
-    void save_to_csv();
+    void save_to_file();
 
     void read_from_csv(int skip);
 

@@ -74,7 +74,7 @@ std::vector<Vector3> Trajectory::get_velocities_at_index(int index)  const {
     return velocities;
 }
 
-void Trajectory::save_to_csv() {
+void Trajectory::save_to_file() {
 
     for (int j = 0; j < self_n_trajectories; ++j) {
         for (int k = 0; k < self_positions[j].size(); ++k) {

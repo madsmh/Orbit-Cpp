@@ -60,7 +60,7 @@ void Verlet::run(System &sys, Trajectory &tra) {
             std::vector<Vector3> v0 = sys.get_velocities();
 
             tra.set_position(x0, v0);
-            tra.save_to_csv();
+            tra.save_to_file();
             tra.clear_coordinates();
 
             ++progress;
@@ -93,7 +93,7 @@ void Verlet::run(System &sys, Trajectory &tra) {
             sys.set_velocities(v1);
 
             tra.set_position(x1, v1);
-            tra.save_to_csv();
+            tra.save_to_file();
             tra.clear_coordinates();
 
             ++progress;
