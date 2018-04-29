@@ -42,17 +42,17 @@ class Trajectory{
     std::vector<std::vector<Vector3>> self_positions;
     std::vector<std::vector<Vector3>> self_velocities;
 
-    std::vector<std::ofstream> self_pos_streams;
-    std::vector<std::ofstream> self_vel_streams;
+    std::vector<std::ofstream> self_pos_ofstreams;
+    std::vector<std::ofstream> self_vel_ofstreams;
 
     std::vector<std::string> self_names;
 
 public:
     void setup(long n_trajectories, std::vector<std::string> names );
 
-    void open_streams();
+    void open_ofstreams();
 
-    void close_streams();
+    void close_ofstreams();
 
     void set_position(const std::vector<Vector3>& pos, const std::vector<Vector3> &vel);
 

@@ -51,7 +51,7 @@ void Verlet::run(System &sys, Trajectory &tra) {
     auto n_bodies = (int) sys.get_number_of_bodies();
     double delta2 = std::pow(m_delta, 2);
 
-    tra.open_streams();
+    tra.open_ofstreams();
 
     for (int i = 0; i < m_rows; ++i) {
         if(i == 0){
@@ -100,6 +100,6 @@ void Verlet::run(System &sys, Trajectory &tra) {
         }
     }
 
-    tra.close_streams();
+    tra.close_ofstreams();
     std::cout << "Integration finished." << std::endl;
 }

@@ -78,14 +78,14 @@ void Trajectory::save_to_csv() {
 
     for (int j = 0; j < self_n_trajectories; ++j) {
         for (int k = 0; k < self_positions[j].size(); ++k) {
-            self_pos_streams[j] << self_positions[j][k].x()
+            self_pos_ofstreams[j] << self_positions[j][k].x()
                                 << ", "
                                 << self_positions[j][k].y()
                                 << ", "
                                 << self_positions[j][k].z()
                                 << std::endl;
 
-            self_vel_streams[j] << self_velocities[j][k].x()
+            self_vel_ofstreams[j] << self_velocities[j][k].x()
                                 << ", "
                                 << self_velocities[j][k].y()
                                 << ", "
@@ -95,10 +95,10 @@ void Trajectory::save_to_csv() {
     }
 }
 
-void Trajectory::close_streams() {
+void Trajectory::close_ofstreams() {
     for (int j = 0; j < self_n_trajectories; ++j) {
-        self_pos_streams[j].close();
-        self_vel_streams[j].close();
+        self_pos_ofstreams[j].close();
+        self_vel_ofstreams[j].close();
     }
 
 }
@@ -195,18 +195,18 @@ void Trajectory::read_from_csv(int skip) {
 
 }
 
-void Trajectory::open_streams() {
+void Trajectory::open_ofstreams() {
     for (unsigned int i = 0; i < self_n_trajectories; ++i) {
         // Create and open ofstreams, position and velocity
 
         std::ofstream out1;
 
-        self_pos_streams.push_back(std::move(out1));
-        self_pos_streams[i].open(self_pos_dir + self_names[i] + self_file_extension);
+        self_pos_ofstreams.push_back(std::move(out1));
+        self_pos_ofstreams[i].open(self_pos_dir + self_names[i] + self_file_extension);
 
         std::ofstream out2;
 
-        self_vel_streams.push_back(std::move(out2));
-        self_vel_streams[i].open(self_vel_dir + self_names[i] + self_file_extension);
+        self_vel_ofstreams.push_back(std::move(out2));
+        self_vel_ofstreams[i].open(self_vel_dir + self_names[i] + self_file_extension);
     }
 }
