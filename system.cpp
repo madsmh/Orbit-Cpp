@@ -177,6 +177,8 @@ double System::potential_energy(Body body1, Body body2) const {
     return -body1.get_GM()*body2.get_mass()/dist;
 }
 
+// TODO Need to modify the energy calculations to they take the nodal correction into account.
+
 double System::get_total_potential_energy() const {
 
     double total_potential_energy = 0;
