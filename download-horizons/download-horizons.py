@@ -1,12 +1,14 @@
 import numpy as np
-import callhorizons as ch
+from astroquery.jplhorizons import Horizons
 import csv
 
 start_date = '2017-07-10'
 end_date = '2020-07-10'
-time_step = '1h'
+time_step =  '1y' # '1h'
 path = "../physical_properties/properties.csv"
 
+data_path = "../data/"
+coord_center = "500@0"
 
 def data_to_table(data):
     table = np.empty((0, 6), float)
@@ -21,19 +23,18 @@ def data_to_table(data):
     return table
 
 def save_table(table, path):
-    np.savetxt(path, table, delimiter=',',fmt="%1.15e")
+    np.savetxt(path, table, delimiter=',',fmt="%1.16e")
 
 def run(path_to_config_file, from_date, to_date, time_step):
 
-    path = "../data/"
-    coord_center = "500@0"
+
     with open(path_to_config_file) as csvfile:
         reader = csv.DictReader(csvfile, skipinitialspace=True)
         for row in reader:
             if row['ID'] == 'NA':
-                body = ch.query(str(row['NAME']), smallbody=True)
-                body.set_epochrange(from_date, to_date, time_step)
-                body.get_vectors(coord_center)
+                body = Horizons(id=str(row['ID']), location=coord_center,
+                                epochs= {'start' : start_date, 'stop': end_date, 'step': time_step})
+                vector = body.vectors()
 
                 table = data_to_table(body.data)
                 save_table(table, path + str(row['NAME']).lower() + ".csv")
@@ -47,4 +48,13 @@ def run(path_to_config_file, from_date, to_date, time_step):
                 save_table(table, path + str(row['NAME']).lower() + ".csv")
 
 
-run(path,start_date, end_date, time_step)
+# run(path,start_date, end_date, time_step)
+
+
+body = Horizons(id_type='asteroid_name', id='2000065', location=coord_center,
+                epochs= {'start' : start_date, 'stop': end_date, 'step': time_step})
+vector = body.vectors()
+print(vector.columns)
+#vector['x'].convert_unit_to('m')
+print(vector['x'])
+print(vector['targetname'])
