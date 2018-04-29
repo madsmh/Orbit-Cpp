@@ -54,7 +54,7 @@ void PhysicalProperties::get_data(long n)  {
 
                 ++tok_it;
 
-                p.GM = std::stod(*tok_it);
+                p.GM = std::stod(*tok_it)*1.0e9;
 
                 ++tok_it;
                 ++tok_it;

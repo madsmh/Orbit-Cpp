@@ -90,17 +90,17 @@ void diagnostics(Trajectory tra,
 
         double max_dist = *std::max_element(dists.begin(), dists.end())/1000;
 
-        if (j == 23){
+        if (j == 28){
             std::cout << std::endl << "Jovian moons: " << std::endl;
-        } else if (j == 73){
+        } else if (j == 34){
             std::cout << std::endl << "Saturninan moons: " << std::endl;
-        } else if (j == 84){
+        } else if (j == 49){
             std::cout << std::endl << "Plutonian moons: " << std::endl;
-        } else if (j == 88){
+        } else if (j == 54){
             std::cout << std::endl << "Martian moons: " << std::endl;
-        } else if (j == 90){
+        } else if (j == 55){
             std::cout << std::endl << "Neptunian moons: " << std::endl;
-        } else if (j == 104){
+        } else if (j == 56){
             std::cout << std::endl << "Uanian moons: " << std::endl;
         }
 
