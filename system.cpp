@@ -95,9 +95,9 @@ Vector3 System::nodal_correction(const Body &body1, const Body &body2) const {
     double r2 = r12.norm2();
     double r5 = std::pow(r12.norm(), 5);
 
-    double a1 = -body1.get_GM()*r12.x()/r3 - ( 3 * body1.get_j2() * body1.get_GM()* R2)/(2*r5) * r12.x() * (1-5*z2/r2);
-    double a2 = -body1.get_GM()*r12.y()/r3 - ( 3 * body1.get_j2() * body1.get_GM()* R2)/(2*r5) * r12.y() * (1-5*z2/r2);
-    double a3 = -body1.get_GM()*r12.z()/r3 - ( 3 * body1.get_j2() * body1.get_GM()* R2)/(2*r5) * r12.z() * (3-5*z2/r2);
+    double a1 = -body1.get_GM()*r12.x()/r3 - ( 3.0 * body1.get_j2() * body1.get_GM()* R2)/(2.0*r5) * r12.x() * (1.0-5.0*z2/r2);
+    double a2 = -body1.get_GM()*r12.y()/r3 - ( 3.0 * body1.get_j2() * body1.get_GM()* R2)/(2.0*r5) * r12.y() * (1.0-5.0*z2/r2);
+    double a3 = -body1.get_GM()*r12.z()/r3 - ( 3.0 * body1.get_j2() * body1.get_GM()* R2)/(2.0*r5) * r12.z() * (3.0-5.0*z2/r2);
 
     return Vector3 (a1, a2, a3);
 }
