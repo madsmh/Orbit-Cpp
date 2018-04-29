@@ -22,6 +22,7 @@
 #include <algorithm>
 #include <fstream>
 #include <boost/tokenizer.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include "planetdata.h"
 
@@ -50,6 +51,7 @@ std::vector<std::string> split(std::string str, const std::string& delim) {
 std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string planet) {
     std::string path = "data/" + planet + ".csv";
     std::transform(path.begin(), path.end(), path.begin(), ::tolower);
+    boost::replace_all(path, " ", "_");
 
     std::ifstream filereader;
     HorizonsFile h = {};
