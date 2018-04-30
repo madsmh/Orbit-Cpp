@@ -18,6 +18,8 @@
  * */
 
 #include <boost/tokenizer.hpp>
+#include <boost/algorithm/string.hpp>
+#include <iomanip>
 #include "trajectory.h"
 #include "vector3.h"
 
@@ -78,19 +80,23 @@ void Trajectory::save_to_file() {
 
     for (int j = 0; j < self_n_trajectories; ++j) {
         for (int k = 0; k < self_positions[j].size(); ++k) {
-            self_pos_ofstreams[j] << self_positions[j][k].x()
-                                << ", "
-                                << self_positions[j][k].y()
-                                << ", "
-                                << self_positions[j][k].z()
-                                << std::endl;
+            self_pos_ofstreams[j] << std::scientific
+                                  << std::setprecision(16)
+                                  << self_positions[j][k].x()
+                                  << ", "
+                                  << self_positions[j][k].y()
+                                  << ", "
+                                  << self_positions[j][k].z()
+                                  << std::endl;
 
-            self_vel_ofstreams[j] << self_velocities[j][k].x()
-                                << ", "
-                                << self_velocities[j][k].y()
-                                << ", "
-                                << self_velocities[j][k].z()
-                                << std::endl;
+            self_vel_ofstreams[j] << std::scientific
+                                  << std::setprecision(16)
+                                  << self_velocities[j][k].x()
+                                  << ", "
+                                  << self_velocities[j][k].y()
+                                  << ", "
+                                  << self_velocities[j][k].z()
+                                  << std::endl;
         }
     }
 }
@@ -124,8 +130,17 @@ void Trajectory::read_from_csv(int skip) {
 
     for (int j = 0; j < self_n_trajectories; ++j) {
 
-        filereader_pos.open(self_pos_dir + self_names[j] + self_file_extension);
-        filereader_vel.open(self_vel_dir + self_names[j] + self_file_extension);
+        std::string path_pos = self_pos_dir + self_names[i] + self_file_extension;
+        boost::algorithm::to_lower(path_pos);
+        boost::replace_all(path_pos, " ", "_");
+
+        std::string path_vel = self_vel_dir + self_names[i] + self_file_extension;
+        boost::algorithm::to_lower(path_vel);
+        boost::replace_all(path_vel, " ", "_");
+
+
+        filereader_pos.open(path_pos);
+        filereader_vel.open(path_vel);
 
         int counter = 0;
 
@@ -199,14 +214,22 @@ void Trajectory::open_ofstreams() {
     for (unsigned int i = 0; i < self_n_trajectories; ++i) {
         // Create and open ofstreams, position and velocity
 
+        std::string path_pos = self_pos_dir + self_names[i] + self_file_extension;
+        boost::algorithm::to_lower(path_pos);
+        boost::replace_all(path_pos, " ", "_");
+
+        std::string path_vel = self_vel_dir + self_names[i] + self_file_extension;
+        boost::algorithm::to_lower(path_vel);
+        boost::replace_all(path_vel, " ", "_");
+
         std::ofstream out1;
 
         self_pos_ofstreams.push_back(std::move(out1));
-        self_pos_ofstreams[i].open(self_pos_dir + self_names[i] + self_file_extension);
+        self_pos_ofstreams[i].open(path_pos);
 
         std::ofstream out2;
 
         self_vel_ofstreams.push_back(std::move(out2));
-        self_vel_ofstreams[i].open(self_vel_dir + self_names[i] + self_file_extension);
+        self_vel_ofstreams[i].open(path_vel);
     }
 }
