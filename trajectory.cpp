@@ -106,7 +106,6 @@ void Trajectory::close_ofstreams() {
         self_pos_ofstreams[j].close();
         self_vel_ofstreams[j].close();
     }
-
 }
 
 void Trajectory::clear_coordinates() {
@@ -114,7 +113,6 @@ void Trajectory::clear_coordinates() {
         self_positions[j].clear();
         self_positions[j].clear();
     }
-
 }
 
 void Trajectory::read_from_csv(int skip) {
@@ -142,73 +140,74 @@ void Trajectory::read_from_csv(int skip) {
         filereader_pos.open(path_pos);
         filereader_vel.open(path_vel);
 
-        int counter = 0;
+        long counter = 0;
 
         if (filereader_pos.is_open() and filereader_vel.is_open()) {
-            while (!filereader_pos.eof() or !filereader_vel.eof()) {
 
-                if (((counter + 1) % skip != 0) and (counter !=0)){
+            while (std::getline(filereader_pos, buffer_pos)) {
+
+                if (((counter+1) % skip !=0) and counter != 0){
                     ++counter;
-                    break;
+                    continue;
                 }
 
-                if(!filereader_pos.eof()){
-                    std::getline(filereader_pos, buffer_pos);
-                }
+                tokenizer tok(buffer_pos);
 
-                if (!filereader_vel.eof()) {
-                    std::getline(filereader_vel, buffer_vel);
-                }
+                auto tok_it = tok.begin();
 
-                if (!buffer_pos.empty() and !filereader_pos.eof()) {
+                double x_buffer = std::stod(*tok_it);
 
-                    tokenizer tok(buffer_pos);
+                ++tok_it;
 
-                    auto tok_it = tok.begin();
+                double y_buffer = std::stod(*tok_it);
 
-                    double x_buffer = std::stod(*tok_it);
+                ++tok_it;
 
-                    ++tok_it;
+                double z_buffer = std::stod(*tok_it);
 
-                    double y_buffer = std::stod(*tok_it);
-
-                    ++tok_it;
-
-                    double z_buffer = std::stod(*tok_it);
-
-                    self_positions[j].push_back(Vector3(x_buffer, y_buffer, z_buffer));
-                }
-
-                if (!buffer_vel.empty() and !filereader_vel.eof()) {
-                    tokenizer tok(buffer_vel);
-
-                    auto tok_it = tok.begin();
-
-                    double vx_buffer = std::stod(*tok_it);
-
-                    ++tok_it;
-
-                    double vy_buffer = std::stod(*tok_it);
-
-                    ++tok_it;
-
-                    double vz_buffer = std::stod(*tok_it);
-
-                    self_velocities[j].push_back(Vector3(vx_buffer, vy_buffer, vz_buffer));
-                }
+                self_positions[j].push_back(Vector3(x_buffer, y_buffer, z_buffer));
 
                 ++counter;
-
             }
 
-            filereader_pos.close();
-            filereader_vel.close();
+            counter = 0;
 
+            while (std::getline(filereader_vel, buffer_vel)) {
+
+                if (((counter+1) % skip !=0) and counter != 0){
+                    ++counter;
+                    continue;
+                }
+
+                tokenizer tok(buffer_vel);
+
+                auto tok_it = tok.begin();
+
+                double vx_buffer = std::stod(*tok_it);
+
+                ++tok_it;
+
+                double vy_buffer = std::stod(*tok_it);
+
+                ++tok_it;
+
+                double vz_buffer = std::stod(*tok_it);
+
+                self_velocities[j].push_back(Vector3(vx_buffer, vy_buffer, vz_buffer));
+
+                ++counter;
+            }
+
+        } else {
+            std::cout << "Error opening file(s) for " << self_names[j] << std::endl;
         }
 
+        filereader_pos.close();
+        filereader_vel.close();
     }
 
 }
+
 
 void Trajectory::open_ofstreams() {
     for (unsigned int i = 0; i < self_n_trajectories; ++i) {
