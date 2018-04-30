@@ -22,8 +22,6 @@
 #include "trajectory.h"
 #include "planetdata.h"
 #include "propertiesfile.h"
-// #include "verlet.h"
-#include "rk4.h"
 #include "verlet.h"
 
 #include <iostream>
@@ -212,34 +210,54 @@ int main(int argc, char **argv) {
     int detail;
     int origin;
     int target;
+    std::string sim_choice("y");
+    std::string diag_choice("y");
 
-    std::cout << "Enter number of integration steps per hour: ";
-    std::cin >> detail;
+    sim_choose:
+    std::cout << "Do you wish to run simulation? (Y/n) ";
+    std::cin >> sim_choice;
 
-    std::cout << "Enter body (int) to set as origin: ";
-    std::cin >> origin;
-    std::cout << "Chosen origin: " << physicalProperties.get_names()[origin] << std::endl;
+    if ( sim_choice == "y" or sim_choice == "Y"){
+        std::cout << "Enter number of integration steps per hour: ";
+        std::cin >> detail;
 
-    std::cout << "Enter body (int) to plot the error for: ";
-    std::cin >> target;
-    std::cout << "Chosen target: " << physicalProperties.get_names()[target] << std::endl;
+        auto hours_to_sim = planetData.get_body_positions(0).size();
 
-    auto hours_to_sim = planetData.get_body_positions(0).size();
+        Verlet integrator;
 
-    Verlet integrator;
+        integrator.setup(hours_to_sim, detail);
 
-    integrator.setup(hours_to_sim, detail);
+        integrator.run(sol,trajectory);
+    } else if ( sim_choice != "n"){
+        goto sim_choose;
+    }
 
-    integrator.run(sol,trajectory);
+    diag_choose:
+    std::cout << "Do you wish to run diagnostics? (Y/n) ";
+    std::cin >> diag_choice;
 
-    /* TODO Update diagnostics to use less RAM.
-     *
-     * diagnostics(trajectory,
-                planetData,
-                physicalProperties.get_names(),
-                detail,
-                hours_to_sim,
-                origin,
-                target);*/
+    if (diag_choice == "y" or diag_choice == "Y"){
+
+        std::cout << "Enter body (int) to set as origin: ";
+        std::cin >> origin;
+        std::cout << "Chosen origin: " << physicalProperties.get_names()[origin] << std::endl;
+
+        std::cout << "Enter body (int) to plot the error for: ";
+        std::cin >> target;
+        std::cout << "Chosen target: " << physicalProperties.get_names()[target] << std::endl;
+
+        /* TODO Update diagnostics to use less RAM.
+        *
+        * diagnostics(trajectory,
+                   planetData,
+                   physicalProperties.get_names(),
+                   detail,
+                   hours_to_sim,
+                   origin,
+                   target);*/
+
+    } else if (diag_choice != "n"){
+        goto diag_choose;
+    }
 }
 
