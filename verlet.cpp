@@ -17,7 +17,6 @@
  *
  * */
 
-#include <QCoreApplication>
 #include "trajectory.h"
 #include "verlet.h"
 #include "system.h"
@@ -45,9 +44,6 @@ void Verlet::setup(int days, int detail) {
 void Verlet::run(System &sys, Trajectory &tra) {
     std::cout << "Starting integrator." << std::endl;
 
-    // std::vector<double> mechanical_energy;
-    // std::vector<Vector3> momentum;
-    // std::vector<Vector3> angular_momentum;
 
     boost::progress_display progress(static_cast<unsigned long>(m_rows));
 
@@ -55,38 +51,32 @@ void Verlet::run(System &sys, Trajectory &tra) {
     auto n_bodies = (int) sys.get_number_of_bodies();
     double delta2 = std::pow(m_delta, 2);
 
+    tra.open_ofstreams();
 
     for (int i = 0; i < m_rows; ++i) {
         if(i == 0){
+
             std::vector<Vector3 > x0 = sys.get_positions();
             std::vector<Vector3> v0 = sys.get_velocities();
 
             tra.set_position(x0, v0);
-            //sys.set_positions(x0);
-            //sys.set_velocities(v0);
-
-            // mechanical_energy.emplace_back(sys.get_total_mechanical_energy());
+            tra.save_to_file();
+            tra.clear_coordinates();
 
             ++progress;
         }
 
         else {
 
-            if (m_abort){
-                emit failure(true);
-                break;
-            }
-
-
-            std::vector<Vector3> x0 = tra.get_positions_at_index(i-1);
-            std::vector<Vector3> v0 = tra.get_velocities_at_index(i-1);
+            std::vector<Vector3> x0 = sys.get_positions();
+            std::vector<Vector3> v0 = sys.get_velocities();
 
             std::vector<Vector3> a0 = sys.get_accelerations();
 
             std::vector<Vector3> x1;
 
             for (long j = 0; j < n_bodies; ++j) {
-                x1.emplace_back(x0[j] + v0[j] * m_delta + delta2 * 0.5 * a0[j]);
+                x1.emplace_back( x0[j] + v0[j] * m_delta + delta2 * 0.5 * a0[j] );
             }
 
             sys.set_positions(x1);
@@ -96,23 +86,20 @@ void Verlet::run(System &sys, Trajectory &tra) {
             std::vector<Vector3 > v1;
 
             for (long k = 0; k < n_bodies; ++k) {
-                v1.emplace_back(v0[k]+ 0.5 * m_delta *( a0[k]+a1[k]) );
+                v1.emplace_back(v0[k] + 0.5 * m_delta * ( a0[k] + a1[k] ) );
             }
 
+            sys.set_positions(x1);
             sys.set_velocities(v1);
 
-            // mechanical_energy.emplace_back(sys.get_total_mechanical_energy());
-
             tra.set_position(x1, v1);
+            tra.save_to_file();
+            tra.clear_coordinates();
 
             ++progress;
         }
     }
 
+    tra.close_ofstreams();
     std::cout << "Integration finished." << std::endl;
-}
-
-void Verlet::set_abort(bool abort) {
-    m_abort = abort;
-
 }

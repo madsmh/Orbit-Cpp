@@ -41,28 +41,28 @@ class PhysicalProperties : public QObject
     Q_OBJECT
 
 private:
-    std::vector<std::string> self_names;
-    std::vector<double> self_radii;
-    std::vector<double> self_GMs;
-    std::vector<double> self_j2s;
+    std::vector<std::string> m_names;
+    std::vector<double> m_radii;
+    std::vector<double> m_GMs;
+    std::vector<double> m_j2s;
 
 public:
     void get_data(long n = 0);
 
     std::vector<std::string> get_names(){
-        return self_names;
+        return m_names;
     };
 
     std::vector<double> get_radii(){
-        return self_radii;
+        return m_radii;
     };
 
     std::vector<double> get_GMs(){
-        return self_GMs;
+        return m_GMs;
     };
 
     std::vector<double> get_j2s(){
-        return self_j2s;
+        return m_j2s;
     }
 
 

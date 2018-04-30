@@ -36,9 +36,9 @@ struct HorizonsFile {
 class PlanetData {
 
     private:
-        std::vector<std::string> self_planet_names;
-        std::vector<std::vector<Vector3> > self_positions;
-        std::vector<std::vector<Vector3> > self_velocities;
+        std::vector<std::string> m_planet_names;
+        std::vector<std::vector<Vector3> > m_positions;
+        std::vector<std::vector<Vector3> > m_velocities;
         void structs_to_arrays();
         std::vector<HorizonsFile> horizons_to_structs(std::string planet);
 

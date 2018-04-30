@@ -73,12 +73,12 @@ void PhysicalProperties::get_data(long n)  {
 
     for (int i = 0; i < n; ++i) {
 
-        self_names.emplace_back(data[i].name);
-        self_radii.emplace_back(data[i].r);
-        self_GMs.emplace_back(data[i].GM);
-        self_j2s.emplace_back(data[i].j2);
+        m_names.emplace_back(data[i].name);
+        m_radii.emplace_back(data[i].r);
+        m_GMs.emplace_back(data[i].GM);
+        m_j2s.emplace_back(data[i].j2);
 
     }
 
-    std::cout << "Loaded physical constants for " << self_names.size() << " bodies." << std::endl;
+    std::cout << "Loaded physical constants for " << m_names.size() << " bodies." << std::endl;
 };

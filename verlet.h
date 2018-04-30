@@ -5,7 +5,6 @@
 #ifndef ORBIT3D_VERLET_H
 #define ORBIT3D_VERLET_H
 
-#include <QObject>
 #include "vector3.h"
 #include "system.h"
 #include "trajectory.h"
@@ -13,9 +12,7 @@
 #include "propertiesfile.h"
 
 
-class Verlet : public QObject
-{
-    Q_OBJECT
+class Verlet {
 
 public:
     void setup(int days, int detail);
@@ -26,16 +23,6 @@ private:
     int m_bodies;
     double m_delta;
     bool m_abort = false;
-
-signals:
-    void progress(int p);
-    void success(bool s);
-    void failure(bool f);
-
-public slots:
-    void set_abort (bool abort);
-
-
 };
 
 

@@ -40,7 +40,7 @@ public:
 
         m_radius = radius;
 
-        m_name = name;
+        m_name = std::move(name);
 
         m_j2 = j2;
     }
