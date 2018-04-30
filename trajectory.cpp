@@ -130,11 +130,11 @@ void Trajectory::read_from_csv(int skip) {
 
     for (int j = 0; j < self_n_trajectories; ++j) {
 
-        std::string path_pos = self_pos_dir + self_names[i] + self_file_extension;
+        std::string path_pos = self_pos_dir + self_names[j] + self_file_extension;
         boost::algorithm::to_lower(path_pos);
         boost::replace_all(path_pos, " ", "_");
 
-        std::string path_vel = self_vel_dir + self_names[i] + self_file_extension;
+        std::string path_vel = self_vel_dir + self_names[j] + self_file_extension;
         boost::algorithm::to_lower(path_vel);
         boost::replace_all(path_vel, " ", "_");
 
