@@ -25,41 +25,41 @@
 
 void Trajectory::setup(long n_trajectories, std::vector<std::string> names) {
 
-    self_n_trajectories = n_trajectories;
+    m_n_trajectories = n_trajectories;
 
-    self_positions.clear();
-    self_velocities.clear();
+    m_positions.clear();
+    m_velocities.clear();
 
-    self_names = std::move(names);
+    m_names = std::move(names);
 
-    for (int j = 0; j < self_n_trajectories; ++j) {
-        self_positions.emplace_back(std::vector<Vector3> {});
-        self_velocities.emplace_back(std::vector<Vector3> {});
+    for (int j = 0; j < m_n_trajectories; ++j) {
+        m_positions.emplace_back(std::vector<Vector3> {});
+        m_velocities.emplace_back(std::vector<Vector3> {});
     }
 
 }
 
 void Trajectory::set_position(const std::vector<Vector3>& pos, const std::vector<Vector3>& vel){
-    for (unsigned int i = 0; i< self_n_trajectories ; ++i) {
-        self_positions[i].emplace_back(pos[i]);
-        self_velocities[i].emplace_back(vel[i]);
+    for (unsigned int i = 0; i< m_n_trajectories ; ++i) {
+        m_positions[i].emplace_back(pos[i]);
+        m_velocities[i].emplace_back(vel[i]);
     }
 }
 
 std::vector<Vector3> Trajectory::get_trajectory_positions(int body) const {
-    return self_positions[body];
+    return m_positions[body];
 }
 
 std::vector<Vector3> Trajectory::get_trajectory_velocities(int body)  const {
-    return self_velocities[body];
+    return m_velocities[body];
 }
 
 std::vector<Vector3> Trajectory::get_positions_at_index(int index) const {
 
     std::vector<Vector3 > positions;
 
-    for (int j = 0; j < self_n_trajectories; ++j) {
-        positions.emplace_back(self_positions[j][index]);
+    for (int j = 0; j < m_n_trajectories; ++j) {
+        positions.emplace_back(m_positions[j][index]);
     }
 
     return positions;
@@ -69,8 +69,8 @@ std::vector<Vector3> Trajectory::get_velocities_at_index(int index)  const {
 
     std::vector<Vector3> velocities;
 
-    for (int j = 0; j < self_n_trajectories; ++j) {
-        velocities.emplace_back(self_velocities[j][index]);
+    for (int j = 0; j < m_n_trajectories; ++j) {
+        velocities.emplace_back(m_velocities[j][index]);
     }
 
     return velocities;
@@ -78,40 +78,40 @@ std::vector<Vector3> Trajectory::get_velocities_at_index(int index)  const {
 
 void Trajectory::save_to_file() {
 
-    for (int j = 0; j < self_n_trajectories; ++j) {
-        for (int k = 0; k < self_positions[j].size(); ++k) {
-            self_pos_ofstreams[j] << std::scientific
+    for (int j = 0; j < m_n_trajectories; ++j) {
+        for (int k = 0; k < m_positions[j].size(); ++k) {
+            m_pos_ofstreams[j] << std::scientific
                                   << std::setprecision(16)
-                                  << self_positions[j][k].x()
+                                  << m_positions[j][k].x()
                                   << ", "
-                                  << self_positions[j][k].y()
+                                  << m_positions[j][k].y()
                                   << ", "
-                                  << self_positions[j][k].z()
+                                  << m_positions[j][k].z()
                                   << std::endl;
 
-            self_vel_ofstreams[j] << std::scientific
+            m_vel_ofstreams[j] << std::scientific
                                   << std::setprecision(16)
-                                  << self_velocities[j][k].x()
+                                  << m_velocities[j][k].x()
                                   << ", "
-                                  << self_velocities[j][k].y()
+                                  << m_velocities[j][k].y()
                                   << ", "
-                                  << self_velocities[j][k].z()
+                                  << m_velocities[j][k].z()
                                   << std::endl;
         }
     }
 }
 
 void Trajectory::close_ofstreams() {
-    for (int j = 0; j < self_n_trajectories; ++j) {
-        self_pos_ofstreams[j].close();
-        self_vel_ofstreams[j].close();
+    for (int j = 0; j < m_n_trajectories; ++j) {
+        m_pos_ofstreams[j].close();
+        m_vel_ofstreams[j].close();
     }
 }
 
 void Trajectory::clear_coordinates() {
-    for (int j = 0; j < self_n_trajectories; ++j) {
-        self_positions[j].clear();
-        self_positions[j].clear();
+    for (int j = 0; j < m_n_trajectories; ++j) {
+        m_positions[j].clear();
+        m_positions[j].clear();
     }
 }
 
@@ -126,13 +126,13 @@ void Trajectory::read_from_csv(int skip) {
 
     typedef boost::tokenizer<boost::escaped_list_separator<char>> tokenizer;
 
-    for (int j = 0; j < self_n_trajectories; ++j) {
+    for (int j = 0; j < m_n_trajectories; ++j) {
 
-        std::string path_pos = self_pos_dir + self_names[j] + self_file_extension;
+        std::string path_pos = m_pos_dir + m_names[j] + m_file_extension;
         boost::algorithm::to_lower(path_pos);
         boost::replace_all(path_pos, " ", "_");
 
-        std::string path_vel = self_vel_dir + self_names[j] + self_file_extension;
+        std::string path_vel = m_vel_dir + m_names[j] + m_file_extension;
         boost::algorithm::to_lower(path_vel);
         boost::replace_all(path_vel, " ", "_");
 
@@ -165,7 +165,7 @@ void Trajectory::read_from_csv(int skip) {
 
                 double z_buffer = std::stod(*tok_it);
 
-                self_positions[j].push_back(Vector3(x_buffer, y_buffer, z_buffer));
+                m_positions[j].push_back(Vector3(x_buffer, y_buffer, z_buffer));
 
                 ++counter;
             }
@@ -193,13 +193,13 @@ void Trajectory::read_from_csv(int skip) {
 
                 double vz_buffer = std::stod(*tok_it);
 
-                self_velocities[j].push_back(Vector3(vx_buffer, vy_buffer, vz_buffer));
+                m_velocities[j].push_back(Vector3(vx_buffer, vy_buffer, vz_buffer));
 
                 ++counter;
             }
 
         } else {
-            std::cout << "Error opening file(s) for " << self_names[j] << std::endl;
+            std::cout << "Error opening file(s) for " << m_names[j] << std::endl;
         }
 
         filereader_pos.close();
@@ -210,25 +210,25 @@ void Trajectory::read_from_csv(int skip) {
 
 
 void Trajectory::open_ofstreams() {
-    for (unsigned int i = 0; i < self_n_trajectories; ++i) {
+    for (unsigned int i = 0; i < m_n_trajectories; ++i) {
         // Create and open ofstreams, position and velocity
 
-        std::string path_pos = self_pos_dir + self_names[i] + self_file_extension;
+        std::string path_pos = m_pos_dir + m_names[i] + m_file_extension;
         boost::algorithm::to_lower(path_pos);
         boost::replace_all(path_pos, " ", "_");
 
-        std::string path_vel = self_vel_dir + self_names[i] + self_file_extension;
+        std::string path_vel = m_vel_dir + m_names[i] + m_file_extension;
         boost::algorithm::to_lower(path_vel);
         boost::replace_all(path_vel, " ", "_");
 
         std::ofstream out1;
 
-        self_pos_ofstreams.push_back(std::move(out1));
-        self_pos_ofstreams[i].open(path_pos);
+        m_pos_ofstreams.push_back(std::move(out1));
+        m_pos_ofstreams[i].open(path_pos);
 
         std::ofstream out2;
 
-        self_vel_ofstreams.push_back(std::move(out2));
-        self_vel_ofstreams[i].open(path_vel);
+        m_vel_ofstreams.push_back(std::move(out2));
+        m_vel_ofstreams[i].open(path_vel);
     }
 }

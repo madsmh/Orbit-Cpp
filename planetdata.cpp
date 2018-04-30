@@ -29,11 +29,11 @@
 
 
 PlanetData::PlanetData(const std::vector<std::string> &names){
-    self_planet_names = names;
+    m_planet_names = names;
 
-    for (unsigned int i = 0; i < self_planet_names.size(); ++i) {
-        self_positions.emplace_back(std::vector<Vector3> {});
-        self_velocities.emplace_back(std::vector<Vector3> {});
+    for (unsigned int i = 0; i < m_planet_names.size(); ++i) {
+        m_positions.emplace_back(std::vector<Vector3> {});
+        m_velocities.emplace_back(std::vector<Vector3> {});
     }
 }
 
@@ -95,39 +95,39 @@ std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string plan
 
 void PlanetData::structs_to_arrays() {
 
-    long n = self_planet_names.size();
+    long n = m_planet_names.size();
 
     std::string out;
 
     for (int j = 0; j < n; ++j) {
-        std::vector<HorizonsFile> h_structs = horizons_to_structs(self_planet_names[j]);
+        std::vector<HorizonsFile> h_structs = horizons_to_structs(m_planet_names[j]);
 
         out = "Initialized vector of structs with " +  std::to_string(h_structs.size()) +
-         " elements, self-positons have size " + std::to_string(self_positions.size()) + "\n";
+         " elements, self-positons have size " + std::to_string(m_positions.size()) + "\n";
 
         long n_of_structs = h_structs.size();
 
         for (int i = 0; i < n_of_structs; ++i) {
             HorizonsFile h = h_structs[i];
-            self_positions[j].emplace_back(Vector3 (h.x, h.y, h.z));
-            self_velocities[j].emplace_back(Vector3 (h.vx, h.vy, h.vz));
+            m_positions[j].emplace_back(Vector3 (h.x, h.y, h.z));
+            m_velocities[j].emplace_back(Vector3 (h.vx, h.vy, h.vz));
         }
 
     }
-    std::cout << "Imported position and velocity data for " << self_positions.size()
+    std::cout << "Imported position and velocity data for " << m_positions.size()
               << " bodies." << std::endl;
 }
 
 std::vector<Vector3> PlanetData::get_body_positions(int body){
-    return self_positions[body];
+    return m_positions[body];
 };
 
 std::vector<Vector3> PlanetData::get_body_velocities(int body) {
-    return self_velocities[body];
+    return m_velocities[body];
 }
 
 std::vector<Vector3 > PlanetData::get_starting_positions(){
-    long n = self_planet_names.size();
+    long n = m_planet_names.size();
     std::vector<Vector3> starting_positions;
 
     for (int i = 0; i < n; ++i) {
@@ -139,7 +139,7 @@ std::vector<Vector3 > PlanetData::get_starting_positions(){
 
 std::vector<Vector3 > PlanetData::get_starting_velocities() {
 
-    long n = self_planet_names.size();
+    long n = m_planet_names.size();
 
     std::vector<Vector3> starting_velocities;
 
