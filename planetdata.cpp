@@ -95,11 +95,9 @@ std::vector<HorizonsFile> PlanetData::horizons_to_structs(const std::string plan
 
 void PlanetData::structs_to_arrays() {
 
-    long n = m_planet_names.size();
-
     std::string out;
 
-    for (int j = 0; j < n; ++j) {
+    for (int j = 0; j < m_planet_names.size(); ++j) {
         std::vector<HorizonsFile> h_structs = horizons_to_structs(m_planet_names[j]);
 
         out = "Initialized vector of structs with " +  std::to_string(h_structs.size()) +
@@ -127,10 +125,9 @@ std::vector<Vector3> PlanetData::get_body_velocities(int body) {
 }
 
 std::vector<Vector3 > PlanetData::get_starting_positions(){
-    long n = m_planet_names.size();
     std::vector<Vector3> starting_positions;
 
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < m_planet_names.size(); ++i) {
         starting_positions.emplace_back(get_body_positions(i)[0]);
     }
 
@@ -139,11 +136,9 @@ std::vector<Vector3 > PlanetData::get_starting_positions(){
 
 std::vector<Vector3 > PlanetData::get_starting_velocities() {
 
-    long n = m_planet_names.size();
-
     std::vector<Vector3> starting_velocities;
 
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < m_planet_names.size(); ++i) {
         starting_velocities.emplace_back(get_body_velocities(i)[0]);
     }
 
