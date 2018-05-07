@@ -62,13 +62,13 @@ void write_table(const std::vector<Vector3 > &data, const std::string &file_name
     file.close();
 }
 
-void diagnostics(Trajectory tra,
+void diagnostics(Trajectory &tra,
                  PlanetData data,
                  std::vector<std::string> const &names,
-                 int detail,
-                 long hours,
-                 int origin,
-                 int target) {
+                 int detail) {
+
+    tra.read_from_csv(detail);
+
     int ref_rows = (int) data.get_body_positions(0).size();
 
     std::cout << "Absolute error for the bodies are" << std::endl;
@@ -88,18 +88,24 @@ void diagnostics(Trajectory tra,
 
         double max_dist = *std::max_element(dists.begin(), dists.end())/1000;
 
-        if (j == 28){
+        if (j == 1){
+            std::cout << std::endl << "Planets: " << std::endl;
+        } else if (j == 11){
+            std::cout << std::endl << "Earth's moon: " << std::endl;
+        } else if (j == 12){
             std::cout << std::endl << "Jovian moons: " << std::endl;
-        } else if (j == 34){
-            std::cout << std::endl << "Saturninan moons: " << std::endl;
-        } else if (j == 49){
+        } else if (j == 18){
+            std::cout << std::endl << "Saturnian moons: " << std::endl;
+        } else if (j == 33){
             std::cout << std::endl << "Plutonian moons: " << std::endl;
-        } else if (j == 54){
+        } else if (j == 37){
             std::cout << std::endl << "Martian moons: " << std::endl;
-        } else if (j == 55){
-            std::cout << std::endl << "Neptunian moons: " << std::endl;
-        } else if (j == 56){
-            std::cout << std::endl << "Uanian moons: " << std::endl;
+        } else if (j == 39){
+            std::cout << "Neptunian moons" << std::endl;
+        } else if (j == 40){
+            std::cout << "Uranian moons" << std::endl;
+        } else if (j == 45){
+            std::cout << "Asteroids" << std::endl;
         }
 
         std::cout << j << " " << names[j] << ": " << max_dist << " km" << std::endl;
@@ -108,7 +114,7 @@ void diagnostics(Trajectory tra,
     // Make table with error of Europas position with respect to Jupiter as a function
     // of time in hours
 
-    auto target_ref_positions = data.get_body_positions(target);
+    /*auto target_ref_positions = data.get_body_positions(target);
     auto origin_ref_positions = data.get_body_positions(origin);
 
     auto target_sim_positions = tra.get_trajectory_positions(target);
@@ -175,7 +181,7 @@ void diagnostics(Trajectory tra,
     write_table(pos_sim_table, "pos_sim.csv");
     write_table(vel_ref_table, "ref_velocity.csv");
     write_table(vel_sim_table, "sim_velocity.csv");
-
+*/
 }
 
 
@@ -210,6 +216,7 @@ int main(int argc, char **argv) {
     int detail;
     int origin;
     int target;
+    auto hours_to_sim = planetData.get_body_positions(0).size();
     std::string sim_choice("y");
     std::string diag_choice("y");
 
@@ -220,8 +227,6 @@ int main(int argc, char **argv) {
     if ( sim_choice == "y" or sim_choice == "Y"){
         std::cout << "Enter number of integration steps per hour: ";
         std::cin >> detail;
-
-        auto hours_to_sim = planetData.get_body_positions(0).size();
 
         Verlet integrator;
 
@@ -238,23 +243,12 @@ int main(int argc, char **argv) {
 
     if (diag_choice == "y" or diag_choice == "Y"){
 
-        std::cout << "Enter body (int) to set as origin: ";
-        std::cin >> origin;
-        std::cout << "Chosen origin: " << physicalProperties.get_names()[origin] << std::endl;
-
-        std::cout << "Enter body (int) to plot the error for: ";
-        std::cin >> target;
-        std::cout << "Chosen target: " << physicalProperties.get_names()[target] << std::endl;
-
         /* TODO Update diagnostics to use less RAM.
-        *
-        * diagnostics(trajectory,
+        */
+         diagnostics(trajectory,
                    planetData,
                    physicalProperties.get_names(),
-                   detail,
-                   hours_to_sim,
-                   origin,
-                   target);*/
+                   detail);
 
     } else if (diag_choice != "n"){
         goto diag_choose;

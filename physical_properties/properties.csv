@@ -10,23 +10,6 @@ Uranus,25559000.00,5.79395132227901E6,799,0.00351068,"Source: Source: NASA/JPL H
 Neptune,25225000.00,6.83509950243967E6,899,0.00340843,"Source: Source: NASA/JPL Horizons, https://ssd.jpl.nasa.gov/?gravity_fields_op"
 Pluto,1151000.00,8.69339078038193E2,999,0,Source: NASA/JPL Horizons
 Luna,1737500.00,4.9028000661638E3,301,0.000203354248211,"Source: Source: NASA/JPL Horizons, JPL, Lunar Constants and Models Document"
-Ceres,469700.00,6.2809393E1,2000001,0,Astroid. Source: NASA/JPL Horizons
-Pallas,272500.00,1.3923011E1,2000002,0,Astroid. Source: NASA/JPL Horizons
-Juno,123298.00,1.622415E0,2000003,0,Asteroid. Source: NASA/JPL Horizons
-Vesta,262700.00,1.7288009E1,2000004,0,Astroid. Source: NASA/JPL Horizons
-Hygiea,203560.00,5.542392E0,2000010,0,Asteroid. Source: NASA/JPL Horizons
-Eunomia,115844.50,2.098155E0,2000015,0,Asteroid. Source: NASA/JPL Horizons
-Psyche,113000.00,1.530048E0,2000016,0,Asteroid. Source: NASA/JPL Horizons
-Euphrosyne,133540.00,2.844872E0,2000031,0,Asteroid. Source: NASA/JPL Horizons
-Doris,108236.50,1.135159E0,2000048,0,Asteroid. Source: NASA/JPL Horizons
-52 Europa,151959.00,1.110804E0,2000052,0,Asteroid. Source: NASA/JPL Horizons
-Cybele,118630.00,1.426481E0,2000065,0,Asteroid. Source: NASA/JPL Horizons
-Sylvia,126525.50,9.86353E-1,2000087,0,Asteroid. Source: NASA/JPL Horizons
-Thisbe,116000.00,1.155799E0,2000088,0,Asteroid. Source: NASA/JPL Horizons
-Eros,8420.00,4.463E-4,2000433,0,Asteroid. Source: NASA/JPL Horizons
-Patientia,126950.00,1.029526E0,2000451,0,Asteroid. Source: NASA/JPL Horizons
-Davida,135163.50,2.331286E0,2000511,0,Asteroid. Source: NASA/JPL Horizons
-Interamnia,153156.50,2.357317E0,2000704,0,Asteroid. Source: NASA/JPL Horizons
 Io,1821600.00,5.95992401027251E3,501,0.01469562,"Moon of Jupiter. Source: NASA/JPL Horizons, R and j2: http://lasp.colorado.edu/~espoclass/5830_2013_Spring_homework/Ch13-Shubert.pdf"
 Europa,1565000.00,3.20273981511473E3,502,0.01629071,"Moon of Jupiter. Source: NASA/JPL Horizons, R and j2: http://lasp.colorado.edu/~espoclass/5830_2013_Spring_homework/Ch13-Shubert.pdf"
 Ganymede,2631200.00,9.88781998008098E3,503,0.00351068,"Moon of Jupiter. Source: NASA/JPL Horizons, R and j2: http://lasp.colorado.edu/~espoclass/5830_2013_Spring_homework/Ch13-Shubert.pdf"
@@ -60,3 +43,20 @@ Umbriel,584700.00,8.50933809448939E1,702,0,Moon of Uranus. Source: https://ssd.j
 Titania,788900.00,2.26943700374125E2,703,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
 Oberon,761400.00,2.05323430253562E2,704,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
 Miranda,235800.00,4.3195168992321E0,705,0,Moon of Uranus. Source: https://ssd.jpl.nasa.gov/?sat_phys_par
+Ceres,469700.00,6.2809393E1,2000001,0,Astroid. Source: NASA/JPL Horizons
+Pallas,272500.00,1.3923011E1,2000002,0,Astroid. Source: NASA/JPL Horizons
+Juno,123298.00,1.622415E0,2000003,0,Asteroid. Source: NASA/JPL Horizons
+Vesta,262700.00,1.7288009E1,2000004,0,Astroid. Source: NASA/JPL Horizons
+Hygiea,203560.00,5.542392E0,2000010,0,Asteroid. Source: NASA/JPL Horizons
+Eunomia,115844.50,2.098155E0,2000015,0,Asteroid. Source: NASA/JPL Horizons
+Psyche,113000.00,1.530048E0,2000016,0,Asteroid. Source: NASA/JPL Horizons
+Euphrosyne,133540.00,2.844872E0,2000031,0,Asteroid. Source: NASA/JPL Horizons
+Doris,108236.50,1.135159E0,2000048,0,Asteroid. Source: NASA/JPL Horizons
+52 Europa,151959.00,1.110804E0,2000052,0,Asteroid. Source: NASA/JPL Horizons
+Cybele,118630.00,1.426481E0,2000065,0,Asteroid. Source: NASA/JPL Horizons
+Sylvia,126525.50,9.86353E-1,2000087,0,Asteroid. Source: NASA/JPL Horizons
+Thisbe,116000.00,1.155799E0,2000088,0,Asteroid. Source: NASA/JPL Horizons
+Eros,8420.00,4.463E-4,2000433,0,Asteroid. Source: NASA/JPL Horizons
+Patientia,126950.00,1.029526E0,2000451,0,Asteroid. Source: NASA/JPL Horizons
+Davida,135163.50,2.331286E0,2000511,0,Asteroid. Source: NASA/JPL Horizons
+Interamnia,153156.50,2.357317E0,2000704,0,Asteroid. Source: NASA/JPL Horizons
