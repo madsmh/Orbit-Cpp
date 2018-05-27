@@ -124,6 +124,8 @@ void Trajectory::read_from_csv(int skip) {
     std::string buffer_pos;
     std::string buffer_vel;
 
+    std::cout << "Reading files." << std::endl;
+
     typedef boost::tokenizer<boost::escaped_list_separator<char>> tokenizer;
 
     for (int j = 0; j < m_n_trajectories; ++j) {
@@ -146,7 +148,7 @@ void Trajectory::read_from_csv(int skip) {
 
             while (std::getline(filereader_pos, buffer_pos)) {
 
-                if (((counter+1) % skip !=0) and counter != 0){
+                if ((counter % skip != 0) and counter != 0){
                     ++counter;
                     continue;
                 }
@@ -174,7 +176,7 @@ void Trajectory::read_from_csv(int skip) {
 
             while (std::getline(filereader_vel, buffer_vel)) {
 
-                if (((counter+1) % skip !=0) and counter != 0){
+                if ((counter % skip != 0) and counter != 0){
                     ++counter;
                     continue;
                 }
@@ -194,7 +196,6 @@ void Trajectory::read_from_csv(int skip) {
                 double vz_buffer = std::stod(*tok_it);
 
                 m_velocities[j].push_back(Vector3(vx_buffer, vy_buffer, vz_buffer));
-
                 ++counter;
             }
 

@@ -72,8 +72,8 @@ void diagnostics(Trajectory &tra,
     int ref_rows = (int) data.get_body_positions(0).size();
 
     std::cout << "Absolute error for the bodies are" << std::endl;
-    std::cout << "Number of rows: " << tra.get_trajectory_positions(0).size() << std::endl;
-
+    std::cout << "Number of rows (positions): " << tra.get_trajectory_positions(0).size() << std::endl;
+    std::cout << "Number of rows (velocity): " << tra.get_trajectory_velocities(0).size() << std::endl;
     for (int j = 0; j < tra.get_number_of_trajectories(); ++j) {
         std::vector<Vector3> sim_vector = tra.get_trajectory_positions(j);
         std::vector<Vector3> ref_vector = data.get_body_positions(j);
@@ -224,9 +224,10 @@ int main(int argc, char **argv) {
     std::cout << "Do you wish to run simulation? (Y/n) ";
     std::cin >> sim_choice;
 
+    std::cout << "Enter number of integration steps per hour: ";
+    std::cin >> detail;
+
     if ( sim_choice == "y" or sim_choice == "Y"){
-        std::cout << "Enter number of integration steps per hour: ";
-        std::cin >> detail;
 
         Verlet integrator;
 
