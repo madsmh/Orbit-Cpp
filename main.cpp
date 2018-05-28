@@ -74,6 +74,7 @@ void diagnostics(Trajectory &tra,
     std::cout << "Absolute error for the bodies are" << std::endl;
     std::cout << "Number of rows (positions): " << tra.get_trajectory_positions(0).size() << std::endl;
     std::cout << "Number of rows (velocity): " << tra.get_trajectory_velocities(0).size() << std::endl;
+
     for (int j = 0; j < tra.get_number_of_trajectories(); ++j) {
         std::vector<Vector3> sim_vector = tra.get_trajectory_positions(j);
         std::vector<Vector3> ref_vector = data.get_body_positions(j);
@@ -82,7 +83,7 @@ void diagnostics(Trajectory &tra,
 
 
         for (int i = 0; i < ref_rows; ++i) {
-            double error = (sim_vector[i*detail]-ref_vector[i]).norm();
+            double error = (sim_vector[i]-ref_vector[i]).norm();
             dists.emplace_back(error);
         }
 
