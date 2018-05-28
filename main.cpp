@@ -74,7 +74,7 @@ void diagnostics(Trajectory &tra,
     std::cout << "Absolute error for the bodies are" << std::endl;
     std::cout << "Number of rows (positions): " << tra.get_trajectory_positions(0).size() << std::endl;
     std::cout << "Number of rows (velocity): " << tra.get_trajectory_velocities(0).size() << std::endl;
-
+    std::cout << std::endl << "Maximum errors:" << std::endl;
     for (int j = 0; j < tra.get_number_of_trajectories(); ++j) {
         std::vector<Vector3> sim_vector = tra.get_trajectory_positions(j);
         std::vector<Vector3> ref_vector = data.get_body_positions(j);
@@ -90,23 +90,23 @@ void diagnostics(Trajectory &tra,
         double max_dist = *std::max_element(dists.begin(), dists.end())/1000;
 
         if (j == 1){
-            std::cout << std::endl << "Planets: " << std::endl;
-        } else if (j == 11){
+            std::cout << std::endl << "Planets (+Pluto): " << std::endl;
+        } else if (j == 10){
             std::cout << std::endl << "Earth's moon: " << std::endl;
-        } else if (j == 12){
+        } else if (j == 11){
             std::cout << std::endl << "Jovian moons: " << std::endl;
-        } else if (j == 18){
+        } else if (j == 17){
             std::cout << std::endl << "Saturnian moons: " << std::endl;
-        } else if (j == 33){
+        } else if (j == 32){
             std::cout << std::endl << "Plutonian moons: " << std::endl;
-        } else if (j == 37){
+        } else if (j == 36){
             std::cout << std::endl << "Martian moons: " << std::endl;
+        } else if (j == 38){
+            std::cout << std::endl << "Neptunian moons" << std::endl;
         } else if (j == 39){
-            std::cout << "Neptunian moons" << std::endl;
-        } else if (j == 40){
-            std::cout << "Uranian moons" << std::endl;
-        } else if (j == 45){
-            std::cout << "Asteroids" << std::endl;
+            std::cout << std::endl << "Uranian moons" << std::endl;
+        } else if (j == 44){
+            std::cout << std::endl << "Asteroids" << std::endl;
         }
 
         std::cout << j << " " << names[j] << ": " << max_dist << " km" << std::endl;
