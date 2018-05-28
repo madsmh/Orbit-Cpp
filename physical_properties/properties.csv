@@ -5,7 +5,7 @@ Venus,6051800.00,3.24858592E5,299,2.7E-05,"Source: NASA/JPL Horizons, J2: http:/
 Earth,6378136.30,3.98600435436096E5,399,0.001082626335439,"Source: NASA/JPL Horizons, JPL Lunar Constants and Models Document"
 Mars,3389500.00,4.28283736206991E4,499,0.001964,"Source: NASA/JPL Horizons, J2: http://onlinelibrary.wiley.com/doi/10.1002/9783527617784.app2/pdf"
 Jupiter,71492000.00,1.266865349115908E08,599,0.01469562,"Source: Source: NASA/JPL Horizons, https://ssd.jpl.nasa.gov/?gravity_fields_op"
-Saturn,60330000.00,3.793120723493890E07,699,0,"Source: Source: NASA/JPL Horizons, https://ssd.jpl.nasa.gov/?gravity_fields_op"
+Saturn,60330000.00,3.793120723493890E07,699,0.01629071,"Source: Source: NASA/JPL Horizons, https://ssd.jpl.nasa.gov/?gravity_fields_op"
 Uranus,25559000.00,5.79395132227901E6,799,0.00351068,"Source: Source: NASA/JPL Horizons, https://ssd.jpl.nasa.gov/?gravity_fields_op"
 Neptune,25225000.00,6.83509950243967E6,899,0.00340843,"Source: Source: NASA/JPL Horizons, https://ssd.jpl.nasa.gov/?gravity_fields_op"
 Pluto,1151000.00,8.69339078038193E2,999,0,Source: NASA/JPL Horizons
