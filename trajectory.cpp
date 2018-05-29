@@ -148,7 +148,7 @@ void Trajectory::read_from_csv(int skip) {
 
             while (std::getline(filereader_pos, buffer_pos)) {
 
-                if ((counter % skip != 0) and counter != 0){
+                if (counter % skip != 0){
                     ++counter;
                     continue;
                 }
@@ -176,7 +176,7 @@ void Trajectory::read_from_csv(int skip) {
 
             while (std::getline(filereader_vel, buffer_vel)) {
 
-                if ((counter % skip != 0) and counter != 0){
+                if (counter % skip != 0){
                     ++counter;
                     continue;
                 }
@@ -196,6 +196,7 @@ void Trajectory::read_from_csv(int skip) {
                 double vz_buffer = std::stod(*tok_it);
 
                 m_velocities[j].push_back(Vector3(vx_buffer, vy_buffer, vz_buffer));
+
                 ++counter;
             }
 
