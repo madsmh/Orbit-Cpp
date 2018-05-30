@@ -111,7 +111,7 @@ void Trajectory::close_ofstreams() {
 void Trajectory::clear_coordinates() {
     for (int j = 0; j < m_n_trajectories; ++j) {
         m_positions[j].clear();
-        m_positions[j].clear();
+        m_velocities[j].clear();
     }
 }
 
