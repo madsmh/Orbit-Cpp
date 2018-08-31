@@ -35,8 +35,10 @@ def data_to_table(data):
 
     return np.column_stack((x, y, z, vx, vy, vz))
 
+
 def save_table(table, path):
     np.savetxt(path, table, delimiter=',', fmt="%1.16e")
+
 
 def run(path_to_config_file, from_date, to_date, time_step):
 
