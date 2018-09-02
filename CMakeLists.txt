@@ -4,6 +4,7 @@ project(orbit3d)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_BUILD_TYPE Release)
 
 add_custom_target(copy-runtime-files ALL
         COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data
@@ -14,8 +15,6 @@ add_custom_target(copy-runtime-files ALL
 
 
 find_package(Boost)
-
-set(CMAKE_BUILD_TYPE Release)
 
 set(SOURCE_FILES
         main.cpp
