@@ -37,18 +37,18 @@ def data_to_table(data):
     return np.column_stack((x, y, z, vx, vy, vz))
 
 
-def save_table(table, path):
-    np.savetxt(path, table, delimiter=',', fmt="%1.16e")
+def save_table(table, file_path):
+    np.savetxt(file_path, table, delimiter=',', fmt="%1.16e")
 
 
-def run(path_to_config_file, from_date, to_date, time_step):
+def run(path_to_config_file, from_date, to_date, delta_t):
 
     with open(path_to_config_file) as csvfile:
         reader = csv.DictReader(csvfile, skipinitialspace=True)
         for row in reader:
             if int(row['ID']) > 2000:
                 body = Horizons(id_type='asteroid_name', id=str(row['ID']), location=coord_center,
-                                epochs={'start': start_date, 'stop': end_date, 'step': time_step})
+                                epochs={'start': from_date, 'stop': to_date, 'step': delta_t})
                 vector = body.vectors()
 
                 print(vector['targetname'][1])
@@ -59,7 +59,7 @@ def run(path_to_config_file, from_date, to_date, time_step):
 
             else:
                 body = Horizons(id_type='majorbody', id=str(row['ID']), location=coord_center,
-                                epochs={'start': start_date, 'stop': end_date, 'step': time_step})
+                                epochs={'start': from_date, 'stop': to_date, 'step': delta_t})
                 vector = body.vectors()
 
                 print(vector['targetname'][1])
