@@ -15,6 +15,7 @@ coord_center = "500@0"
 dist_unit = 'km'
 vel_unit = 'km/s'
 
+
 def data_to_table(data):
     # Convert to proper units
     data['x'].convert_unit_to(dist_unit)
@@ -47,7 +48,7 @@ def run(path_to_config_file, from_date, to_date, time_step):
         for row in reader:
             if int(row['ID']) > 2000:
                 body = Horizons(id_type='asteroid_name', id=str(row['ID']), location=coord_center,
-                                epochs= {'start' : start_date, 'stop': end_date, 'step': time_step})
+                                epochs={'start': start_date, 'stop': end_date, 'step': time_step})
                 vector = body.vectors()
 
                 print(vector['targetname'][1])
@@ -58,7 +59,7 @@ def run(path_to_config_file, from_date, to_date, time_step):
 
             else:
                 body = Horizons(id_type='majorbody', id=str(row['ID']), location=coord_center,
-                                epochs= {'start' : start_date, 'stop': end_date, 'step': time_step})
+                                epochs={'start': start_date, 'stop': end_date, 'step': time_step})
                 vector = body.vectors()
 
                 print(vector['targetname'][1])
@@ -68,5 +69,4 @@ def run(path_to_config_file, from_date, to_date, time_step):
                 save_table(table, data_path + str(row['NAME']).lower().replace(" ", "_") + data_extension)
 
 
-run(path,start_date, end_date, time_step)
-
+run(path, start_date, end_date, time_step)
